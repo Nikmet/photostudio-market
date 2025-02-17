@@ -1,18 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeButton } from "@/components/theme-button";
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"]
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"]
-});
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import "./globals.css";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -26,10 +15,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                {" "}
+            <body>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <ThemeButton />
+                    <ThemeSwitcher />
                     {children}
                 </ThemeProvider>
             </body>
