@@ -1,16 +1,15 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { JSX } from "react";
-import { Switch } from "./ui";
-import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Switch } from "./ui";
 
-export interface IThemeButtonProps {
+export interface IThemeSwitcherProps {
     className?: string;
 }
 
-export const ThemeSwitcher = ({ className }: IThemeButtonProps): JSX.Element => {
+export const ThemeSwitcher = ({ className }: IThemeSwitcherProps): React.JSX.Element => {
     const { setTheme } = useTheme();
 
     return (
