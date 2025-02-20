@@ -8,9 +8,10 @@ import { ThemeImage } from "./theme-image";
 
 export interface IHeaderProps {
     className?: string;
+    hasCart?: boolean;
 }
 
-export const Header: React.FC<IHeaderProps> = ({ className }) => {
+export const Header: React.FC<IHeaderProps> = ({ hasCart, className }) => {
     return (
         <header
             className={cn(
@@ -48,12 +49,16 @@ export const Header: React.FC<IHeaderProps> = ({ className }) => {
                 </Button>
 
                 {/* Кнопки для корзин */}
-                <Button className="dark:text-white hidden md:flex">
-                    Корзина <ArrowRight />
-                </Button>
-                <Button className="dark:text-white md:hidden h-7 w-7">
-                    <ShoppingCart />
-                </Button>
+                {hasCart && (
+                    <>
+                        <Button className="dark:text-white hidden md:flex">
+                            Корзина <ArrowRight />
+                        </Button>
+                        <Button className="dark:text-white md:hidden h-7 w-7">
+                            <ShoppingCart />
+                        </Button>
+                    </>
+                )}
             </div>
         </header>
     );
