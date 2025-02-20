@@ -8,10 +8,10 @@ import { ThemeImage } from "./theme-image";
 
 export interface IHeaderProps {
     className?: string;
-    hasCart?: boolean;
+    admin?: boolean;
 }
 
-export const Header: React.FC<IHeaderProps> = ({ hasCart, className }) => {
+export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
     return (
         <header
             className={cn(
@@ -20,7 +20,7 @@ export const Header: React.FC<IHeaderProps> = ({ hasCart, className }) => {
             )}
         >
             <Suspense>
-                <Link href="/">
+                <Link href={admin ? "/admin" : "/"}>
                     <ThemeImage
                         darkSrc="/logo_dark.svg"
                         lightSrc="/logo_light.svg"
@@ -49,7 +49,7 @@ export const Header: React.FC<IHeaderProps> = ({ hasCart, className }) => {
                 </Button>
 
                 {/* Кнопки для корзин */}
-                {hasCart && (
+                {!admin && (
                     <>
                         <Button className="dark:text-white hidden md:flex">
                             Корзина <ArrowRight />

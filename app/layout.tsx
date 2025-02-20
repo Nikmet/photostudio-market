@@ -13,7 +13,7 @@ const main_font = Plus_Jakarta_Sans({
     weight: ["400", "500", "600", "700", "800"]
 });
 
-export default async function RootLayout({
+export default async function MainLayout({
     children
 }: Readonly<{
     children: React.ReactNode;
