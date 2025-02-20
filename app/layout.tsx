@@ -4,6 +4,8 @@ import { Header } from "@/components/header";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MenuBar } from "@/components/menu-bar";
+import { clientPages } from "@/constants/pages";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Главная"
@@ -27,7 +29,10 @@ export default async function RootLayout({
             <body className={main_font.className}>
                 <ThemeProvider defaultTheme={theme}>
                     <Header />
-                    {children}
+                    <main className="flex h-[91vh] w-full">
+                        <MenuBar pages={clientPages} />
+                        <div className="w-full h-full">{children}</div>
+                    </main>
                 </ThemeProvider>
             </body>
         </html>

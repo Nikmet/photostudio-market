@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -8,8 +10,6 @@ import { getCookie, setCookie } from "cookies-next";
 export interface IThemeSwitcherProps {
     className?: string;
 }
-
-//TODO: Добавить сохранение темы в локалсторадж
 
 export const ThemeSwitcher = ({ className }: IThemeSwitcherProps): React.JSX.Element => {
     const { setTheme, systemTheme, theme } = useTheme();

@@ -16,7 +16,7 @@ body {
         --popover-foreground: 222.2 84% 4.9%;
         --primary: 221.2 83.2% 53.3%;
         --primary-foreground: 210 40% 98%;
-        --secondary: 210 40% 96.1%;
+        --secondary: 210 40% 93%;
         --secondary-foreground: 222.2 47.4% 11.2%;
         --muted: 210 40% 96.1%;
         --muted-foreground: 215.4 16.3% 46.9%;
@@ -70,4 +70,37 @@ body {
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* Анимация выплывания слева */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Применение анимации к MenuBar */
+.menu-bar-animation {
+    animation: slideInFromLeft 0.7s ease-in-out forwards;
+    animation-delay: 0.5s;
+}
+
+.header-animation {
+    animation: slideInFromTop 0.7s ease-out forwards;
 }
