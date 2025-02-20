@@ -6,6 +6,7 @@ import { Container } from "./container";
 import { useTheme } from "next-themes";
 import { Button } from "./ui";
 import { ArrowRight } from "lucide-react";
+import React from "react";
 
 export interface IHeaderProps {
     className?: string;
@@ -13,6 +14,15 @@ export interface IHeaderProps {
 
 export const Header: React.FC<IHeaderProps> = ({ className }) => {
     const { theme } = useTheme();
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <header className={cn("bg-secondary", className)}>

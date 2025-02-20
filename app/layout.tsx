@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Главная"
@@ -13,15 +14,18 @@ const main_font = Plus_Jakarta_Sans({
     weight: ["400", "500", "600", "700", "800"]
 });
 
-export default function RootLayout({
+export default async function RootLayout({
     children
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const cookieStore = await cookies();
+    const theme = cookieStore.get("theme")?.value || "dark";
+
     return (
-        <html lang="ru">
+        <html lang="ru" className={theme} style={{ colorScheme: theme }}>
             <body className={main_font.className}>
-                <ThemeProvider defaultTheme="system" enableSystem>
+                <ThemeProvider defaultTheme={theme}>
                     <Header />
                     {children}
                 </ThemeProvider>
