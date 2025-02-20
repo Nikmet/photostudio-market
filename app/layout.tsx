@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { cookies } from "next/headers";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Главная"
