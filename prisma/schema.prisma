@@ -19,7 +19,50 @@ enum UserRole {
     ADMIN
 }
 
-model User { 
+// Перечисление сторон печати (односторонняя или двусторонняя)
+enum PrintingSide {
+    ONE_SIDE
+    TWO_SIDES
+}
+
+// Перечисление размеров одежды
+enum Size {
+    XS
+    S
+    M
+    L
+    XL
+    TWO_XL
+    THREE_XL
+}
+
+// Перечисление сложности задачи
+enum Difficile {
+    EASY
+    MEDIUM
+    HARD
+}
+
+// Перечисление типов магнитов
+enum MagnetType {
+    ACRYLIC
+    SUBSTRATE
+}
+
+// Перечисление размеров печатей
+enum PrintingType {
+    WITH_TOOLING
+    WITHOUT_TOOLING
+}
+
+// Таблица плотности банера
+enum BannerDensity {
+    THREE_HUNDRED
+    FOUR_HUNDRED
+}
+
+// Таблица пользователей
+model User {
     id Int @id @default(autoincrement())
 
     fullName String
@@ -27,4 +70,200 @@ model User {
     phone    String   @unique
     password String
     role     UserRole @default(USER)
+}
+
+// Таблица Категорий
+model Category {
+    id       Int       @id @default(autoincrement())
+    name     String
+    products Product[]
+}
+
+// Таблица Продуктов
+model Product {
+    id                Int        @id @default(autoincrement())
+    price             Float
+    design            Boolean?
+    design_difficulty Difficile?
+
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
+}
+
+// Таблица Кружек
+model Cup {
+    id    Int    @id @default(autoincrement())
+    name  String
+    price Float
+}
+
+// Таблица Материалов
+model Material {
+    id           Int            @id @default(autoincrement())
+    name         String
+    price        Float
+    t_shirt      TShirt[]
+    lec          LEC[]
+    BusinessCard BusinessCard[]
+}
+
+// Таблица Футболок
+model TShirt {
+    id           Int          @id @default(autoincrement())
+    name         String
+    printingSide PrintingSide
+    size         Size
+    materialId   Int
+    material     Material     @relation(fields: [materialId], references: [id])
+}
+
+// Лазерная гравировка и резка
+model LEC {
+    id         Int       @id @default(autoincrement())
+    name       String
+    materialId Int
+    material   Material  @relation(fields: [materialId], references: [id])
+    width      Float
+    height     Float
+    difficile  Difficile
+}
+
+// Таблица Значков
+model Badge {
+    id    Int    @id @default(autoincrement())
+    name  String
+    price Float
+}
+
+// Таблица Магнитов
+model Magnet {
+    id          Int        @id @default(autoincrement())
+    name        String
+    width       Float
+    height      Float
+    magnet_type MagnetType
+}
+
+// Таблица Печатей
+model Printing {
+    id            Int          @id @default(autoincrement())
+    name          String
+    printing_type PrintingType
+}
+
+// Таблица Банеров
+model Banner {
+    id           Int           @id @default(autoincrement())
+    name         String
+    width        Float
+    height       Float
+    luvers_count Int
+    luvers_step  Float
+    density      BannerDensity
+}
+
+// Таблица Стендов
+model Stand {
+    id           Int    @id @default(autoincrement())
+    name         String
+    width        Float
+    height       Float
+    pocket_count Int
+}
+
+// Таблица Цветов
+model Color {
+    id            Int             @id @default(autoincrement())
+    name          String
+    hex           String
+    Table         Table[]
+    AddressPlaque AddressPlaque[]
+    Newsletter    Newsletter[]
+}
+
+// Таблица Табличек
+model Table {
+    id      Int    @id @default(autoincrement())
+    name    String
+    width   Float
+    height  Float
+    colorId Int
+    Color   Color  @relation(fields: [colorId], references: [id])
+}
+
+// Таблица Форм Адресных табличек
+model AddressPlaqueForm {
+    id            Int             @id @default(autoincrement())
+    name          String
+    image         String
+    AddressPlaque AddressPlaque[]
+}
+
+// Таблица Адресных табличек
+model AddressPlaque {
+    id      Int               @id @default(autoincrement())
+    name    String
+    formId  Int
+    form    AddressPlaqueForm @relation(fields: [formId], references: [id])
+    colorId Int
+    Color   Color             @relation(fields: [colorId], references: [id])
+}
+
+// Таблица Информационных вывесок
+model Newsletter {
+    id      Int    @id @default(autoincrement())
+    name    String
+    width   Float
+    height  Float
+    colorId Int
+    Color   Color  @relation(fields: [colorId], references: [id])
+}
+
+// Таблица Типов бумаги
+model PaperType {
+    id    Int    @id @default(autoincrement())
+    name  String
+    price Float
+    LFP   LFP[]
+}
+
+// Таблица Широкоформатной печати
+model LFP {
+    id            Int       @id @default(autoincrement())
+    name          String
+    width         Float
+    height        Float
+    paper_type_id Int
+    paper_type    PaperType @relation(fields: [paper_type_id], references: [id])
+}
+
+// Таблица Визиток
+model BusinessCard {
+    id            Int          @id @default(autoincrement())
+    name          String
+    materialId    Int
+    material      Material     @relation(fields: [materialId], references: [id])
+    printing_side PrintingSide
+}
+
+// Таблица Багета
+model Baguette {
+    id    Int     @id @default(autoincrement())
+    name  String
+    image String
+    price Float
+    Frame Frame[]
+}
+
+// Таблица Рамок
+model Frame {
+    id             Int      @id @default(autoincrement())
+    name           String
+    width          Float
+    height         Float
+    baguetteId     Int
+    baguette       Baguette @relation(fields: [baguetteId], references: [id])
+    has_glass      Boolean
+    has_backdrop   Boolean
+    has_suspension Boolean
 }
