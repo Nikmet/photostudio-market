@@ -14,3 +14,10 @@ export const clientPages: IPage[] = [
         href: "/frames"
     }
 ];
+
+export const adminPages: IPage[] = [
+    {
+        name: "Рамки",
+        href: "/admin/frames"
+    }
+];
