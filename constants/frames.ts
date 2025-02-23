@@ -1,244 +1,268 @@
-export const initial_frames = [
+import { Frame } from "@prisma/client";
+
+export const initial_frames: Frame[] = [
     {
-        id: 1,
+        id: "РМ-00001",
         name: "Рамка 1",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00001",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 2,
+        id: "РМ-00002",
         name: "Рамка 2",
         width: 210,
         height: 297,
-        baguetteId: 2,
-        baguette: "РАH-23455",
+        baguetteId: "БАГ-00002",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: true
+        has_suspension: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 3,
+        id: "РМ-00003",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00003",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 4,
+        id: "РМ-00004",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00004",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 5,
+        id: "РМ-00005",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00005",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 6,
+        id: "РМ-00006",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00006",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 7,
+        id: "РМ-00007",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00007",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 8,
+        id: "РМ-00008",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00008",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 9,
+        id: "РМ-00009",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00009",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 10,
+        id: "РМ-00010",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00010",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 11,
+        id: "РМ-00011",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00011",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 12,
+        id: "РМ-00012",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00012",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 13,
+        id: "РМ-00013",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00013",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 14,
+        id: "РМ-00014",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00014",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 15,
+        id: "РМ-00015",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00015",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 16,
+        id: "РМ-00016",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00016",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 17,
+        id: "РМ-00017",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00017",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 18,
+        id: "РМ-00018",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00018",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 19,
+        id: "РМ-00019",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00019",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 20,
+        id: "РМ-00020",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00020",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 21,
+        id: "РМ-00021",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00021",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        id: 22,
+        id: "РМ-00022",
         name: "Рамка 3",
         width: 210,
         height: 297,
-        baguetteId: 1,
-        baguette: "РА-2345",
+        baguetteId: "БАГ-00022",
         has_glass: true,
         has_backdrop: false,
-        has_suspension: false
+        has_suspension: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 ];
