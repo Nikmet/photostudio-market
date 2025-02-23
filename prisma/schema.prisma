@@ -62,6 +62,8 @@ enum BannerDensity {
 }
 
 // Таблица пользователей
+//TODO: добавить поле для хранения фотографии
+//TODO: Подумать на счет юр лиц
 model User {
     id Int @id @default(autoincrement())
 
@@ -70,13 +72,60 @@ model User {
     phone    String   @unique
     password String
     role     UserRole @default(USER)
+
+    provider   String?
+    providerId String?
+
+    cart Cart?
+
+    orders Order[]
+
+    verificationCode VerificationCode?
+    verified         DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Категорий
 model Category {
     id       Int       @id @default(autoincrement())
-    name     String
+    name     String    @unique
     products Product[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// Таблица корзины
+model Cart {
+    id Int @id @default(autoincrement())
+
+    userId Int  @unique
+    user   User @relation(fields: [userId], references: [id])
+
+    items CartItem[]
+
+    totalAmount Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// Таблица элементов корзины
+model CartItem {
+    id Int @id @default(autoincrement())
+
+    productId Int
+    product   Product @relation(fields: [productId], references: [id])
+
+    cartId Int
+    cart   Cart @relation(fields: [cartId], references: [id])
+
+    quantity Int @default(1)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Продуктов
@@ -88,182 +137,296 @@ model Product {
 
     categoryId Int
     category   Category @relation(fields: [categoryId], references: [id])
+    itemId     String
+    itemName   String
+    comments   String?
+
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    CartItem  CartItem[]
+    Order     Order[]
+}
+
+// Перечисление статусов заказа
+enum OrderStatus {
+    PENDING
+    SUCCEEDED
+    CANCELED
+}
+
+// Таблица заказов
+model Order {
+    id Int @id @default(autoincrement())
+
+    userId Int
+    user   User @relation(fields: [userId], references: [id])
+
+    totalAmount Int
+    status      OrderStatus @default(PENDING)
+    paymentId   String?
+
+    products Product[]
+
+    fullName String
+    phone    String
+    email    String
+    comment  String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// Таблица кодов верификации
+model VerificationCode {
+    id Int @id @default(autoincrement())
+
+    user   User @relation(fields: [userId], references: [id])
+    userId Int  @unique
+
+    code String
+
+    createdAt DateTime @default(now())
+
+    @@unique([userId, code])
 }
 
 // Таблица Кружек
 model Cup {
-    id    Int    @id @default(autoincrement())
-    name  String
-    price Float
-}
+    id             String  @id //Prefix: К
+    name           String
+    printing_image String?
 
-// Таблица Материалов
-model Material {
-    id           Int            @id @default(autoincrement())
-    name         String
-    price        Float
-    t_shirt      TShirt[]
-    lec          LEC[]
-    BusinessCard BusinessCard[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Футболок
 model TShirt {
-    id           Int          @id @default(autoincrement())
-    name         String
-    printingSide PrintingSide
-    size         Size
-    materialId   Int
-    material     Material     @relation(fields: [materialId], references: [id])
+    id             String       @id //Prefix: Ф
+    name           String
+    printingSide   PrintingSide
+    printing_image String?
+    size           Size
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Лазерная гравировка и резка
 model LEC {
-    id         Int       @id @default(autoincrement())
-    name       String
-    materialId Int
-    material   Material  @relation(fields: [materialId], references: [id])
-    width      Float
-    height     Float
-    difficile  Difficile
+    id        String    @id //Prefix: ЛГР
+    name      String
+    width     Float
+    height    Float
+    difficile Difficile
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Значков
 model Badge {
-    id    Int    @id @default(autoincrement())
-    name  String
-    price Float
+    id             String  @id //Prefix: ЗН
+    name           String
+    printing_image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Магнитов
 model Magnet {
-    id          Int        @id @default(autoincrement())
-    name        String
-    width       Float
-    height      Float
-    magnet_type MagnetType
+    id             String     @id //Prefix: МГ
+    name           String
+    width          Float
+    height         Float
+    magnet_type    MagnetType
+    printing_image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Печатей
 model Printing {
-    id            Int          @id @default(autoincrement())
+    id            String       @id //Prefix: П
     name          String
     printing_type PrintingType
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Банеров
 model Banner {
-    id           Int           @id @default(autoincrement())
-    name         String
-    width        Float
-    height       Float
-    luvers_count Int
-    luvers_step  Float
-    density      BannerDensity
+    id             String        @id //Prefix: БАН
+    name           String
+    width          Float
+    height         Float
+    luvers_count   Int
+    luvers_step    Float
+    density        BannerDensity
+    printing_image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Стендов
 model Stand {
-    id           Int    @id @default(autoincrement())
-    name         String
-    width        Float
-    height       Float
-    pocket_count Int
+    id             String  @id //Prefix: СТ
+    name           String
+    width          Float
+    height         Float
+    pocket_count   Int
+    printing_image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Цветов
 model Color {
-    id            Int             @id @default(autoincrement())
-    name          String
-    hex           String
-    Table         Table[]
-    AddressPlaque AddressPlaque[]
-    Newsletter    Newsletter[]
+    id              String          @id //Prefix: ЦВ
+    name            String
+    rgb             String
+    tables          Table[]
+    address_plaques AddressPlaque[]
+    Newsletter      Newsletter[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Табличек
 model Table {
-    id      Int    @id @default(autoincrement())
+    id      String @id //Prefix: T
     name    String
     width   Float
     height  Float
-    colorId Int
+    colorId String
     Color   Color  @relation(fields: [colorId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Форм Адресных табличек
 model AddressPlaqueForm {
-    id            Int             @id @default(autoincrement())
-    name          String
-    image         String
-    AddressPlaque AddressPlaque[]
+    id              String          @id //Prefix: ФАА
+    name            String
+    image           String
+    address_plaques AddressPlaque[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Адресных табличек
 model AddressPlaque {
-    id      Int               @id @default(autoincrement())
+    id      String            @id //Prefix: АА
     name    String
-    formId  Int
+    formId  String
     form    AddressPlaqueForm @relation(fields: [formId], references: [id])
-    colorId Int
+    colorId String
     Color   Color             @relation(fields: [colorId], references: [id])
+    address String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Информационных вывесок
 model Newsletter {
-    id      Int    @id @default(autoincrement())
+    id      String @id //Prefix: ИВ
     name    String
     width   Float
     height  Float
-    colorId Int
+    colorId String
     Color   Color  @relation(fields: [colorId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Типов бумаги
 model PaperType {
-    id    Int    @id @default(autoincrement())
+    id    String @id //Prefix: ТБУМ
     name  String
     price Float
     LFP   LFP[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Широкоформатной печати
 model LFP {
-    id            Int       @id @default(autoincrement())
-    name          String
-    width         Float
-    height        Float
-    paper_type_id Int
-    paper_type    PaperType @relation(fields: [paper_type_id], references: [id])
+    id             String    @id //Prefix: ШФП
+    name           String
+    width          Float
+    height         Float
+    paper_type_id  String
+    paper_type     PaperType @relation(fields: [paper_type_id], references: [id])
+    printing_image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Визиток
 model BusinessCard {
-    id            Int          @id @default(autoincrement())
-    name          String
-    materialId    Int
-    material      Material     @relation(fields: [materialId], references: [id])
-    printing_side PrintingSide
+    id             String       @id //Prefix: В
+    name           String
+    materialId     Int
+    printing_side  PrintingSide
+    printing_image String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Багета
 model Baguette {
-    id    Int     @id @default(autoincrement())
-    name  String
+    id    String  @id //Prefix: БАГ
     image String
     price Float
     Frame Frame[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Рамок
 model Frame {
-    id             Int      @id @default(autoincrement())
+    id             String   @id //Prefix: РМ
     name           String
     width          Float
     height         Float
-    baguetteId     Int
+    baguetteId     String
     baguette       Baguette @relation(fields: [baguetteId], references: [id])
     has_glass      Boolean
     has_backdrop   Boolean
     has_suspension Boolean
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Story {
+    id              Int    @id @default(autoincrement())
+    previewImageUrl String
+
+    items     StoryItem[]
+    createdAt DateTime    @default(now())
+}
+
+model StoryItem {
+    id Int @id @default(autoincrement())
+
+    storyId Int
+    story   Story @relation(fields: [storyId], references: [id])
+
+    sourceUrl String
+    createdAt DateTime @default(now())
 }

@@ -30,7 +30,7 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
                 </Link>
             </Suspense>
 
-            <p className="hidden lg:block">Поиск</p>
+            {admin ? <p className="font-medium">ПАНЕЛЬ АДМИНИСТРАТОРА</p> : <p className="hidden lg:block">Поиск</p>}
             <div className="flex items-center gap-3 2xl:gap-4">
                 <ThemeSwitcher />
 

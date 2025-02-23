@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { initial_frames } from "@/constants/frames";
 import { cn } from "@/lib";
-import { ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -13,7 +13,7 @@ export default function FramesPage() {
     const [selected, setSelected] = React.useState<number[]>([]);
     const [frames, setFrames] = React.useState(initial_frames);
     const [currentPage, setCurrentPage] = React.useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 15;
     const router = useRouter();
 
     const handleSelect = (id: number) => {
@@ -44,6 +44,10 @@ export default function FramesPage() {
             <div className="pr-5 flex flex-col min-h-[calc(100vh-200px)]">
                 <div className="flex justify-between mb-3">
                     <Button onClick={handleDelete}>Добавить</Button>
+                    <div className="bg-gray-300 w-[500px] rounded-md flex items-center justify-between px-2 py-1">
+                        Поиск
+                        <Search />
+                    </div>
                     <div className="flex gap-2">
                         <Button className="bg-red-500" onClick={handleDelete}>
                             Удалить

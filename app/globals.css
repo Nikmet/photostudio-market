@@ -95,23 +95,36 @@ body {
     }
 }
 
+@keyframes viewAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Применение анимации к MenuBar */
 .menu-bar-animation {
     animation: slideInFromLeft 0.7s ease-in-out forwards;
-    animation-delay: 0.5s;
+    animation-delay: 0.3s;
 }
 
 .header-animation {
     animation: slideInFromTop 0.7s ease-out forwards;
 }
 
-
+.view-animation {
+    animation: viewAnimation 0.7s ease-out forwards;
+}
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
 }
