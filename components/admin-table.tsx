@@ -23,6 +23,7 @@ export interface IAdminTableProps<T> {
 
 //TODO: ВЫнести пагинацию в отдельный компонент
 //TODO: Сделать отображение для булева и налов
+//TODO: Сделать сортировку
 
 export const AdminTable = <T,>({
     data,

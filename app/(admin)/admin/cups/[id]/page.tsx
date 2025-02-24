@@ -1,3 +1,4 @@
+import { createProduct } from "@/app/actions";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui/input";
 import { prisma } from "@/prisma/prisma-client";
@@ -22,12 +23,14 @@ export default async function CupsEditPage({ params }: Props) {
         "use server";
 
         if (!findCup) {
-            await prisma.cup.create({
+            const cup = await prisma.cup.create({
                 data: {
                     id: id,
                     name: formData.get("name") as string
                 }
             });
+
+            await createProduct(cup.id, cup.name, "Сувениры", 450);
         }
 
         await prisma.cup.update({
@@ -53,7 +56,7 @@ export default async function CupsEditPage({ params }: Props) {
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex gap-2">
-                    <Input name="name" type="text" placeholder="Название" value={findCup?.name} />
+                    <Input name="name" type="text" placeholder="Название" defaultValue={findCup?.name} />
                     <Button type="submit">Сохранить</Button>
                 </div>
             </form>
