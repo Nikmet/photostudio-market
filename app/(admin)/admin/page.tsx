@@ -9,16 +9,22 @@ export default async function AdminPage() {
         }
     });
 
-    const flattenedData = productWithCategory.map(product => ({
-        ...product,
-        categoryName: product.category.name
-    }));
-
-    console.log(productWithCategory);
-
-    if (!productWithCategory) {
-        throw new Error("Продукты не найдены");
+    if (!productWithCategory || productWithCategory.length === 0) {
+        return (
+            <div className="p-3">
+                <h2 className="text-2xl font-medium mb-10">Список всех продуктов</h2>
+                <p>Продукты не найдены</p>
+            </div>
+        );
     }
+
+    const flattenedData = productWithCategory.map(product => ({
+        id: product.id,
+        categoryName: product.category?.name || "Без категории",
+        itemId: product.itemId,
+        itemName: product.itemName,
+        price: product.price
+    }));
 
     const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
         { title: "Номер", key: "id" },

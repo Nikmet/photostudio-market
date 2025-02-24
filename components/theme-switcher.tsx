@@ -15,8 +15,6 @@ export const ThemeSwitcher = ({ className }: IThemeSwitcherProps): React.JSX.Ele
     const { setTheme, systemTheme, theme } = useTheme();
     const [mounted, setMounted] = React.useState(false);
 
-    console.log(systemTheme);
-
     React.useEffect(() => {
         setMounted(true);
 
