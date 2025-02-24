@@ -7,6 +7,7 @@ import { cn } from "@/lib";
 import { Checkbox } from "./ui/checkbox";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui";
+import { createUid, getId } from "@/lib/uid";
 
 export interface IAdminTableProps<T> {
     className?: string;
@@ -17,6 +18,7 @@ export interface IAdminTableProps<T> {
     }[];
     route: string;
     handleDeleteProp?: (ids: string[]) => void;
+    prefix?: string;
 }
 
 //TODO: ВЫнести пагинацию в отдельный компонент
@@ -27,6 +29,7 @@ export const AdminTable = <T,>({
     columns,
     route,
     handleDeleteProp,
+    prefix,
     className
 }: IAdminTableProps<T>): React.JSX.Element => {
     const [selected, setSelected] = React.useState<string[]>([]);
@@ -56,11 +59,19 @@ export const AdminTable = <T,>({
         handleDeleteProp?.(ids);
     };
 
+    const handleAdd = (id: string) => {
+        const newId = (Number(getId(id)) + 1).toString();
+        console.log(newId);
+
+        const uid = createUid(prefix ?? "", newId);
+        router.push(`/admin/${route}/${uid}`);
+    };
+
     return (
         <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-200px)]", className)}>
             <div className="pr-5 flex flex-col min-h-[calc(100vh-200px)]">
                 <div className="flex justify-between mb-3">
-                    <Button>Добавить</Button>
+                    <Button onClick={() => handleAdd((data[data.length - 1] as any).id)}>Добавить</Button>
                     <div className="bg-gray-300 w-[500px] rounded-md flex items-center justify-between px-2 py-1">
                         Поиск
                         <Search />
