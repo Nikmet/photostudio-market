@@ -57,7 +57,7 @@ export default async function CupsEditPage({ params }: Props) {
                 />
                 <div className="flex gap-2">
                     <Input name="name" type="text" placeholder="Название" defaultValue={findCup?.name} />
-                    <Button type="submit">Сохранить</Button>
+                    <Button type="submit">{findCup ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>
         </div>

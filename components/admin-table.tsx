@@ -1,7 +1,7 @@
 "use client";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
-import { ArrowDown, Search } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { cn } from "@/lib";
 import { Checkbox } from "./ui/checkbox";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { formatTableCell } from "@/lib/format-table-cell";
 import { usePagination } from "@/hooks/use-pagination";
 import React from "react";
 import { Pagination } from "./pagination";
+import { TableSearch } from "./table-search";
 
 export interface IAdminTableProps<T> {
     className?: string;
@@ -45,7 +46,7 @@ export const AdminTable = <T extends { id: string }>({
     };
 
     const handleDelete = async (ids: string[]) => {
-        await handleDeleteProp?.(ids);
+        handleDeleteProp?.(ids);
         setSelected([]);
         router.refresh();
     };
@@ -64,10 +65,7 @@ export const AdminTable = <T extends { id: string }>({
                     <Button onClick={() => handleAdd(data[data.length - 1] ? data[data.length - 1].id : "К-00000")}>
                         Добавить
                     </Button>
-                    <div className="bg-gray-300 w-[500px] rounded-md flex items-center justify-between px-2 py-1">
-                        Поиск
-                        <Search />
-                    </div>
+                    <TableSearch<T> data={data} />
                     <div className="flex gap-2">
                         <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
                             Удалить
