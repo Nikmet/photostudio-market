@@ -1,10 +1,6 @@
+import { IColumnsProps } from "@/@types/column-props";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
-
-interface IColumnsPropsWithCategory<T> {
-    title: string;
-    key: keyof T;
-}
 
 export default async function AdminPage() {
     const productWithCategory = await prisma.product.findMany({
@@ -24,7 +20,7 @@ export default async function AdminPage() {
         throw new Error("Продукты не найдены");
     }
 
-    const columns: IColumnsPropsWithCategory<(typeof flattenedData)[0]>[] = [
+    const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
         { title: "Номер", key: "id" },
         { title: "Категория", key: "categoryName" },
         { title: "Номер продукта", key: "itemId" },

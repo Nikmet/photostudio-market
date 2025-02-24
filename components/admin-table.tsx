@@ -16,12 +16,19 @@ export interface IAdminTableProps<T> {
         key: keyof T;
     }[];
     route: string;
+    handleDeleteProp?: (ids: string[]) => void;
 }
 
 //TODO: ВЫнести пагинацию в отдельный компонент
 //TODO: Сделать отображение для булева и налов
 
-export const AdminTable = <T,>({ data, columns, route, className }: IAdminTableProps<T>): React.JSX.Element => {
+export const AdminTable = <T,>({
+    data,
+    columns,
+    route,
+    handleDeleteProp,
+    className
+}: IAdminTableProps<T>): React.JSX.Element => {
     const [selected, setSelected] = React.useState<string[]>([]);
     const [currentPage, setCurrentPage] = React.useState(1);
     const itemsPerPage = 15;
@@ -44,6 +51,10 @@ export const AdminTable = <T,>({ data, columns, route, className }: IAdminTableP
         console.log(selected);
     };
 
+    const handleDelete = (ids: string[]) => {
+        handleDeleteProp?.(ids);
+    };
+
     return (
         <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-200px)]", className)}>
             <div className="pr-5 flex flex-col min-h-[calc(100vh-200px)]">
@@ -54,7 +65,9 @@ export const AdminTable = <T,>({ data, columns, route, className }: IAdminTableP
                         <Search />
                     </div>
                     <div className="flex gap-2">
-                        <Button className="bg-red-500">Удалить</Button>
+                        <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
+                            Удалить
+                        </Button>
                         <Button className="bg-blue-500">
                             Редактировать <ArrowDown />
                         </Button>

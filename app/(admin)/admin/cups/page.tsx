@@ -1,4 +1,5 @@
 import { AdminTable } from "@/components/admin-table";
+import { prisma } from "@/prisma/prisma-client";
 import { Cup } from "@prisma/client";
 import React from "react";
 
@@ -8,7 +9,9 @@ interface IColumnsProps {
 }
 
 export default async function CupPage() {
-    const cups = await fetch("http://localhost:3000/api/cup").then(res => res.json());
+    const cups = await prisma.cup.findMany();
+
+    if (!cups) return <div>Кружек нет</div>;
 
     const columns: IColumnsProps[] = [
         { title: "Номер", key: "id" },
@@ -16,10 +19,22 @@ export default async function CupPage() {
         { title: "Изображение", key: "printing_image" }
     ];
 
+    const handleDelete = async (ids: string[]) => {
+        "use server";
+
+        await prisma.cup.deleteMany({
+            where: {
+                id: {
+                    in: ids
+                }
+            }
+        });
+    };
+
     return (
         <div className="p-3">
             <h2 className="text-2xl font-medium mb-10">Список кружек</h2>
-            <AdminTable<Cup> data={cups} route="cups" className="" columns={columns} />
+            <AdminTable<Cup> data={cups} route="cups" className="" columns={columns} handleDeleteProp={handleDelete} />
         </div>
     );
 }
