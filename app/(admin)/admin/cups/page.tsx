@@ -18,7 +18,7 @@ export default async function CupPage() {
 
     return (
         <div className="p-3">
-            <h2 className="text-2xl font-medium mb-10">Список рамок</h2>
+            <h2 className="text-2xl font-medium mb-10">Список кружек</h2>
             <AdminTable<Cup> data={cups} route="cups" className="" columns={columns} />
         </div>
     );

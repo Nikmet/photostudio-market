@@ -137,7 +137,7 @@ model Product {
 
     categoryId Int
     category   Category @relation(fields: [categoryId], references: [id])
-    itemId     String
+    itemId     String   @unique
     itemName   String
     comments   String?
 
