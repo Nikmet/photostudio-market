@@ -52,6 +52,7 @@ export const AdminTable = <T,>({
     };
 
     const handleDelete = (ids: string[]) => {
+        //TODO: Добавить тостер и диалоговое окно
         handleDeleteProp?.(ids);
     };
 
