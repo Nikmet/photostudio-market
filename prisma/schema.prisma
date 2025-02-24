@@ -378,7 +378,6 @@ model LFP {
 model BusinessCard {
     id             String       @id //Prefix: В
     name           String
-    materialId     Int
     printing_side  PrintingSide
     printing_image String?
 

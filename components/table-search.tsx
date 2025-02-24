@@ -13,11 +13,13 @@ export interface ITableSearchProps<T> {
     route: string;
 }
 
-export const TableSearch = <T extends { id: string }>({ data, route, className }: ITableSearchProps<T>): React.JSX.Element => {
+export const TableSearch = <T extends { id: string }>({
+    data,
+    route,
+    className
+}: ITableSearchProps<T>): React.JSX.Element => {
     const [search, setSearch] = React.useState("");
     const router = useRouter();
-
-    console.log(data);
 
     const handleClick = () => {
         const filteredSearch = data.filter(item => item.id == search);
