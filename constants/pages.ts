@@ -27,5 +27,9 @@ export const adminPages: IPage[] = [
     {
         name: "Значки",
         href: "/admin/badges"
+    },
+    {
+        name: "Цвета",
+        href: "/admin/colors"
     }
 ];
