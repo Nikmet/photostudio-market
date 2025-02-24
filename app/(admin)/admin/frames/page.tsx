@@ -32,7 +32,14 @@ export default function FramesPage() {
     return (
         <div className="p-3">
             <h2 className="text-2xl font-medium mb-10">Список рамок</h2>
-            <AdminTable<Frame> data={initial_frames} route="frames" columns={columns} handleDeleteProp={handleDelete} prefix="РМ" />
+            <AdminTable<Frame>
+                data={initial_frames}
+                route="frames"
+                columns={columns}
+                handleDeleteProp={handleDelete}
+                prefix="РМ"
+                has_actions={true}
+            />
         </div>
     );
 }

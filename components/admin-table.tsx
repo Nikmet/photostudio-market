@@ -23,6 +23,7 @@ export interface IAdminTableProps<T> {
     route: string;
     handleDeleteProp?: (ids: string[]) => void;
     prefix?: string;
+    has_actions?: boolean;
 }
 
 export const AdminTable = <T extends { id: string }>({
@@ -31,6 +32,7 @@ export const AdminTable = <T extends { id: string }>({
     route,
     handleDeleteProp,
     prefix,
+    has_actions,
     className
 }: IAdminTableProps<T>): React.JSX.Element => {
     const [selected, setSelected] = React.useState<string[]>([]);
@@ -61,26 +63,29 @@ export const AdminTable = <T extends { id: string }>({
     return (
         <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-200px)]", className)}>
             <div className="pr-5 flex flex-col min-h-[calc(100vh-200px)]">
-                <div className="flex justify-between mb-3">
-                    <Button onClick={() => handleAdd(data[data.length - 1] ? data[data.length - 1].id : "К-00000")}>
-                        Добавить
-                    </Button>
-                    <TableSearch<T> data={data} />
-                    <div className="flex gap-2">
-                        <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
-                            Удалить
+                {!has_actions && <TableSearch<T> data={data} route={route} className="absolute top-4 right-10" />}
+                {has_actions && (
+                    <div className="flex justify-between mb-3">
+                        <Button onClick={() => handleAdd(data[data.length - 1] ? data[data.length - 1].id : "К-00000")}>
+                            Добавить
                         </Button>
-                        <Button className="bg-blue-500">
-                            Редактировать <ArrowDown />
-                        </Button>
+                        <TableSearch<T> data={data} route={route} />
+                        <div className="flex gap-2">
+                            <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
+                                Удалить
+                            </Button>
+                            <Button className="bg-blue-500">
+                                Редактировать <ArrowDown />
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                )}
                 {data.length > 0 && (
                     <>
                         <Table className="overflow-x-auto min-w-[1200px]">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead></TableHead>
+                                    {has_actions && <TableHead></TableHead>}
                                     {columns.map(column => (
                                         <TableHead key={column.title}>{column.title}</TableHead>
                                     ))}
@@ -95,12 +100,14 @@ export const AdminTable = <T extends { id: string }>({
                                             router.push(`/admin/${route}/${item.id}`);
                                         }}
                                     >
-                                        <TableCell>
-                                            <Checkbox
-                                                checked={selected.includes(item.id)}
-                                                onCheckedChange={() => handleSelect(item.id)}
-                                            />
-                                        </TableCell>
+                                        {has_actions && (
+                                            <TableCell>
+                                                <Checkbox
+                                                    checked={selected.includes(item.id)}
+                                                    onCheckedChange={() => handleSelect(item.id)}
+                                                />
+                                            </TableCell>
+                                        )}
                                         {columns.map(column => (
                                             <TableCell key={String(column.key)}>
                                                 {formatTableCell<T>(item[column.key])}

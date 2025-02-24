@@ -41,6 +41,7 @@ export default async function CupPage() {
                 columns={columns}
                 handleDeleteProp={handleDelete}
                 prefix="К"
+                has_actions={true}
             />
         </div>
     );

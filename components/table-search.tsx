@@ -10,9 +10,10 @@ import { useRouter } from "next/navigation";
 export interface ITableSearchProps<T> {
     className?: string;
     data: T[];
+    route: string;
 }
 
-export const TableSearch = <T extends { id: string }>({ data, className }: ITableSearchProps<T>): React.JSX.Element => {
+export const TableSearch = <T extends { id: string }>({ data, route, className }: ITableSearchProps<T>): React.JSX.Element => {
     const [search, setSearch] = React.useState("");
     const router = useRouter();
 
@@ -26,7 +27,7 @@ export const TableSearch = <T extends { id: string }>({ data, className }: ITabl
             return;
         }
 
-        router.push(`/admin/cups/${search}`);
+        router.push(`/admin/${route}/${search}`);
     };
 
     return (
