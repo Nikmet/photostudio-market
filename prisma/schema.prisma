@@ -61,6 +61,12 @@ enum BannerDensity {
     FOUR_HUNDRED
 }
 
+model Image {
+    id        Int      @id @default(autoincrement())
+    url       String // Ссылка на изображение
+    createdAt DateTime @default(now())
+}
+
 // Таблица пользователей
 //TODO: добавить поле для хранения фотографии
 //TODO: Подумать на счет юр лиц
@@ -130,7 +136,7 @@ model CartItem {
 
 // Таблица Продуктов
 model Product {
-    id                String   @id //Prefix: ПР
+    id                String     @id //Prefix: ПР
     price             Float
     design            Boolean?
     design_difficulty Difficile?
