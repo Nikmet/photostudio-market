@@ -63,5 +63,9 @@ export const adminPages: IPage[] = [
     {
         name: "Типы бумаги",
         href: "/admin/paper-types"
+    },
+    {
+        name: "ШФП",
+        href: "/admin/lfps"
     }
 ];
