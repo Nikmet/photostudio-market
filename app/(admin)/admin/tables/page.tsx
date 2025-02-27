@@ -42,7 +42,7 @@ export default async function TablesPage() {
 
     return (
         <div className="p-3">
-            <h2 className="text-2xl font-medium mb-10">Список кружек</h2>
+            <h2 className="text-2xl font-medium mb-10">Список табличек</h2>
             <AdminTable<(typeof flattenedTables)[0]>
                 data={flattenedTables}
                 route="tables"
