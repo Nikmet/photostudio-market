@@ -6,9 +6,10 @@ import React from "react";
 export interface IMenuBarProps {
     className?: string;
     pages: IPage[];
+    adminPage?: boolean;
 }
 
-export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element => {
+export const MenuBar = ({ pages, adminPage, className }: IMenuBarProps): React.JSX.Element => {
     return (
         <div
             className={cn(
@@ -16,7 +17,7 @@ export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element 
                 className
             )}
         >
-            <div>
+            <div className="scrollbar overflow-auto">
                 {pages.map(page => (
                     <Link
                         key={page.href}
@@ -28,9 +29,11 @@ export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element 
                 ))}
             </div>
 
-            <Link href="/admin" className="p-4 dark:text-white text-black underline">
-                Панель Администратора
-            </Link>
+            {!adminPage && (
+                <Link href="/admin" className="p-4 dark:text-white text-black underline">
+                    Панель Администратора
+                </Link>
+            )}
         </div>
     );
 };
