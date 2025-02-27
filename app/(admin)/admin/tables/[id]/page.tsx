@@ -1,7 +1,7 @@
 import { createProduct } from "@/app/actions";
+import { AdminSelect } from "@/components/admin-select";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -85,18 +85,14 @@ export default async function TablesEditPage({ params }: Props) {
                     <Input name="name" type="text" placeholder="Название" defaultValue={findTable?.name} />
                     <Input name="height" type="number" placeholder="Высота" defaultValue={findTable?.height} />
                     <Input name="width" type="number" placeholder="Ширина" defaultValue={findTable?.width} />
-                    <Select name="color" defaultValue={findTable?.Color.id}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Цвет" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {colors.map(color => (
-                                <SelectItem key={color.id} value={color.id}>
-                                    {color.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <AdminSelect
+                        name="color"
+                        placeholder={"Цвет"}
+                        items={{
+                            ...Object.fromEntries(colors.map(color => [color.id, color.name]))
+                        }}
+                        defaultValue={findTable?.Color.id}
+                    />
                     <Button type="submit">{findTable ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>

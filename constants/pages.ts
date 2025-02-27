@@ -47,5 +47,9 @@ export const adminPages: IPage[] = [
     {
         name: "Печати",
         href: "/admin/printings"
+    },
+    {
+        name: "Магниты",
+        href: "/admin/magnets"
     }
 ];
