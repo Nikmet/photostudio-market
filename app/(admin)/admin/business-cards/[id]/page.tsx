@@ -1,8 +1,9 @@
+import { printingSides } from "@/@types/enums";
 import { createProduct } from "@/app/actions";
+import { AdminSelect } from "@/components/admin-select";
 import { ImageInput } from "@/components/image-input";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingSide } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -57,15 +58,13 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                     <ImageInput name="image" />
                     <div className="flex flex-col gap-2">
                         <Input name="name" type="text" placeholder="Название" defaultValue={findCard?.name} />
-                        <Select name="printing_side" defaultValue={findCard?.printing_side}>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Стороны печати" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="ONE_SIDE">Односторонняя</SelectItem>
-                                <SelectItem value="TWO_SIDES">Двусторонняя</SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <AdminSelect
+                            items={printingSides}
+                            name="printing_side"
+                            placeholder="Стороны печати"
+                            defaultValue={findCard?.printing_side}
+                        />
+
                         <Button type="submit">{findCard ? "Сохранить" : "Создать"}</Button>
                     </div>
                 </div>

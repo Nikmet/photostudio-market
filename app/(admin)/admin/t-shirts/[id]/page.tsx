@@ -1,8 +1,9 @@
+import { printingSides, sizes } from "@/@types/enums";
 import { createProduct } from "@/app/actions";
+import { AdminSelect } from "@/components/admin-select";
 import { ImageInput } from "@/components/image-input";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingSide, Size } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -59,27 +60,18 @@ export default async function TShirtsEditPage({ params }: Props) {
                     <ImageInput name="image" />
                     <div className="flex flex-col gap-2">
                         <Input name="name" type="text" placeholder="Название" defaultValue={find_t_shirts?.name} />
-                        <Select name="printing_side" defaultValue={find_t_shirts?.printingSide}>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Стороны печати" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="ONE_SIDE">Односторонняя</SelectItem>
-                                <SelectItem value="TWO_SIDES">Двусторонняя</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Select name="size" defaultValue={find_t_shirts?.size}>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Размер" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {Object.values(Size).map(size => (
-                                    <SelectItem key={size} value={size}>
-                                        {size}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <AdminSelect
+                            items={printingSides}
+                            name="printing_side"
+                            placeholder="Стороны печати"
+                            defaultValue={find_t_shirts?.printingSide}
+                        />
+                        <AdminSelect
+                            items={sizes}
+                            name="size"
+                            placeholder="Размер"
+                            defaultValue={find_t_shirts?.size}
+                        />
                         <Button type="submit">{find_t_shirts ? "Сохранить" : "Создать"}</Button>
                     </div>
                 </div>
