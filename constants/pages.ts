@@ -55,5 +55,9 @@ export const adminPages: IPage[] = [
     {
         name: "ЛГР",
         href: "/admin/lec"
+    },
+    {
+        name: "Информационные таблички",
+        href: "/admin/newsletters"
     }
 ];
