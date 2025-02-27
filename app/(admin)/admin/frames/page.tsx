@@ -1,11 +1,12 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { AdminTable } from "@/components/admin-table";
-import { initial_frames } from "@/constants/frames";
 import { prisma } from "@/prisma/prisma-client";
 import { Frame } from "@prisma/client";
 import React from "react";
 
-export default function FramesPage() {
+export default async function FramesPage() {
+    const frames = await prisma.frame.findMany();
+
     const columns: IColumnsProps<Frame>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
@@ -33,7 +34,7 @@ export default function FramesPage() {
         <div className="p-3">
             <h2 className="text-2xl font-medium mb-10">Список рамок</h2>
             <AdminTable<Frame>
-                data={initial_frames}
+                data={frames}
                 route="frames"
                 columns={columns}
                 handleDeleteProp={handleDelete}

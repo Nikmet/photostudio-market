@@ -392,6 +392,7 @@ model BusinessCard {
 }
 
 // Таблица Багета
+// TODO: Добавить реальный серийный номер и в селекте выводить его
 model Baguette {
     id    String  @id //Prefix: БАГ
     image String
