@@ -71,5 +71,9 @@ export const adminPages: IPage[] = [
     {
         name: "Стенды",
         href: "/admin/stands"
+    },
+    {
+        name: "Багет",
+        href: "/admin/baguettes"
     }
 ];
