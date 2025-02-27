@@ -35,5 +35,9 @@ export const adminPages: IPage[] = [
     {
         name: "Визитки",
         href: "/admin/business-cards"
+    },
+    {
+        name: "Таблички",
+        href: "/admin/tables"
     }
 ];
