@@ -1,4 +1,4 @@
-import { MagnetType, PrintingSide, PrintingType, Size } from "@prisma/client";
+import { Difficile, MagnetType, PrintingSide, PrintingType, Size } from "@prisma/client";
 
 export const printingTypes: Record<PrintingType, string> = {
     [PrintingType.WITH_TOOLING]: "С оснасткой",
@@ -23,4 +23,10 @@ export const sizes: Record<Size, string> = {
 export const magnetTypes: Record<MagnetType, string> = {
     [MagnetType.ACRYLIC]: "Акрил",
     [MagnetType.SUBSTRATE]: "Подложка"
+};
+
+export const difficile: Record<Difficile, string> = {
+    [Difficile.EASY]: "Легкая",
+    [Difficile.MEDIUM]: "Средняя",
+    [Difficile.HARD]: "Сложная"
 };

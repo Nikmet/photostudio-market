@@ -49,7 +49,7 @@ export default async function TablesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(table.id, table.name, "Сувениры", 450);
+            await createProduct(table.id, table.name, "Реклама", 450);
         }
 
         await prisma.table.update({
