@@ -101,7 +101,6 @@ export default async function FramesEditPage({ params }: Props) {
                 />
                 <div className="flex flex-col gap-2">
                     <Input name="name" type="text" placeholder="Название" defaultValue={findAddressPlaque?.name} />
-                    {/* TODO: Заменить на дадату */}
                     <Input name="address" type="text" placeholder="Адрес" defaultValue={findAddressPlaque?.address} />
                     <AdminSelect
                         name="color"

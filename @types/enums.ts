@@ -1,4 +1,4 @@
-import { Difficile, MagnetType, PrintingSide, PrintingType, Size } from "@prisma/client";
+import { BannerDensity, Difficile, MagnetType, PrintingSide, PrintingType, Size } from "@prisma/client";
 
 export const printingTypes: Record<PrintingType, string> = {
     [PrintingType.WITH_TOOLING]: "С оснасткой",
@@ -29,4 +29,9 @@ export const difficile: Record<Difficile, string> = {
     [Difficile.EASY]: "Легкая",
     [Difficile.MEDIUM]: "Средняя",
     [Difficile.HARD]: "Сложная"
+};
+
+export const density: Record<BannerDensity, string> = {
+    [BannerDensity.FOUR_HUNDRED]: "400 г/м²",
+    [BannerDensity.THREE_HUNDRED]: "300 г/м²"
 };
