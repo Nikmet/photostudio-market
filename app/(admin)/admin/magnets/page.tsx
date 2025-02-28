@@ -35,7 +35,7 @@ export default async function TShirtsPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список магнитов</h2>
             <AdminTable<Magnet>
                 data={t_shirts}

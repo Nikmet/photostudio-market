@@ -13,8 +13,6 @@ export default async function FramesPage() {
         { title: "RGB", key: "rgb" }
     ];
 
-
-
     const handleDelete = async (ids: string[]) => {
         "use server";
 
@@ -28,7 +26,7 @@ export default async function FramesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список цветов</h2>
             <AdminTable<Color>
                 data={badges}

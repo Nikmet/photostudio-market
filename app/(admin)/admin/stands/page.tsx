@@ -30,7 +30,7 @@ export default async function TablesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список стендов</h2>
             <AdminTable<Stand>
                 data={stands}

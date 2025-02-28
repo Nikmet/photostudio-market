@@ -26,7 +26,7 @@ export default async function AddressPlaqueFormsPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список форм адресных аншлагов</h2>
             <AdminTable<AddressPlaqueForm>
                 data={apf}

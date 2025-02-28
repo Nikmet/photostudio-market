@@ -3,8 +3,7 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { Button } from "./ui";
 import { ArrowRight, ShoppingCart, User } from "lucide-react";
 import React, { Suspense } from "react";
-import Link from "next/link";
-import { ThemeImage } from "./theme-image";
+import { HeaderLogo } from "./header-logo";
 
 export interface IHeaderProps {
     className?: string;
@@ -20,14 +19,7 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
             )}
         >
             <Suspense>
-                <Link href={admin ? "/admin" : "/"}>
-                    <ThemeImage
-                        darkSrc="/logo_dark.svg"
-                        lightSrc="/logo_light.svg"
-                        alt="Фотостудия-Маркет"
-                        className="md:h-5 h-4"
-                    />
-                </Link>
+                <HeaderLogo admin={admin} />
             </Suspense>
 
             {admin ? <p className="font-medium">ПАНЕЛЬ АДМИНИСТРАТОРА</p> : <p className="hidden lg:block">Поиск</p>}

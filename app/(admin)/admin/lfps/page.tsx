@@ -41,7 +41,7 @@ export default async function TablesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список широкоформатной печати</h2>
             <AdminTable<(typeof flattenedTables)[0]>
                 data={flattenedTables}

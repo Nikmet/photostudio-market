@@ -32,7 +32,7 @@ export default async function CupPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список кружек</h2>
             <AdminTable<Cup>
                 data={cups}

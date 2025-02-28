@@ -8,13 +8,14 @@ import { Difficile } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function PrintingsEditPage({ params }: Props) {
-    const id = decodeURIComponent(params.id);
+    const { id: resolvedId } = await params;
+    const id = decodeURIComponent(resolvedId);
 
     const findlEC = await prisma.lEC.findFirst({
         where: {

@@ -28,8 +28,8 @@ export default async function PaperTypesPage() {
     };
 
     return (
-        <div className="p-3">
-            <h2 className="text-2xl font-medium mb-10">Список табличек</h2>
+        <div>
+            <h2 className="text-2xl font-medium mb-10">Список типов бумаги</h2>
             <AdminTable<PaperType>
                 data={paperTypes}
                 route="paper-types"

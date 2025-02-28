@@ -40,7 +40,7 @@ export default async function AddressPlaquesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список адресных аншлагов</h2>
             <AdminTable<(typeof flattenedAddressPlaques)[0]>
                 data={flattenedAddressPlaques}

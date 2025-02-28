@@ -41,7 +41,7 @@ export default async function NewslettersPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список информационных табличек</h2>
             <AdminTable<(typeof flattenedNewsletters)[0]>
                 data={flattenedNewsletters}

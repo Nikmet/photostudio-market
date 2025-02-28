@@ -5,13 +5,14 @@ import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
 interface Props {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function CupsEditPage({ params }: Props) {
-    const id = decodeURIComponent(params.id);
+    const { id: resolvedId } = await params;
+    const id = decodeURIComponent(resolvedId);
 
     const findColor = await prisma.color.findFirst({
         where: {

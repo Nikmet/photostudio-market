@@ -21,7 +21,7 @@ export const Pagination = ({ currentPage, totalPages, paginate, className }: IPa
     };
 
     return (
-        <div className={cn("flex justify-between gap-4 mt-auto pt-4", className)}>
+        <div className={cn("flex justify-between gap-4 mt-auto", className)}>
             <a onClick={slideLeft} className="cursor-pointer">
                 <ArrowLeft
                     className={cn("w-6 h-6", {

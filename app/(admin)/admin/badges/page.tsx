@@ -26,7 +26,7 @@ export default async function BadgesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список значков</h2>
             <AdminTable<Badge>
                 data={badges}

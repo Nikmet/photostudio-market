@@ -12,6 +12,8 @@ import { usePagination } from "@/hooks/use-pagination";
 import React from "react";
 import { Pagination } from "./pagination";
 import { TableSearch } from "./table-search";
+import { usePagesStore } from "@/store/pages-store";
+import { IPage } from "@/@types/page";
 
 export interface IAdminTableProps<T> {
     className?: string;
@@ -37,6 +39,7 @@ export const AdminTable = <T extends { id: string }>({
 }: IAdminTableProps<T>): React.JSX.Element => {
     const [selected, setSelected] = React.useState<string[]>([]);
     const { currentItems, currentPage, totalPages, paginate } = usePagination(data, 15);
+    const { addPage, setActivePage } = usePagesStore();
     const router = useRouter();
 
     console.log(currentItems);
@@ -55,17 +58,26 @@ export const AdminTable = <T extends { id: string }>({
         router.refresh();
     };
 
+    const redirectToPage = (id: string) => {
+        const page: IPage = {
+            href: `/admin/${route}/${id}`,
+            name: id
+        };
+        router.push(page.href);
+        addPage(page);
+        setActivePage(page);
+    };
+
     const handleAdd = (id: string) => {
         const newId = (Number(getId(id)) + 1).toString();
-
         const uid = createUid(prefix ?? "", newId);
-        router.push(`/admin/${route}/${uid}`);
+        redirectToPage(uid);
     };
 
     return (
-        <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-200px)]", className)}>
-            <div className="pr-5 flex flex-col min-h-[calc(100vh-200px)]">
-                {!has_actions && <TableSearch<T> data={data} route={route} className="absolute top-4 right-10" />}
+        <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-250px)]", className)}>
+            <div className="pr-5 flex flex-col min-h-[calc(100vh-250px)]">
+                {!has_actions && <TableSearch<T> data={data} route={route} className="absolute top-[65px] right-10" />}
                 {has_actions && (
                     <div className="flex justify-between mb-3">
                         <Button onClick={() => handleAdd(data[data.length - 1] ? data[data.length - 1].id : "К-00000")}>
@@ -99,7 +111,7 @@ export const AdminTable = <T extends { id: string }>({
                                         key={item.id}
                                         className="cursor-pointer"
                                         onDoubleClick={() => {
-                                            router.push(`/admin/${route}/${item.id}`);
+                                            redirectToPage(item.id);
                                         }}
                                     >
                                         {has_actions && (

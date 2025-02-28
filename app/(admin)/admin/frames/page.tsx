@@ -31,7 +31,7 @@ export default async function FramesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список рамок</h2>
             <AdminTable<Frame>
                 data={frames}

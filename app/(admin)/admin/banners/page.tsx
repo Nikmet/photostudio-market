@@ -31,7 +31,7 @@ export default async function BannersPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список банеров</h2>
             <AdminTable<Banner>
                 data={banners}

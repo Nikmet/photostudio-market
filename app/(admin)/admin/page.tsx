@@ -11,7 +11,7 @@ export default async function AdminPage() {
 
     if (!productWithCategory || productWithCategory.length === 0) {
         return (
-            <div className="p-3">
+            <div>
                 <h2 className="text-2xl font-medium mb-10">Список всех продуктов</h2>
                 <p>Продукты не найдены</p>
             </div>
@@ -35,7 +35,7 @@ export default async function AdminPage() {
     ];
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список всех продуктов</h2>
             <AdminTable<(typeof flattenedData)[0]> data={flattenedData} route="product" columns={columns} />
         </div>

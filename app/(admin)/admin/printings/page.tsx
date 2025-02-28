@@ -28,7 +28,7 @@ export default async function PrintingsPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список печатей</h2>
             <AdminTable<Printing>
                 data={printings}

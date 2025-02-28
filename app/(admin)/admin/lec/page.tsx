@@ -28,7 +28,7 @@ export default async function LECPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список лазерной гравировки и резки</h2>
             <AdminTable<LEC>
                 data={lecs}

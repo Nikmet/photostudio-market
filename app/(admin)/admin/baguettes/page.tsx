@@ -27,7 +27,7 @@ export default async function PaperTypesPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список багета</h2>
             <AdminTable<Baguette>
                 data={baguettes}

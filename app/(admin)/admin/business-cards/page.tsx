@@ -33,7 +33,7 @@ export default async function BusinessCardsPage() {
     };
 
     return (
-        <div className="p-3">
+        <div>
             <h2 className="text-2xl font-medium mb-10">Список визиток</h2>
             <AdminTable<BusinessCard>
                 data={cards}
