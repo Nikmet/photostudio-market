@@ -79,5 +79,9 @@ export const adminPages: IPage[] = [
     {
         name: "Формы адресных аншлагов",
         href: "/admin/address-plaque-form"
+    },
+    {
+        name: "Адресных аншлаги",
+        href: "/admin/address-plaques"
     }
 ];
