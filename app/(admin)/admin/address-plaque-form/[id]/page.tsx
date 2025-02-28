@@ -1,4 +1,3 @@
-import { createProduct } from "@/app/actions";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui/input";
 import { prisma } from "@/prisma/prisma-client";
@@ -10,10 +9,10 @@ interface Props {
     };
 }
 
-export default async function BadgesEditPage({ params }: Props) {
+export default async function AddressPlaqueFormsEditPage({ params }: Props) {
     const id = decodeURIComponent(params.id);
 
-    const findBadge = await prisma.badge.findFirst({
+    const findAPF = await prisma.addressPlaqueForm.findFirst({
         where: {
             id: id
         }
@@ -22,31 +21,31 @@ export default async function BadgesEditPage({ params }: Props) {
     const handleSubmit = async (formData: FormData) => {
         "use server";
 
-        if (!findBadge) {
-            const badge = await prisma.badge.create({
+        if (!findAPF) {
+            await prisma.addressPlaqueForm.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string
+                    name: formData.get("name") as string,
+                    image: ""
                 }
             });
-
-            await createProduct(badge.id, badge.name, "Сувениры", 450);
         }
 
-        await prisma.badge.update({
+        await prisma.addressPlaqueForm.update({
             where: {
                 id: id
             },
             data: {
-                name: formData.get("name") as string
+                name: formData.get("name") as string,
+                image: ""
             }
         });
-        redirect("/admin/badges");
+        redirect("/admin/address-plaque-form");
     };
 
     return (
         <div>
-            <h1>{findBadge?.id ? `Кружка | ${findBadge.id}` : `Новый значок | ${id}`}</h1>
+            <h1>{findAPF?.id ? `Форма адресного аншлага | ${findAPF.id}` : `Новая форма адресного аншлага | ${id}`}</h1>
             <form action={handleSubmit} className="flex gap-2">
                 <img
                     src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
@@ -56,8 +55,8 @@ export default async function BadgesEditPage({ params }: Props) {
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findBadge?.name} />
-                    <Button type="submit">{findBadge ? "Сохранить" : "Создать"}</Button>
+                    <Input name="name" type="text" placeholder="Название" defaultValue={findAPF?.name} />
+                    <Button type="submit">{findAPF ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>
         </div>
