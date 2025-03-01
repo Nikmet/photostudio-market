@@ -1,7 +1,5 @@
 import { createProduct } from "@/app/actions";
-import { AdminSelect } from "@/components/admin-select";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { AddressPlaquesForm, FormValuesAddressPlaques } from "@/components/forms/address-plaques-form";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -28,18 +26,20 @@ export default async function FramesEditPage({ params }: Props) {
     const colors = await prisma.color.findMany();
     const forms = await prisma.addressPlaqueForm.findMany();
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesAddressPlaques) => {
         "use server";
+
+        console.log(data);
 
         const findColor = await prisma.color.findFirst({
             where: {
-                id: formData.get("color") as string
+                id: data.colorId
             }
         });
 
         const findForm = await prisma.addressPlaqueForm.findFirst({
             where: {
-                id: formData.get("form") as string
+                id: data.formId
             }
         });
 
@@ -47,8 +47,8 @@ export default async function FramesEditPage({ params }: Props) {
             const addressPlaque = await prisma.addressPlaque.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    address: formData.get("address") as string,
+                    name: data.name,
+                    address: data.address,
                     Color: {
                         connect: {
                             id: findColor?.id
@@ -70,8 +70,8 @@ export default async function FramesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                address: formData.get("address") as string,
+                name: data.name,
+                address: data.address,
                 Color: {
                     connect: {
                         id: findColor?.id
@@ -92,7 +92,27 @@ export default async function FramesEditPage({ params }: Props) {
             <h1>
                 {findAddressPlaque?.id ? `Адресный аншлаг | ${findAddressPlaque.id}` : `Новый адресный аншлаг | ${id}`}
             </h1>
-            <form action={handleSubmit} className="flex gap-2">
+            {findAddressPlaque ? (
+                <AddressPlaquesForm
+                    defaultValues={{
+                        name: findAddressPlaque?.name,
+                        address: findAddressPlaque.address,
+                        colorId: findAddressPlaque.colorId,
+                        formId: findAddressPlaque.formId
+                    }}
+                    colors={colors}
+                    forms={forms}
+                    onSubmit={handleSubmit}
+                />
+            ) : (
+                <AddressPlaquesForm onSubmit={handleSubmit} colors={colors} forms={forms} />
+            )}
+        </div>
+    );
+}
+
+{
+    /* <form action={handleSubmit} className="flex gap-2">
                 <img
                     src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
                     alt="кружка"
@@ -101,6 +121,7 @@ export default async function FramesEditPage({ params }: Props) {
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex flex-col gap-2">
+
                     <Input name="name" type="text" placeholder="Название" defaultValue={findAddressPlaque?.name} />
                     <Input name="address" type="text" placeholder="Адрес" defaultValue={findAddressPlaque?.address} />
                     <AdminSelect
@@ -123,7 +144,5 @@ export default async function FramesEditPage({ params }: Props) {
                     />
                     <Button type="submit">{findAddressPlaque ? "Сохранить" : "Создать"}</Button>
                 </div>
-            </form>
-        </div>
-    );
+            </form> */
 }

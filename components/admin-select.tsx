@@ -8,7 +8,9 @@ import { cn } from "@/lib";
 
 export interface IAdminSelectProps {
     className?: string;
-    name: string;
+    name?: string;
+    value?: string;
+    onChange?: (value: string) => void;
     defaultValue?: string;
     placeholder: string;
     items: Record<string, string>;
@@ -21,7 +23,9 @@ export const AdminSelect = ({
     placeholder,
     defaultValue,
     route,
-    className
+    className,
+    value,
+    onChange
 }: IAdminSelectProps): React.JSX.Element => {
     const [page, setPage] = React.useState<IPage>();
 
@@ -33,11 +37,12 @@ export const AdminSelect = ({
         console.log(page);
 
         setPage(page);
+        onChange?.(key);
     };
 
     return (
         <div className={cn("flex gap-2", className)}>
-            <Select name={name} defaultValue={defaultValue} onValueChange={e => handleChange(e)}>
+            <Select name={name} defaultValue={defaultValue} value={value} onValueChange={e => handleChange(e)}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
