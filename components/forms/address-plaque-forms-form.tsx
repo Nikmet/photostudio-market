@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import toast from "react-hot-toast";
+import { FormInput } from "../form-input";
 
 const formSchema = z.object({
     name: z.string().min(2, "Название должно быть больше 2 символов")
@@ -30,9 +31,14 @@ export const AddressPlaqueFormsForm = ({
         }
     });
 
+    const submitAction = (data: FormValuesAddressPlaqueForms) => {
+        onSubmit(data);
+        toast.success(`Форма адресного аншлага "${data.name}" успешно создана!`);
+    };
+
     return (
         <div className={className}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
+            <form onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
                 <img
                     src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
                     alt="кружка"
@@ -41,10 +47,13 @@ export const AddressPlaqueFormsForm = ({
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex gap-2">
-                    <Input {...form.register("name")} type="text" placeholder="Название" />
-                    {form.formState.errors.name && (
-                        <span className="text-red-500">{form.formState.errors.name.message}</span>
-                    )}
+                    <FormInput
+                        label="Название"
+                        type="text"
+                        {...form.register("name")}
+                        errors={form.formState.errors}
+                        required
+                    />
                     <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>
