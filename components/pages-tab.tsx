@@ -12,7 +12,7 @@ export interface IPagesTabProps {
 }
 
 export const PagesTab = ({ className }: IPagesTabProps): React.JSX.Element => {
-    const { openPages, removePage, activePage, setActivePage } = usePagesStore();
+    const { openPages, removePage, activePage, setActivePage, clearPages } = usePagesStore();
     const router = useRouter();
 
     const handleDelete = (page: IPage, e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -46,33 +46,39 @@ export const PagesTab = ({ className }: IPagesTabProps): React.JSX.Element => {
         setActivePage(page);
     };
 
+    const closeAll = () => {
+        clearPages();
+        router.push("/admin");
+    };
+
     //TODO: Сделать нормальный скроллбар
     return (
-        <div
-            className={cn(
-                "flex gap-1 h-10 bg-secondary/50 w-full rounded-md overflow-auto scrollbar cursor-pointer",
-                className
-            )}
-        >
-            {openPages.map((page, index) => (
-                <div
-                    key={index}
-                    className={cn("flex items-center gap-2 px-2 bg-secondary", {
-                        "border-b-2 border-primary bg-slate-300 dark:bg-indigo-900": activePage?.name === page.name
-                    })}
-                    onMouseDown={e => e.button === 1 && handleDelete(page, e)}
-                    onClick={() => onClick(page)}
-                >
-                    <div>{page.name}</div>
-                    <CircleX
-                        size={16}
-                        onClick={e => {
-                            e.stopPropagation();
-                            handleDelete(page);
-                        }}
-                    />
-                </div>
-            ))}
+        <div className={cn("flex h-10 bg-secondary/50 w-full items-center rounded-md ", className)}>
+            <div className="overflow-auto scrollbar flex gap-1 h-full">
+                {openPages.map((page, index) => (
+                    <div
+                        key={index}
+                        className={cn("flex items-center gap-2 px-2 bg-secondary cursor-pointer", {
+                            "border-b-2 border-primary bg-slate-300 dark:bg-indigo-900": activePage?.name === page.name
+                        })}
+                        onMouseDown={e => e.button === 1 && handleDelete(page, e)}
+                        onClick={() => onClick(page)}
+                    >
+                        <div>{page.name}</div>
+                        <CircleX
+                            size={16}
+                            onClick={e => {
+                                e.stopPropagation();
+                                handleDelete(page);
+                            }}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            <a className="ml-auto px-5 cursor-pointer underline" onClick={closeAll}>
+                Закрыть все
+            </a>
         </div>
     );
 };

@@ -1,39 +1,35 @@
 "use client";
 
+import { FormInput } from "../form-input";
 import { Button } from "@/components/ui";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { FormInput } from "../form-input";
+
+export interface IBadgesFormProps {
+    defaultValues?: FormValuesBadges;
+    onSubmit: (data: FormValuesBadges) => void;
+    className?: string;
+}
 
 const formSchema = z.object({
     name: z.string().min(2, "Название должно быть больше 2 символов")
 });
 
-export type FormValuesAddressPlaqueForms = z.infer<typeof formSchema>;
+export type FormValuesBadges = z.infer<typeof formSchema>;
 
-export interface IAddressPlaqueFormsFormProps {
-    className?: string;
-    defaultValues?: FormValuesAddressPlaqueForms;
-    onSubmit: (data: FormValuesAddressPlaqueForms) => void;
-}
-
-export const AddressPlaqueFormsForm = ({
-    className,
-    defaultValues,
-    onSubmit
-}: IAddressPlaqueFormsFormProps): React.JSX.Element => {
-    const form = useForm<FormValuesAddressPlaqueForms>({
+export const BadgesForm = ({ onSubmit, defaultValues, className }: IBadgesFormProps): React.JSX.Element => {
+    const form = useForm<FormValuesBadges>({
         resolver: zodResolver(formSchema),
         defaultValues: defaultValues || {
             name: ""
         }
     });
 
-    const submitAction = (data: FormValuesAddressPlaqueForms) => {
+    const submitAction = (data: FormValuesBadges) => {
         onSubmit(data);
-        toast.success(`Форма адресного аншлага "${data.name}" успешно сохранен!`);
+        toast.success(`Значок "${data.name}" успешно сохранен!`);
     };
 
     return (
@@ -48,8 +44,9 @@ export const AddressPlaqueFormsForm = ({
                 />
                 <div className="flex gap-2">
                     <FormInput
-                        label="Название"
                         type="text"
+                        label="Название"
+                        defaultValue={defaultValues?.name}
                         {...form.register("name")}
                         errors={form.formState.errors}
                         required

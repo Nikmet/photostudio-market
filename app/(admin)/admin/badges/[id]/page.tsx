@@ -1,6 +1,5 @@
 import { createProduct } from "@/app/actions";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { BadgesForm, FormValuesBadges } from "@/components/forms/badges-form";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -20,14 +19,14 @@ export default async function BadgesEditPage({ params }: Props) {
         }
     });
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesBadges) => {
         "use server";
 
         if (!findBadge) {
             const badge = await prisma.badge.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string
+                    name: data.name
                 }
             });
 
@@ -39,7 +38,7 @@ export default async function BadgesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string
+                name: data.name
             }
         });
         redirect("/admin/badges");
@@ -48,19 +47,11 @@ export default async function BadgesEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findBadge?.id ? `Кружка | ${findBadge.id}` : `Новый значок | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
-                />
-                <div className="flex gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findBadge?.name} />
-                    <Button type="submit">{findBadge ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findBadge ? (
+                <BadgesForm onSubmit={handleSubmit} defaultValues={{ name: findBadge.name }} />
+            ) : (
+                <BadgesForm onSubmit={handleSubmit} />
+            )}
         </div>
     );
 }

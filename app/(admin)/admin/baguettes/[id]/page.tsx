@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { BaguetteForm, FormValuesBaguette } from "@/components/forms/baguette-form";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -19,14 +18,14 @@ export default async function PaperTypesEditPage({ params }: Props) {
         }
     });
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesBaguette) => {
         "use server";
 
         if (!findBaguette) {
             await prisma.baguette.create({
                 data: {
                     id: id,
-                    price: Number(formData.get("price")),
+                    price: data.price,
                     image: ""
                 }
             });
@@ -37,7 +36,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                price: Number(formData.get("price"))
+                price: data.price
             }
         });
         redirect("/admin/baguettes");
@@ -46,12 +45,11 @@ export default async function PaperTypesEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findBaguette?.id ? `Багет | ${findBaguette.id}` : `Новый багет | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <div className="flex gap-2">
-                    <Input name="price" type="number" placeholder="Цена за метр" defaultValue={findBaguette?.price} />
-                    <Button type="submit">{findBaguette ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findBaguette ? (
+                <BaguetteForm defaultValues={{ price: findBaguette?.price }} onSubmit={handleSubmit} />
+            ) : (
+                <BaguetteForm onSubmit={handleSubmit} />
+            )}
         </div>
     );
 }

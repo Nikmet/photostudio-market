@@ -29,7 +29,7 @@ export const FormInput = ({
                 </div>
             )}
 
-            <Input className="h-12 text-md" {...props} />
+            <Input {...props} />
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
         </div>
     );

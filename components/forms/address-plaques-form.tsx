@@ -36,13 +36,16 @@ export const AddressPlaquesForm = ({
     const form = useForm<FormValuesAddressPlaques>({
         resolver: zodResolver(formSchema),
         defaultValues: defaultValues || {
-            name: ""
+            name: "",
+            address: "",
+            colorId: "",
+            formId: ""
         }
     });
 
     const submitAction = (data: FormValuesAddressPlaques) => {
         onSubmit(data);
-        toast.success(`Адресный аншлаг "${data.name}" успешно создан!`);
+        toast.success(`Адресный аншлаг "${data.name}" успешно сохранен!`);
     };
 
     return (
