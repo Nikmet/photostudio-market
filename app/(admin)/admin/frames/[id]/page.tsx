@@ -98,6 +98,7 @@ export default async function FramesEditPage({ params }: Props) {
                     <AdminCheckbox name="has_suspension" label="Подвес" defaultChecked={findFrame?.has_suspension} />
                     <AdminSelect
                         name="baguette"
+                        route="baguettes"
                         placeholder={"Багет"}
                         items={{
                             ...Object.fromEntries(baguettes.map(baguette => [baguette.id, baguette.id]))

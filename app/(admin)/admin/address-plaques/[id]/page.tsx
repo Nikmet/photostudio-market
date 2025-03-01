@@ -106,6 +106,7 @@ export default async function FramesEditPage({ params }: Props) {
                     <AdminSelect
                         name="color"
                         placeholder={"Цвет"}
+                        route="colors"
                         items={{
                             ...Object.fromEntries(colors.map(color => [color.id, color.name]))
                         }}
@@ -114,6 +115,7 @@ export default async function FramesEditPage({ params }: Props) {
                     <AdminSelect
                         name="form"
                         placeholder={"Форма"}
+                        route="address-plaque-form"
                         items={{
                             ...Object.fromEntries(forms.map(form => [form.id, form.name]))
                         }}

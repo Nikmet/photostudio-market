@@ -88,6 +88,7 @@ export default async function TablesEditPage({ params }: Props) {
                     <Input name="width" type="number" placeholder="Ширина" defaultValue={findLFP?.width} />
                     <AdminSelect
                         name="paper_type"
+                        route="paper-types"
                         placeholder={"Тип бумаги"}
                         items={{
                             ...Object.fromEntries(paperTypes.map(type => [type.id, type.name]))

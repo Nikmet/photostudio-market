@@ -88,6 +88,7 @@ export default async function TablesEditPage({ params }: Props) {
                     <Input name="width" type="number" placeholder="Ширина" defaultValue={findTable?.width} />
                     <AdminSelect
                         name="color"
+                        route="colors"
                         placeholder={"Цвет"}
                         items={{
                             ...Object.fromEntries(colors.map(color => [color.id, color.name]))

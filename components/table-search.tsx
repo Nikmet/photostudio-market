@@ -6,6 +6,8 @@ import { Button } from "./ui";
 import { cn } from "@/lib";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { usePagesStore } from "@/store/pages-store";
+import { IPage } from "@/@types/page";
 
 export interface ITableSearchProps<T> {
     className?: string;
@@ -18,6 +20,7 @@ export const TableSearch = <T extends { id: string }>({
     route,
     className
 }: ITableSearchProps<T>): React.JSX.Element => {
+    const { setActivePage, addPage } = usePagesStore();
     const [search, setSearch] = React.useState("");
     const router = useRouter();
 
@@ -29,7 +32,14 @@ export const TableSearch = <T extends { id: string }>({
             return;
         }
 
-        router.push(`/admin/${route}/${search}`);
+        const page: IPage = {
+            href: `/admin/${route}/${search}`,
+            name: search
+        };
+
+        addPage(page);
+        setActivePage(page);
+        router.push(page.href);
     };
 
     return (

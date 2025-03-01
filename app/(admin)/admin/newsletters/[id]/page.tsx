@@ -91,6 +91,7 @@ export default async function TablesEditPage({ params }: Props) {
                     <Input name="height" type="number" placeholder="Высота" defaultValue={findNewsletter?.height} />
                     <Input name="width" type="number" placeholder="Ширина" defaultValue={findNewsletter?.width} />
                     <AdminSelect
+                        route="colors"
                         name="color"
                         placeholder={"Цвет"}
                         items={{
