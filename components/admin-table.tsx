@@ -106,8 +106,15 @@ export const AdminTable = <T extends { id: string }>({
         setActivePage(page);
     };
 
-    const handleAdd = (id: string) => {
-        const newId = (Number(getId(id)) + 1).toString();
+    const handleAdd = () => {
+        if (data.length === 0) {
+            const uid = createUid(prefix ?? "", "1"); // Начинаем с 1, если массив пуст
+            redirectToPage(uid);
+            return;
+        }
+
+        const maxId = Math.max(...data.map(item => Number(getId(item.id))));
+        const newId = (maxId + 1).toString();
         const uid = createUid(prefix ?? "", newId);
         redirectToPage(uid);
     };
@@ -118,9 +125,7 @@ export const AdminTable = <T extends { id: string }>({
                 {!has_actions && <TableSearch<T> data={data} route={route} className="absolute top-[65px] right-10" />}
                 {has_actions && (
                     <div className="flex justify-between mb-3">
-                        <Button onClick={() => handleAdd(data[data.length - 1] ? data[data.length - 1].id : "К-00000")}>
-                            Добавить
-                        </Button>
+                        <Button onClick={handleAdd}>Добавить</Button>
                         <TableSearch<T> data={data} route={route} />
                         <div className="flex gap-2">
                             <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
