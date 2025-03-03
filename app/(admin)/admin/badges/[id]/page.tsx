@@ -1,5 +1,6 @@
 import { createProduct } from "@/app/actions";
-import { BadgesForm, FormValuesBadges } from "@/components/forms/badges-form";
+import { BadgesForm } from "@/components/forms/badges-form/badges-form";
+import { FormValuesBadges } from "@/components/forms/badges-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 

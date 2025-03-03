@@ -1,5 +1,6 @@
 import { createProduct } from "@/app/actions";
-import { BannerForm, FormValuesBanner } from "@/components/forms/banner-form";
+import { BannerForm } from "@/components/forms/banner-form/banner-form";
+import { FormValuesBanner } from "@/components/forms/banner-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { BannerDensity } from "@prisma/client";
 import { redirect } from "next/navigation";

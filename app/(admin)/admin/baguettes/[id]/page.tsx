@@ -1,4 +1,5 @@
-import { BaguetteForm, FormValuesBaguette } from "@/components/forms/baguette-form";
+import { BaguetteForm } from "@/components/forms/baguette-form/baguette-form";
+import { FormValuesBaguette } from "@/components/forms/baguette-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 

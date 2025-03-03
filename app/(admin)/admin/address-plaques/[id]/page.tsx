@@ -1,5 +1,6 @@
 import { createProduct } from "@/app/actions";
-import { AddressPlaquesForm, FormValuesAddressPlaques } from "@/components/forms/address-plaques-form";
+import { AddressPlaquesForm } from "@/components/forms/address-plaques-form/address-plaques-form";
+import { FormValuesAddressPlaques } from "@/components/forms/address-plaques-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 

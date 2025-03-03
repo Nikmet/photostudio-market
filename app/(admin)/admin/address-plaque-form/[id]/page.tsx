@@ -1,4 +1,5 @@
-import { AddressPlaqueFormsForm, FormValuesAddressPlaqueForms } from "@/components/forms/address-plaque-forms-form";
+import { AddressPlaqueFormsForm } from "@/components/forms/address-plaque-forms-form/address-plaque-forms-form";
+import { FormValuesAddressPlaqueForms } from "@/components/forms/address-plaque-forms-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 

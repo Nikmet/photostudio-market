@@ -1,46 +1,21 @@
 "use client";
 
-import { z } from "zod";
-import { FormInput } from "../form-input";
+import { FormInput } from "../../form-input";
 import { density } from "@/@types/enums";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { AdminSelect } from "../admin-select";
-import { Button } from "../ui";
-import { BannerDensity } from "@prisma/client";
+import { AdminSelect } from "../../admin-select";
+import { Button } from "../../ui";
 import React from "react";
+import { onNumberValueChange } from "@/lib/inputs";
+import { formSchemaBanners, FormValuesBanner } from "./schema";
 
 export interface IBannerFormProps {
     defaultValues?: FormValuesBanner;
     onSubmit: (data: FormValuesBanner) => void;
     className?: string;
 }
-
-const formSchema = z.object({
-    name: z.string().min(1, "Поле обязательно"), // Кастомное сообщение для обязательного поля
-    density: z.enum(Object.values(BannerDensity) as [string, ...string[]], {
-        required_error: "Поле обязательно" // Кастомное сообщение для обязательного поля
-    }),
-    height: z.number({
-        required_error: "Поле обязательно", // Кастомное сообщение для обязательного поля
-        invalid_type_error: "Значение должно быть числом"
-    }),
-    width: z.number({
-        required_error: "Поле обязательно", // Кастомное сообщение для обязательного поля
-        invalid_type_error: "Значение должно быть числом"
-    }),
-    luvers_count: z.number({
-        required_error: "Поле обязательно", // Кастомное сообщение для обязательного поля
-        invalid_type_error: "Значение должно быть числом"
-    }),
-    luvers_step: z.number({
-        required_error: "Поле обязательно", // Кастомное сообщение для обязательного поля
-        invalid_type_error: "Значение должно быть числом"
-    })
-});
-
-export type FormValuesBanner = z.infer<typeof formSchema>;
 
 export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormProps): React.JSX.Element => {
     const {
@@ -50,7 +25,7 @@ export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormPr
         setValue,
         watch
     } = useForm<FormValuesBanner>({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(formSchemaBanners),
         defaultValues: defaultValues || {
             name: ""
         }
@@ -70,11 +45,6 @@ export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormPr
     const submitAction = (data: FormValuesBanner) => {
         onSubmit(data);
         toast.success(`Банер успешно сохранен!`);
-    };
-
-    const onNumberValueChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (...event: any[]) => void) => {
-        const value = e.target.value;
-        onChange(value === "" ? "" : Number(value));
     };
 
     return (

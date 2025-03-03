@@ -1,22 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { AdminSelect } from "../admin-select";
+import { AdminSelect } from "../../admin-select";
 import { AddressPlaqueForm, Color } from "@prisma/client";
 import toast from "react-hot-toast";
-import { FormInput } from "../form-input";
-
-const formSchema = z.object({
-    name: z.string().min(2, "Название должно быть больше 2 символов"),
-    address: z.string().min(2, "Адрес должен быть больше 2 символов"),
-    colorId: z.string().min(1, "Выберите цвет"),
-    formId: z.string().min(1, "Выберите форму")
-});
-
-export type FormValuesAddressPlaques = z.infer<typeof formSchema>;
+import { FormInput } from "../../form-input";
+import { formSchemaAddressPlaques, FormValuesAddressPlaques } from "./schema";
 
 export interface IAddressPlaquesFormProps {
     className?: string;
@@ -34,7 +25,7 @@ export const AddressPlaquesForm = ({
     className
 }: IAddressPlaquesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesAddressPlaques>({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(formSchemaAddressPlaques),
         defaultValues: defaultValues || {
             name: "",
             address: "",
@@ -59,21 +50,19 @@ export const AddressPlaquesForm = ({
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex flex-col gap-2">
-                    <FormInput
-                        type="text"
-                        label="Название"
-                        defaultValue={defaultValues?.name}
-                        {...form.register("name")}
-                        errors={form.formState.errors}
-                        required
+                    <Controller
+                        name="name"
+                        control={form.control}
+                        render={({ field }) => (
+                            <FormInput {...field} label="Название" errors={form.formState.errors} required />
+                        )}
                     />
-                    <FormInput
-                        type="text"
-                        label="Адрес"
-                        defaultValue={defaultValues?.address}
-                        errors={form.formState.errors}
-                        {...form.register("address")}
-                        required
+                    <Controller
+                        name="address"
+                        control={form.control}
+                        render={({ field }) => (
+                            <FormInput {...field} label="Адрес" errors={form.formState.errors} required />
+                        )}
                     />
                     <AdminSelect
                         name="colorId"

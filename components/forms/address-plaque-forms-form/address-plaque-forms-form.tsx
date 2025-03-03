@@ -1,17 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import toast from "react-hot-toast";
-import { FormInput } from "../form-input";
-
-const formSchema = z.object({
-    name: z.string().min(2, "Название должно быть больше 2 символов")
-});
-
-export type FormValuesAddressPlaqueForms = z.infer<typeof formSchema>;
+import { FormInput } from "../../form-input";
+import { formSchemaAddressPlaqueForms, FormValuesAddressPlaqueForms } from "./schema";
 
 export interface IAddressPlaqueFormsFormProps {
     className?: string;
@@ -24,8 +18,12 @@ export const AddressPlaqueFormsForm = ({
     defaultValues,
     onSubmit
 }: IAddressPlaqueFormsFormProps): React.JSX.Element => {
-    const form = useForm<FormValuesAddressPlaqueForms>({
-        resolver: zodResolver(formSchema),
+    const {
+        handleSubmit,
+        formState: { errors },
+        control
+    } = useForm<FormValuesAddressPlaqueForms>({
+        resolver: zodResolver(formSchemaAddressPlaqueForms),
         defaultValues: defaultValues || {
             name: ""
         }
@@ -38,7 +36,7 @@ export const AddressPlaqueFormsForm = ({
 
     return (
         <div className={className}>
-            <form onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
+            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
                 <img
                     src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
                     alt="кружка"
@@ -47,13 +45,12 @@ export const AddressPlaqueFormsForm = ({
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex gap-2">
-                    <FormInput
-                        label="Название"
-                        type="text"
-                        {...form.register("name")}
-                        errors={form.formState.errors}
-                        required
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({ field }) => <FormInput label="Название" {...field} required errors={errors} />}
                     />
+
                     <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>

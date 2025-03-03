@@ -1,11 +1,11 @@
 "use client";
 
-import { FormInput } from "../form-input";
 import { Button } from "@/components/ui";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import toast from "react-hot-toast";
+import { formSchemaBadges, FormValuesBadges } from "./schema";
+import { FormInput } from "@/components/form-input";
 
 export interface IBadgesFormProps {
     defaultValues?: FormValuesBadges;
@@ -13,15 +13,9 @@ export interface IBadgesFormProps {
     className?: string;
 }
 
-const formSchema = z.object({
-    name: z.string().min(2, "Название должно быть больше 2 символов")
-});
-
-export type FormValuesBadges = z.infer<typeof formSchema>;
-
 export const BadgesForm = ({ onSubmit, defaultValues, className }: IBadgesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesBadges>({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(formSchemaBadges),
         defaultValues: defaultValues || {
             name: ""
         }
@@ -43,13 +37,18 @@ export const BadgesForm = ({ onSubmit, defaultValues, className }: IBadgesFormPr
                     className="rounded-md border border-gray-300"
                 />
                 <div className="flex gap-2">
-                    <FormInput
-                        type="text"
-                        label="Название"
-                        defaultValue={defaultValues?.name}
-                        {...form.register("name")}
-                        errors={form.formState.errors}
-                        required
+                    <Controller
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormInput
+                                type="text"
+                                label="Название"
+                                {...field}
+                                errors={form.formState.errors}
+                                required
+                            />
+                        )}
                     />
                     <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
                 </div>
