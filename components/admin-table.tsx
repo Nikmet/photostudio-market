@@ -47,8 +47,8 @@ export const AdminTable = <T extends { id: string }>({
     };
 
     return (
-        <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-250px)]", className)}>
-            <div className="pr-5 flex flex-col min-h-[calc(100vh-250px)]">
+        <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-290px)]", className)}>
+            <div className="pr-5 flex flex-col min-h-[calc(100vh-290px)]">
                 {!has_actions && <TableSearch<T> data={data} route={route} className="absolute top-[65px] right-10" />}
                 {has_actions && (
                     <div className="flex justify-between mb-3">

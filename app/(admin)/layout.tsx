@@ -17,9 +17,9 @@ export default async function AdminLayout({
         <>
             <Header admin={true} />
 
-            <main className="flex h-[91vh] w-full p-4">
+            <main className="flex h-[85.5vh] w-full p-4">
                 <MenuBar pages={adminPages} adminPage={true} />
-                <div className="w-full h-full view-animation ">
+                <div className="w-full h-full view-animation">
                     <PagesTab />
                     {children}
                 </div>
