@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { ColorsForm } from "@/components/forms/colors-form/colors-form";
+import { FormValuesColors } from "@/components/forms/colors-form/schema";
 import { hexToRgb, rgbStringToHex } from "@/lib/colors";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
@@ -20,15 +20,15 @@ export default async function CupsEditPage({ params }: Props) {
         }
     });
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesColors) => {
         "use server";
 
         if (!findColor) {
             await prisma.color.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    rgb: hexToRgb(formData.get("rgb") as string)
+                    name: data.name,
+                    rgb: hexToRgb(data.rgb) as string
                 }
             });
         }
@@ -38,8 +38,8 @@ export default async function CupsEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                rgb: hexToRgb(formData.get("rgb") as string)
+                name: data.name,
+                rgb: hexToRgb(data.rgb) as string
             }
         });
         redirect("/admin/colors");
@@ -48,17 +48,17 @@ export default async function CupsEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findColor?.id ? `Цвет | ${findColor.id}` : `Новый цвет | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <div className="flex gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findColor?.name} />
-                    <Input
-                        name="rgb"
-                        type="color"
-                        defaultValue={findColor?.rgb ? rgbStringToHex(findColor?.rgb) : "#000000"}
-                    />
-                    <Button type="submit">{findColor ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findColor ? (
+                <ColorsForm
+                    onSubmit={handleSubmit}
+                    defaultValues={{
+                        name: findColor?.name || "",
+                        rgb: rgbStringToHex(findColor?.rgb || "0,0,0")
+                    }}
+                />
+            ) : (
+                <ColorsForm onSubmit={handleSubmit} />
+            )}
         </div>
     );
 }

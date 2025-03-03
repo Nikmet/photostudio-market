@@ -35,7 +35,7 @@ export const BusinessCardsForm = ({
 
     const submitAction = (data: FormValuesBusinessCards) => {
         onSubmit(data);
-        toast.success(`Карточка успешно сохранена!`);
+        toast.success(`Визитка "${data.name}" успешно сохранена!`);
     };
 
     return (
