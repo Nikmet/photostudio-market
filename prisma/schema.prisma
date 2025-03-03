@@ -245,7 +245,7 @@ model Badge {
 }
 
 // Таблица Магнитов
-
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И ТИПА МАГНИТА (СТРАНИЦА, ТИП МАГНИТА)
 model Magnet {
     id             String     @id //Prefix: МГ
     name           String
@@ -259,6 +259,7 @@ model Magnet {
 }
 
 // Таблица Печатей
+//! ЦЕНА ЗАВИСИТ ОТ ТИПА ПЕЧАТИ (СТРАНИЦА, ТИП ПЕЧАТИ)
 model Printing {
     id            String       @id //Prefix: П
     name          String
@@ -269,6 +270,7 @@ model Printing {
 }
 
 // Таблица Банеров
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА, ПЛОТНОСТИ И КОЛИЧЕСТВА ЛЮВЕРСОВ (СТРАНИЦА, ПЛОТНОСТЬ, ЦЕНА ЛЮВЕРСА)
 model Banner {
     id             String        @id //Prefix: БАН
     name           String
@@ -284,6 +286,7 @@ model Banner {
 }
 
 // Таблица Стендов
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И КОЛИЧЕСТВА КАРМАНОВ (СТРАНИЦА, ЦЕНА КАРМАНА)
 model Stand {
     id             String  @id //Prefix: СТ
     name           String
@@ -311,6 +314,7 @@ model Color {
 }
 
 // Таблица Табличек
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И ЦВЕТА 
 model Table {
     id      String @id //Prefix: T
     name    String
@@ -338,6 +342,7 @@ model AddressPlaqueForm {
 }
 
 // Таблица Адресных табличек
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА ФОРМЫ И ЦВЕТА
 model AddressPlaque {
     id      String            @id //Prefix: АА
     name    String
@@ -352,6 +357,7 @@ model AddressPlaque {
 }
 
 // Таблица Информационных вывесок
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И ЦВЕТА
 model Newsletter {
     id      String @id //Prefix: ИВ
     name    String
@@ -376,6 +382,7 @@ model PaperType {
 }
 
 // Таблица Широкоформатной печати
+//! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И ТИПА БУМАГИ
 model LFP {
     id             String    @id //Prefix: ШФП
     name           String
@@ -390,6 +397,7 @@ model LFP {
 }
 
 // Таблица Визиток
+//! ЦЕНА ЗАВИСИТ ОТ СТОРОНЫ ПЕЧАТИ (СТРАНИЦА)
 model BusinessCard {
     id             String       @id //Prefix: В
     name           String
@@ -401,9 +409,9 @@ model BusinessCard {
 }
 
 // Таблица Багета
-// TODO: Добавить реальный серийный номер и в селекте выводить его
 model Baguette {
     id    String  @id //Prefix: БАГ
+    serial_number  String //Настоящий серийный номер 
     image String
     price Float
     Frame Frame[]
@@ -413,6 +421,7 @@ model Baguette {
 }
 
 // Таблица Рамок
+//! ЦЕНА ЗАВИСИТ ОТ ДЛИНЫ БАГЕТА И НАЛИЧИЯ ПАРАМЕТРОВ (СТРАНИЦА, ПАРАМЕТРЫ)
 model Frame {
     id             String   @id //Prefix: РМ
     name           String

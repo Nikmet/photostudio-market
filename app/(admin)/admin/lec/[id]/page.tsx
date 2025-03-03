@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { LecForm } from "@/components/forms/lec-form/lec-form";
 import { FormValuesLEC } from "@/components/forms/lec-form/schema";
+import { calcLECPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { Difficile } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -35,7 +36,7 @@ export default async function PrintingsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(lec.id, lec.name, "Сувениры", 450);
+            await createProduct(lec.id, lec.name, "Сувениры", calcLECPrice(lec));
         }
 
         await prisma.lEC.update({
