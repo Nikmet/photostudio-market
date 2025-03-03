@@ -42,7 +42,6 @@ export const AdminSelect = ({
             href: `/admin/${route}/${key}`,
             name: key
         };
-        console.log(page);
 
         setPage(page);
         onChange?.(key);

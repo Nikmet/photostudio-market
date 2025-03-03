@@ -42,8 +42,6 @@ export const AdminTable = <T extends { id: string }>({
     const { addPage, setActivePage } = usePagesStore();
     const router = useRouter();
 
-    console.log(currentItems);
-
     const handleSelect = (id: string) => {
         if (selected.includes(id)) {
             setSelected(selected.filter(item => item !== id));

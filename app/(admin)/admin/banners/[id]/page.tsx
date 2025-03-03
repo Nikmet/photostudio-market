@@ -24,8 +24,6 @@ export default async function BannersEditPage({ params }: Props) {
     const handleSubmit = async (data: FormValuesBanner) => {
         "use server";
 
-        console.log(data);
-
         if (!findBanner) {
             const banner = await prisma.banner.create({
                 data: {

@@ -30,8 +30,6 @@ export default async function FramesEditPage({ params }: Props) {
     const handleSubmit = async (data: FormValuesAddressPlaques) => {
         "use server";
 
-        console.log(data);
-
         const findColor = await prisma.color.findFirst({
             where: {
                 id: data.colorId

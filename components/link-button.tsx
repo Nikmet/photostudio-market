@@ -21,7 +21,6 @@ export const LinkButton = ({ href, name, className }: ILinkButtonProps): React.J
                 href,
                 name
             };
-            console.log(page);
 
             router.push(page.href);
             setActivePage(page);

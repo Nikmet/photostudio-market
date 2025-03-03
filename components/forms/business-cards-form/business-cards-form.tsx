@@ -25,7 +25,6 @@ export const BusinessCardsForm = ({
         handleSubmit,
         formState: { errors },
         setValue,
-        getValues,
         watch
     } = useForm<FormValuesBusinessCards>({
         resolver: zodResolver(formSchemaBusinessCards),
@@ -33,8 +32,6 @@ export const BusinessCardsForm = ({
             name: ""
         }
     });
-
-    console.log(getValues());
 
     const submitAction = (data: FormValuesBusinessCards) => {
         onSubmit(data);
