@@ -28,6 +28,8 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
                     id: id,
                     name: data.name,
                     price: data.price,
+                    height: data.height,
+                    width: data.width,
                     image: ""
                 }
             });
@@ -40,6 +42,8 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
             data: {
                 name: data.name,
                 price: data.price,
+                height: data.height,
+                width: data.width,
                 image: ""
             }
         });

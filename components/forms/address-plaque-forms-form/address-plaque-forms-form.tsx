@@ -52,6 +52,34 @@ export const AddressPlaqueFormsForm = ({
                         render={({ field }) => <FormInput label="Название" {...field} required errors={errors} />}
                     />
                     <Controller
+                        name="width"
+                        control={control}
+                        render={({ field: { onChange, ...field } }) => (
+                            <FormInput
+                                type="number"
+                                label="Ширина"
+                                {...field}
+                                onChange={e => onNumberValueChange(e, onChange)}
+                                errors={errors}
+                                required
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="height"
+                        control={control}
+                        render={({ field: { onChange, ...field } }) => (
+                            <FormInput
+                                type="number"
+                                label="Высота"
+                                {...field}
+                                onChange={e => onNumberValueChange(e, onChange)}
+                                errors={errors}
+                                required
+                            />
+                        )}
+                    />
+                    <Controller
                         name="price"
                         control={control}
                         render={({ field: { onChange, ...field } }) => (

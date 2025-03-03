@@ -329,6 +329,8 @@ model AddressPlaqueForm {
     name            String
     image           String
     price           Float
+    width          Float
+    height         Float
     address_plaques AddressPlaque[]
 
     createdAt DateTime @default(now())

@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { AddressPlaquesForm } from "@/components/forms/address-plaques-form/address-plaques-form";
 import { FormValuesAddressPlaques } from "@/components/forms/address-plaques-form/schema";
+import { calcAddressPlaquePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -61,7 +62,12 @@ export default async function FramesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(addressPlaque.id, addressPlaque.name, "Реклама", 450);
+            await createProduct(
+                addressPlaque.id,
+                addressPlaque.name,
+                "Реклама",
+                await calcAddressPlaquePrice(addressPlaque)
+            );
         }
 
         await prisma.addressPlaque.update({
