@@ -1,7 +1,6 @@
 import { createProduct } from "@/app/actions";
-import { AdminSelect } from "@/components/admin-select";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { LfpForm } from "@/components/forms/lfp-form/lfp-form";
+import { FormValuesLFP } from "@/components/forms/lfp-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -26,12 +25,12 @@ export default async function TablesEditPage({ params }: Props) {
 
     const paperTypes = await prisma.paperType.findMany();
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesLFP) => {
         "use server";
 
         const findPaperType = await prisma.paperType.findFirst({
             where: {
-                id: formData.get("paper_type") as string
+                id: data.paper_type_id
             }
         });
 
@@ -39,9 +38,9 @@ export default async function TablesEditPage({ params }: Props) {
             const lfps = await prisma.lFP.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    width: Number(formData.get("width")),
-                    height: Number(formData.get("height")),
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
                     paper_type: {
                         connect: {
                             id: findPaperType?.id
@@ -58,9 +57,9 @@ export default async function TablesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                width: Number(formData.get("width")),
-                height: Number(formData.get("height")),
+                name: data.name,
+                width: data.width,
+                height: data.height,
                 paper_type: {
                     connect: {
                         id: findPaperType?.id
@@ -74,30 +73,11 @@ export default async function TablesEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findLFP?.id ? `Широкоформатная печать | ${findLFP.id}` : `Новая широкоформатная печать | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
-                />
-                <div className="flex flex-col gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findLFP?.name} />
-                    <Input name="height" type="number" placeholder="Высота" defaultValue={findLFP?.height} />
-                    <Input name="width" type="number" placeholder="Ширина" defaultValue={findLFP?.width} />
-                    <AdminSelect
-                        name="paper_type"
-                        route="paper-types"
-                        placeholder={"Тип бумаги"}
-                        items={{
-                            ...Object.fromEntries(paperTypes.map(type => [type.id, type.name]))
-                        }}
-                        defaultValue={findLFP?.paper_type_id}
-                    />
-                    <Button type="submit">{findLFP ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findLFP ? (
+                <LfpForm defaultValues={findLFP} onSubmit={handleSubmit} paperTypes={paperTypes} />
+            ) : (
+                <LfpForm onSubmit={handleSubmit} paperTypes={paperTypes} />
+            )}
         </div>
     );
 }
