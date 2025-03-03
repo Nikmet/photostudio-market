@@ -197,6 +197,7 @@ model VerificationCode {
 }
 
 // Таблица Кружек
+//! ФИКСИРОВАННАЯ ЦЕНА (СТРАНИЦА)
 model Cup {
     id             String  @id //Prefix: К
     name           String
@@ -207,6 +208,7 @@ model Cup {
 }
 
 // Таблица Футболок
+//! ЦЕНА ОДНОСТОРОННЕЙ ПЕЧАТИ И ДВУСТОРОННЕЙ ПЕЧАТИ (СТРАНИЦА)
 model TShirt {
     id             String       @id //Prefix: Ф
     name           String
@@ -219,6 +221,7 @@ model TShirt {
 }
 
 // Лазерная гравировка и резка
+//! ЦЕНА ЗАВИСИТ ОТ ПЛОЩАДИ И СЛОЖНОСТИ (СЛОЖНОСТЬ - МНОЖИТЕЛЬ)
 model LEC {
     id        String    @id //Prefix: ЛГР
     name      String
@@ -231,6 +234,7 @@ model LEC {
 }
 
 // Таблица Значков
+//! ЦЕНА ФИКСИРОВАННАЯ (СТРАНИЦА)
 model Badge {
     id             String  @id //Prefix: ЗН
     name           String
@@ -241,6 +245,7 @@ model Badge {
 }
 
 // Таблица Магнитов
+
 model Magnet {
     id             String     @id //Prefix: МГ
     name           String
@@ -296,6 +301,7 @@ model Color {
     id              String          @id //Prefix: ЦВ
     name            String
     rgb             String
+    price           Float
     tables          Table[]
     address_plaques AddressPlaque[]
     Newsletter      Newsletter[]
@@ -322,6 +328,7 @@ model AddressPlaqueForm {
     id              String          @id //Prefix: ФАА
     name            String
     image           String
+    price           Float
     address_plaques AddressPlaque[]
 
     createdAt DateTime @default(now())

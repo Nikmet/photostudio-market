@@ -10,6 +10,7 @@ export default async function FramesPage() {
     const columns: IColumnsProps<Color>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
+        { title: "Цена за кв. м", key: "price" },
         { title: "RGB", key: "rgb" }
     ];
 

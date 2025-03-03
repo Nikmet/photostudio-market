@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FormInput } from "@/components/form-input";
 import { Button } from "@/components/ui";
+import { onNumberValueChange } from "@/lib/inputs";
 
 export interface IColorsFormProps {
     defaultValues?: FormValuesColors;
@@ -53,6 +54,20 @@ export const ColorsForm = ({ onSubmit, defaultValues, className }: IColorsFormPr
                                 errors={errors}
                                 {...field}
                                 defaultValue={defaultValues?.rgb}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="price"
+                        control={control}
+                        render={({ field: { onChange, ...field } }) => (
+                            <FormInput
+                                type="number"
+                                label="Цена за кв. метр"
+                                onChange={e => onNumberValueChange(e, onChange)}
+                                errors={errors}
+                                required
+                                {...field}
                             />
                         )}
                     />

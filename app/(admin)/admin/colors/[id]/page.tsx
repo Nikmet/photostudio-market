@@ -28,7 +28,8 @@ export default async function CupsEditPage({ params }: Props) {
                 data: {
                     id: id,
                     name: data.name,
-                    rgb: hexToRgb(data.rgb) as string
+                    rgb: hexToRgb(data.rgb) as string,
+                    price: data.price
                 }
             });
         }
@@ -39,7 +40,8 @@ export default async function CupsEditPage({ params }: Props) {
             },
             data: {
                 name: data.name,
-                rgb: hexToRgb(data.rgb) as string
+                rgb: hexToRgb(data.rgb) as string,
+                price: data.price
             }
         });
         redirect("/admin/colors");
@@ -52,8 +54,9 @@ export default async function CupsEditPage({ params }: Props) {
                 <ColorsForm
                     onSubmit={handleSubmit}
                     defaultValues={{
-                        name: findColor?.name || "",
-                        rgb: rgbStringToHex(findColor?.rgb || "0,0,0")
+                        name: findColor.name || "",
+                        rgb: rgbStringToHex(findColor?.rgb || "0,0,0"),
+                        price: findColor.price || 0
                     }}
                 />
             ) : (
