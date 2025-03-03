@@ -16,7 +16,7 @@ export interface IAdminSelectProps {
     defaultValue?: string;
     label: string;
     items: Record<string, string>;
-    route: string;
+    route?: string;
     required?: boolean;
     errors?: any;
 }
@@ -68,10 +68,14 @@ export const AdminSelect = ({
                         ))}
                     </SelectContent>
                 </Select>
-                {page ? (
-                    <LinkButton href={page.href} name={page.name} />
-                ) : (
-                    <LinkButton href={`/admin/${route}/${defaultValue}`} name={defaultValue} />
+                {route && (
+                    <>
+                        {page ? (
+                            <LinkButton href={page.href} name={page.name} />
+                        ) : (
+                            <LinkButton href={`/admin/${route}/${defaultValue}`} name={defaultValue} />
+                        )}
+                    </>
                 )}
             </div>
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
