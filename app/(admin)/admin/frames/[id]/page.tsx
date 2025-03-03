@@ -1,8 +1,6 @@
 import { createProduct } from "@/app/actions";
-import { AdminCheckbox } from "@/components/admin-checkbox";
-import { AdminSelect } from "@/components/admin-select";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { FramesForm } from "@/components/forms/frames-form/frames-form";
+import { FormValuesFrames } from "@/components/forms/frames-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -27,12 +25,12 @@ export default async function FramesEditPage({ params }: Props) {
 
     const baguettes = await prisma.baguette.findMany();
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesFrames) => {
         "use server";
 
         const findBaguette = await prisma.baguette.findFirst({
             where: {
-                id: formData.get("baguette") as string
+                id: data.baguetteId
             }
         });
 
@@ -40,12 +38,12 @@ export default async function FramesEditPage({ params }: Props) {
             const frame = await prisma.frame.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    width: Number(formData.get("width")),
-                    height: Number(formData.get("height")),
-                    has_glass: Boolean(formData.get("has_glass")),
-                    has_backdrop: Boolean(formData.get("has_backdrop")),
-                    has_suspension: Boolean(formData.get("has_suspension")),
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
+                    has_glass: data.has_glass,
+                    has_backdrop: data.has_backdrop,
+                    has_suspension: data.has_suspension,
                     baguette: {
                         connect: {
                             id: findBaguette?.id
@@ -62,12 +60,12 @@ export default async function FramesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                width: Number(formData.get("width")),
-                height: Number(formData.get("height")),
-                has_glass: Boolean(formData.get("has_glass")),
-                has_backdrop: Boolean(formData.get("has_backdrop")),
-                has_suspension: Boolean(formData.get("has_suspension")),
+                name: data.name,
+                width: data.width,
+                height: data.height,
+                has_glass: data.has_glass,
+                has_backdrop: data.has_backdrop,
+                has_suspension: data.has_suspension,
                 baguette: {
                     connect: {
                         id: findBaguette?.id
@@ -81,33 +79,11 @@ export default async function FramesEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findFrame?.id ? `Табличка | ${findFrame.id}` : `Новая табличка | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
-                />
-                <div className="flex flex-col gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findFrame?.name} />
-                    <Input name="height" type="number" placeholder="Высота" defaultValue={findFrame?.height} />
-                    <Input name="width" type="number" placeholder="Ширина" defaultValue={findFrame?.width} />
-                    <AdminCheckbox name="has_glass" label="Стекло" defaultChecked={findFrame?.has_glass} />
-                    <AdminCheckbox name="has_backdrop" label="Задник" defaultChecked={findFrame?.has_backdrop} />
-                    <AdminCheckbox name="has_suspension" label="Подвес" defaultChecked={findFrame?.has_suspension} />
-                    <AdminSelect
-                        name="baguette"
-                        route="baguettes"
-                        placeholder={"Багет"}
-                        items={{
-                            ...Object.fromEntries(baguettes.map(baguette => [baguette.id, baguette.id]))
-                        }}
-                        defaultValue={findFrame?.baguette.id}
-                    />
-                    <Button type="submit">{findFrame ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findFrame ? (
+                <FramesForm defaultValues={findFrame} onSubmit={handleSubmit} baguettes={baguettes} />
+            ) : (
+                <FramesForm onSubmit={handleSubmit} baguettes={baguettes} />
+            )}
         </div>
     );
 }
