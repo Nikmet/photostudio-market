@@ -1,7 +1,6 @@
 import { createProduct } from "@/app/actions";
-import { AdminSelect } from "@/components/admin-select";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { FormValuesTables } from "@/components/forms/tabels-form/schema";
+import { TablesForm } from "@/components/forms/tabels-form/tabels-form";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -26,12 +25,12 @@ export default async function TablesEditPage({ params }: Props) {
 
     const colors = await prisma.color.findMany();
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesTables) => {
         "use server";
 
         const findColor = await prisma.color.findFirst({
             where: {
-                id: formData.get("color") as string
+                id: data.colorId
             }
         });
 
@@ -39,9 +38,9 @@ export default async function TablesEditPage({ params }: Props) {
             const table = await prisma.table.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    width: Number(formData.get("width")),
-                    height: Number(formData.get("height")),
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
                     Color: {
                         connect: {
                             id: findColor?.id
@@ -58,9 +57,9 @@ export default async function TablesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                width: Number(formData.get("width")),
-                height: Number(formData.get("height")),
+                name: data.name,
+                width: data.width,
+                height: data.height,
                 Color: {
                     connect: {
                         id: findColor?.id
@@ -74,30 +73,11 @@ export default async function TablesEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findTable?.id ? `Табличка | ${findTable.id}` : `Новая табличка | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
-                />
-                <div className="flex flex-col gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findTable?.name} />
-                    <Input name="height" type="number" placeholder="Высота" defaultValue={findTable?.height} />
-                    <Input name="width" type="number" placeholder="Ширина" defaultValue={findTable?.width} />
-                    <AdminSelect
-                        name="color"
-                        route="colors"
-                        placeholder={"Цвет"}
-                        items={{
-                            ...Object.fromEntries(colors.map(color => [color.id, color.name]))
-                        }}
-                        defaultValue={findTable?.Color.id}
-                    />
-                    <Button type="submit">{findTable ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findTable ? (
+                <TablesForm defaultValues={findTable} onSubmit={handleSubmit} colors={colors} />
+            ) : (
+                <TablesForm colors={colors} onSubmit={handleSubmit} />
+            )}
         </div>
     );
 }
