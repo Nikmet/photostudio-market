@@ -2,28 +2,15 @@
 
 import { IPage } from "@/@types/page";
 import { cn } from "@/lib";
-import { usePagesStore } from "@/store/pages-store";
 import Link from "next/link";
 import React from "react";
 
 export interface IMenuBarProps {
     className?: string;
     pages: IPage[];
-    adminPage?: boolean;
 }
 
-export const MenuBar = ({ pages, adminPage, className }: IMenuBarProps): React.JSX.Element => {
-    const { addPage, openPages, setActivePage } = usePagesStore();
-
-    const handleClick = (page: IPage) => {
-        const findPage = openPages.find(p => p.name === page.name);
-        setActivePage(page);
-        if (findPage) {
-            return;
-        }
-        addPage(page);
-    };
-
+export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element => {
     return (
         <div
             className={cn(
@@ -36,19 +23,15 @@ export const MenuBar = ({ pages, adminPage, className }: IMenuBarProps): React.J
                     <Link
                         key={page.href}
                         href={page.href}
-                        onClick={() => handleClick(page)}
                         className="block p-4 dark:text-white text-black hover:bg-primary/5"
                     >
                         {page.name}
                     </Link>
                 ))}
             </div>
-
-            {!adminPage && (
-                <Link href="/admin" className="p-4 dark:text-white text-black underline">
-                    Панель Администратора
-                </Link>
-            )}
+            <Link href="/admin" className="p-4 dark:text-white text-black underline">
+                Панель Администратора
+            </Link>
         </div>
     );
 };
