@@ -4,16 +4,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib";
 import { Checkbox } from "./ui/checkbox";
-import { useRouter } from "next/navigation";
 import { Button } from "./ui";
-import { createUid, getId } from "@/lib/uid";
 import { formatTableCell } from "@/lib/format-table-cell";
 import { usePagination } from "@/hooks/use-pagination";
 import React from "react";
 import { Pagination } from "./pagination";
 import { TableSearch } from "./table-search";
-import { usePagesStore } from "@/store/pages-store";
-import { IPage } from "@/@types/page";
+import { useSort } from "@/hooks/use-sort";
+import { useSelection } from "@/hooks/use-selection";
+import { useTableActions } from "@/hooks/use-table-actions";
 
 export interface IAdminTableProps<T> {
     className?: string;
@@ -37,86 +36,14 @@ export const AdminTable = <T extends { id: string }>({
     has_actions,
     className
 }: IAdminTableProps<T>): React.JSX.Element => {
-    const [selected, setSelected] = React.useState<string[]>([]);
-    const [sortedData, setSortedData] = React.useState<T[]>(data);
-    const [sortConfig, setSortConfig] = React.useState<{
-        key: keyof T | null;
-        direction: "asc" | "desc" | null;
-    }>({
-        key: null,
-        direction: null
-    });
+    const { sortedData, sortConfig, handleSort } = useSort<T>(data);
+    const { selected, handleSelect, clearSelection } = useSelection();
+    const { handleAdd, redirectToPage } = useTableActions<T>(data, route, prefix);
     const { currentItems: currentSortedItems, currentPage, totalPages, paginate } = usePagination(sortedData, 15);
-    const { addPage, setActivePage } = usePagesStore();
-    const router = useRouter();
-
-    React.useEffect(() => {
-        setSortedData(data);
-    }, [data]);
-
-    const handleSort = (key: keyof T) => {
-        let direction: "asc" | "desc" | null = "asc";
-
-        if (sortConfig.key === key && sortConfig.direction === "asc") {
-            direction = "desc";
-        } else if (sortConfig.key === key && sortConfig.direction === "desc") {
-            direction = null;
-        }
-
-        setSortConfig({ key, direction });
-
-        const sorted = [...sortedData].sort((a, b) => {
-            if (direction === null) {
-                return 0;
-            }
-
-            if (a[key] < b[key]) {
-                return direction === "asc" ? -1 : 1;
-            }
-            if (a[key] > b[key]) {
-                return direction === "asc" ? 1 : -1;
-            }
-            return 0;
-        });
-
-        setSortedData(direction === null ? data : sorted);
-    };
-
-    const handleSelect = (id: string) => {
-        if (selected.includes(id)) {
-            setSelected(selected.filter(item => item !== id));
-        } else {
-            setSelected([...selected, id]);
-        }
-    };
 
     const handleDelete = async (ids: string[]) => {
         handleDeleteProp?.(ids);
-        setSelected([]);
-        router.refresh();
-    };
-
-    const redirectToPage = (id: string) => {
-        const page: IPage = {
-            href: `/admin/${route}/${id}`,
-            name: id
-        };
-        router.push(page.href);
-        addPage(page);
-        setActivePage(page);
-    };
-
-    const handleAdd = () => {
-        if (data.length === 0) {
-            const uid = createUid(prefix ?? "", "1"); // Начинаем с 1, если массив пуст
-            redirectToPage(uid);
-            return;
-        }
-
-        const maxId = Math.max(...data.map(item => Number(getId(item.id))));
-        const newId = (maxId + 1).toString();
-        const uid = createUid(prefix ?? "", newId);
-        redirectToPage(uid);
+        clearSelection();
     };
 
     return (
