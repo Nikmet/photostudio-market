@@ -13,6 +13,28 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// Перечисление типов цен
+enum PriceType {
+    CUP
+    ONE_SIDE_T_SHIRT
+    TWO_SIDES_T_SHIRT
+    LEC
+    BADGE
+    SUBSTRATE_MAGNET
+    ACRYLIC_MAGNET
+    PRINTING_WITH_TOOLING
+    PRINTING_WITHOUT_TOOLING
+    BANNER_THREE_HUNDRED
+    BANNER_FOUR_HUNDRED
+    LUVERS
+    STAND
+    POCKET
+    ONE_SIDE_BUSINESS_CARD
+    TWO_SIDES_BUSINESS_CARD
+    BACKDROP
+    SUSPENSION
+}
+
 // Перечисление ролей пользователей
 enum UserRole {
     USER
@@ -196,6 +218,12 @@ model VerificationCode {
     @@unique([userId, code])
 }
 
+model Prices {
+    id        Int       @id @default(autoincrement())
+    priceType PriceType
+    value     Float
+}
+
 // Таблица Кружек
 //! ФИКСИРОВАННАЯ ЦЕНА (СТРАНИЦА)
 model Cup {
@@ -333,8 +361,8 @@ model AddressPlaqueForm {
     name            String
     image           String
     price           Float
-    width          Float
-    height         Float
+    width           Float
+    height          Float
     address_plaques AddressPlaque[]
 
     createdAt DateTime @default(now())
@@ -410,11 +438,11 @@ model BusinessCard {
 
 // Таблица Багета
 model Baguette {
-    id    String  @id //Prefix: БАГ
-    serial_number  String //Настоящий серийный номер 
-    image String
-    price Float
-    Frame Frame[]
+    id            String  @id //Prefix: БАГ
+    serial_number String //Настоящий серийный номер 
+    image         String
+    price         Float
+    Frame         Frame[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
