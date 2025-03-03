@@ -1,9 +1,6 @@
-import { printingSides } from "@/@types/enums";
 import { createProduct } from "@/app/actions";
-import { AdminSelect } from "@/components/admin-select";
-import { ImageInput } from "@/components/image-input";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { BusinessCardsForm } from "@/components/forms/business-cards-form/business-cards-form";
+import { FormValuesBusinessCards } from "@/components/forms/business-cards-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingSide } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -24,15 +21,15 @@ export default async function BusinessCardsEditPage({ params }: Props) {
         }
     });
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesBusinessCards) => {
         "use server";
 
         if (!findCard) {
             const cup = await prisma.businessCard.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    printing_side: formData.get("printing_side") as PrintingSide
+                    name: data.name,
+                    printing_side: data.printing_side as PrintingSide
                 }
             });
 
@@ -44,8 +41,8 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                printing_side: formData.get("printing_side") as PrintingSide
+                name: data.name,
+                printing_side: data.printing_side as PrintingSide
             }
         });
         redirect("/admin/business-cards");
@@ -54,22 +51,17 @@ export default async function BusinessCardsEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findCard?.id ? `Визитка | ${findCard.id}` : `Новая визитка | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <div className="flex gap-2">
-                    <ImageInput name="image" />
-                    <div className="flex flex-col gap-2">
-                        <Input name="name" type="text" placeholder="Название" defaultValue={findCard?.name} />
-                        <AdminSelect
-                            items={printingSides}
-                            name="printing_side"
-                            placeholder="Стороны печати"
-                            defaultValue={findCard?.printing_side}
-                        />
-
-                        <Button type="submit">{findCard ? "Сохранить" : "Создать"}</Button>
-                    </div>
-                </div>
-            </form>
+            {findCard ? (
+                <BusinessCardsForm
+                    onSubmit={handleSubmit}
+                    defaultValues={{
+                        name: findCard?.name,
+                        printing_side: findCard?.printing_side
+                    }}
+                />
+            ) : (
+                <BusinessCardsForm onSubmit={handleSubmit} />
+            )}
         </div>
     );
 }
