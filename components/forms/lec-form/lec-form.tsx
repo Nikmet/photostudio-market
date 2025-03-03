@@ -1,43 +1,38 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchemaFrames, FormValuesFrames } from "./schema";
-import toast from "react-hot-toast";
 import { Controller, useForm } from "react-hook-form";
-import { onNumberValueChange } from "@/lib/inputs";
+import { formSchemaLEC, FormValuesLEC } from "./schema";
 import { FormInput } from "@/components/form-input";
-import { AdminCheckbox } from "@/components/admin-checkbox";
-import { Baguette } from "@prisma/client";
+import { onNumberValueChange } from "@/lib/inputs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import { AdminSelect } from "@/components/admin-select";
+import { difficile } from "@/@types/enums";
 import { Button } from "@/components/ui";
 
-export interface IFramesFormProps {
-    defaultValues?: FormValuesFrames;
-    onSubmit: (data: FormValuesFrames) => void;
+export interface ILecFormProps {
+    defaultValues?: FormValuesLEC;
+    onSubmit: (data: FormValuesLEC) => void;
     className?: string;
-    baguettes: Baguette[];
 }
 
-export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IFramesFormProps): React.JSX.Element => {
+export const LecForm = ({ onSubmit, defaultValues, className }: ILecFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
         formState: { errors },
         setValue,
         watch
-    } = useForm<FormValuesFrames>({
-        resolver: zodResolver(formSchemaFrames),
+    } = useForm<FormValuesLEC>({
+        resolver: zodResolver(formSchemaLEC),
         defaultValues: defaultValues || {
-            name: "",
-            has_glass: false,
-            has_backdrop: false,
-            has_suspension: false
+            name: ""
         }
     });
 
-    const submitAction = (data: FormValuesFrames) => {
+    const submitAction = (data: FormValuesLEC) => {
         onSubmit(data);
-        toast.success(`Рамка ${data.name} успешно сохранена!`);
+        toast.success(`ЛГР "${data.name}" успешно сохранена!`);
     };
 
     return (
@@ -86,42 +81,13 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                             />
                         )}
                     />
-                    <Controller
-                        name="has_glass"
-                        control={control}
-                        render={({ field }) => (
-                            <AdminCheckbox
-                                {...field}
-                                checked={field.value} // Передаем значение
-                                onChange={field.onChange} // Передаем обработчик
-                                label="Стекло"
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="has_backdrop"
-                        control={control}
-                        render={({ field }) => (
-                            <AdminCheckbox {...field} checked={field.value} onChange={field.onChange} label="Задник" />
-                        )}
-                    />
-                    <Controller
-                        name="has_suspension"
-                        control={control}
-                        render={({ field }) => (
-                            <AdminCheckbox {...field} checked={field.value} onChange={field.onChange} label="Подвес" />
-                        )}
-                    />
                     <AdminSelect
-                        name="baguette"
-                        value={watch("baguetteId")}
-                        onChange={value => setValue("baguetteId", value)}
-                        route="baguettes"
-                        label={"Багет"}
-                        items={{
-                            ...Object.fromEntries(baguettes.map(baguette => [baguette.id, baguette.id]))
-                        }}
-                        defaultValue={defaultValues?.baguetteId}
+                        name="difficile"
+                        value={watch("difficile")}
+                        onChange={value => setValue("difficile", value)}
+                        label={"Сложность"}
+                        items={difficile}
+                        defaultValue={defaultValues?.difficile}
                         errors={errors}
                         required
                     />

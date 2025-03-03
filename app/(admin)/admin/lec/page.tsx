@@ -11,6 +11,8 @@ export default async function LECPage() {
     const columns: IColumnsProps<LEC>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
+        { title: "Ширина", key: "width" },
+        { title: "Высота", key: "height" },
         { title: "Сложность", key: "difficile" }
     ];
 
