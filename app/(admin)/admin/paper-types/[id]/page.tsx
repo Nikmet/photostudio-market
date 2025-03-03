@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui/input";
+import { PaperTypesForm } from "@/components/forms/paper-types-form/paper-types-form";
+import { FormValuesPaperTypes } from "@/components/forms/paper-types-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -19,15 +19,15 @@ export default async function PaperTypesEditPage({ params }: Props) {
         }
     });
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (data: FormValuesPaperTypes) => {
         "use server";
 
         if (!findPaperType) {
             await prisma.paperType.create({
                 data: {
                     id: id,
-                    name: formData.get("name") as string,
-                    price: Number(formData.get("price"))
+                    name: data.name,
+                    price: data.price
                 }
             });
         }
@@ -37,8 +37,8 @@ export default async function PaperTypesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                name: formData.get("name") as string,
-                price: Number(formData.get("price"))
+                name: data.name,
+                price: data.price
             }
         });
         redirect("/admin/paper-types");
@@ -47,13 +47,11 @@ export default async function PaperTypesEditPage({ params }: Props) {
     return (
         <div>
             <h1>{findPaperType?.id ? `Тип бумаги | ${findPaperType.id}` : `Новый тип бумаги | ${id}`}</h1>
-            <form action={handleSubmit} className="flex gap-2">
-                <div className="flex gap-2">
-                    <Input name="name" type="text" placeholder="Название" defaultValue={findPaperType?.name} />
-                    <Input name="price" type="number" placeholder="Цена за лист" defaultValue={findPaperType?.price} />
-                    <Button type="submit">{findPaperType ? "Сохранить" : "Создать"}</Button>
-                </div>
-            </form>
+            {findPaperType ? (
+                <PaperTypesForm defaultValues={findPaperType} onSubmit={handleSubmit} />
+            ) : (
+                <PaperTypesForm onSubmit={handleSubmit} />
+            )}
         </div>
     );
 }

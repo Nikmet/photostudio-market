@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { formSchemaBaguette, FormValuesBaguette } from "./schema";
+import { onNumberValueChange } from "@/lib/inputs";
 
 export interface IBaguetteFormProps {
     defaultValues?: FormValuesBaguette;
@@ -16,9 +17,7 @@ export interface IBaguetteFormProps {
 export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFormProps): React.JSX.Element => {
     const form = useForm<FormValuesBaguette>({
         resolver: zodResolver(formSchemaBaguette),
-        defaultValues: defaultValues || {
-            price: 0
-        }
+        defaultValues: defaultValues
     });
 
     const submitAction = (data: FormValuesBaguette) => {
@@ -33,10 +32,11 @@ export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFo
                     <Controller
                         name="price"
                         control={form.control}
-                        render={({ field }) => (
+                        render={({ field: { onChange, ...field } }) => (
                             <FormInput
                                 type="number"
                                 label="Цена за метр"
+                                onChange={e => onNumberValueChange(e, onChange)}
                                 errors={form.formState.errors}
                                 required
                                 {...field}
