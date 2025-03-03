@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { FormInput } from "../../form-input";
 import { formSchemaAddressPlaqueForms, FormValuesAddressPlaqueForms } from "./schema";
+import { onNumberValueChange } from "@/lib/inputs";
 
 export interface IAddressPlaqueFormsFormProps {
     className?: string;
@@ -50,7 +51,20 @@ export const AddressPlaqueFormsForm = ({
                         name="name"
                         render={({ field }) => <FormInput label="Название" {...field} required errors={errors} />}
                     />
-
+                    <Controller
+                        name="price"
+                        control={control}
+                        render={({ field: { onChange, ...field } }) => (
+                            <FormInput
+                                type="number"
+                                label="Цена"
+                                onChange={e => onNumberValueChange(e, onChange)}
+                                errors={errors}
+                                required
+                                {...field}
+                            />
+                        )}
+                    />
                     <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>

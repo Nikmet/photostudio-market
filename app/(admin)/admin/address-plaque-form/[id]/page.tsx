@@ -27,6 +27,7 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
                 data: {
                     id: id,
                     name: data.name,
+                    price: data.price,
                     image: ""
                 }
             });
@@ -38,6 +39,7 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
             },
             data: {
                 name: data.name,
+                price: data.price,
                 image: ""
             }
         });
@@ -48,7 +50,7 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
         <div>
             <h1>{findAPF?.id ? `Форма адресного аншлага | ${findAPF.id}` : `Новая форма адресного аншлага | ${id}`}</h1>
             {findAPF ? (
-                <AddressPlaqueFormsForm defaultValues={{ name: findAPF?.name }} onSubmit={handleSubmit} />
+                <AddressPlaqueFormsForm defaultValues={findAPF} onSubmit={handleSubmit} />
             ) : (
                 <AddressPlaqueFormsForm onSubmit={handleSubmit} />
             )}

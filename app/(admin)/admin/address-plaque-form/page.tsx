@@ -10,6 +10,7 @@ export default async function AddressPlaqueFormsPage() {
     const columns: IColumnsProps<AddressPlaqueForm>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
+        { title: "Цена", key: "price" },
         { title: "Изображение", key: "image" }
     ];
 
