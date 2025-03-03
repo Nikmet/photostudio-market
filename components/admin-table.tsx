@@ -1,7 +1,7 @@
 "use client";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib";
 import { Checkbox } from "./ui/checkbox";
 import { useRouter } from "next/navigation";
@@ -38,9 +38,49 @@ export const AdminTable = <T extends { id: string }>({
     className
 }: IAdminTableProps<T>): React.JSX.Element => {
     const [selected, setSelected] = React.useState<string[]>([]);
-    const { currentItems, currentPage, totalPages, paginate } = usePagination(data, 15);
+    const [sortedData, setSortedData] = React.useState<T[]>(data);
+    const [sortConfig, setSortConfig] = React.useState<{
+        key: keyof T | null;
+        direction: "asc" | "desc" | null;
+    }>({
+        key: null,
+        direction: null
+    });
+    const { currentItems: currentSortedItems, currentPage, totalPages, paginate } = usePagination(sortedData, 15);
     const { addPage, setActivePage } = usePagesStore();
     const router = useRouter();
+
+    React.useEffect(() => {
+        setSortedData(data);
+    }, [data]);
+
+    const handleSort = (key: keyof T) => {
+        let direction: "asc" | "desc" | null = "asc";
+
+        if (sortConfig.key === key && sortConfig.direction === "asc") {
+            direction = "desc";
+        } else if (sortConfig.key === key && sortConfig.direction === "desc") {
+            direction = null;
+        }
+
+        setSortConfig({ key, direction });
+
+        const sorted = [...sortedData].sort((a, b) => {
+            if (direction === null) {
+                return 0;
+            }
+
+            if (a[key] < b[key]) {
+                return direction === "asc" ? -1 : 1;
+            }
+            if (a[key] > b[key]) {
+                return direction === "asc" ? 1 : -1;
+            }
+            return 0;
+        });
+
+        setSortedData(direction === null ? data : sorted);
+    };
 
     const handleSelect = (id: string) => {
         if (selected.includes(id)) {
@@ -99,12 +139,26 @@ export const AdminTable = <T extends { id: string }>({
                                 <TableRow>
                                     {has_actions && <TableHead></TableHead>}
                                     {columns.map(column => (
-                                        <TableHead key={column.title}>{column.title}</TableHead>
+                                        <TableHead
+                                            key={column.title}
+                                            className="cursor-pointer"
+                                            onClick={() => handleSort(column.key)}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {column.title}
+                                                {sortConfig.key === column.key &&
+                                                    (sortConfig.direction === "asc" ? (
+                                                        <ArrowUp size={14} />
+                                                    ) : (
+                                                        <ArrowDown size={14} />
+                                                    ))}
+                                            </div>
+                                        </TableHead>
                                     ))}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {currentItems.map(item => (
+                                {currentSortedItems.map(item => (
                                     <TableRow
                                         key={item.id}
                                         className="cursor-pointer"
