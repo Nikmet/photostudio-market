@@ -33,7 +33,7 @@ export const LfpForm = ({ onSubmit, defaultValues, paperTypes, className }: ILfp
 
     const submitAction = (data: FormValuesLFP) => {
         onSubmit(data);
-        toast.success(`Рамка ${data.name} успешно сохранена!`);
+        toast.success(`ШФП "${data.name}" успешно сохранена!`);
     };
 
     return (
