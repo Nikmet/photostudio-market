@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { FormValuesStands } from "@/components/forms/stands-form/schema";
 import { StandsForm } from "@/components/forms/stands-form/stands-form";
+import { calcStandPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -34,7 +35,7 @@ export default async function StandsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(stand.id, stand.name, "Реклама", 450);
+            await createProduct(stand.id, stand.name, "Реклама", await calcStandPrice(stand));
         }
 
         await prisma.stand.update({

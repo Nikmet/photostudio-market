@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { BusinessCardsForm } from "@/components/forms/business-cards-form/business-cards-form";
 import { FormValuesBusinessCards } from "@/components/forms/business-cards-form/schema";
+import { calcBusinessCardPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingSide } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -25,7 +26,7 @@ export default async function BusinessCardsEditPage({ params }: Props) {
         "use server";
 
         if (!findCard) {
-            const cup = await prisma.businessCard.create({
+            const businessCard = await prisma.businessCard.create({
                 data: {
                     id: id,
                     name: data.name,
@@ -33,7 +34,12 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(cup.id, cup.name, "Сувениры", 450);
+            await createProduct(
+                businessCard.id,
+                businessCard.name,
+                "Сувениры",
+                await calcBusinessCardPrice(businessCard)
+            );
         }
 
         await prisma.businessCard.update({

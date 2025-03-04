@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { BannerForm } from "@/components/forms/banner-form/banner-form";
 import { FormValuesBanner } from "@/components/forms/banner-form/schema";
+import { calcBannerPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { BannerDensity } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -37,7 +38,7 @@ export default async function BannersEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(banner.id, banner.name, "Реклама", 450);
+            await createProduct(banner.id, banner.name, "Реклама", await calcBannerPrice(banner));
         }
 
         await prisma.banner.update({

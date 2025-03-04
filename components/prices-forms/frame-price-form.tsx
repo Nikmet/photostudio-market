@@ -50,11 +50,12 @@ export const FramePriceForm = ({ index, className }: IFramePriceFormProps): Reac
             <Controller
                 control={control}
                 name="glass"
-                render={({ field }) => (
+                render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
                         label="Цена стекла за м²"
+                        onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
                         className="w-[400px]"

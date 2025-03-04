@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { NewslettersForm } from "@/components/forms/newsletters-form/newsletters-form";
 import { FormValuesNewsletters } from "@/components/forms/newsletters-form/schema";
+import { calcNewsletterPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -49,7 +50,7 @@ export default async function TablesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(newsletter.id, newsletter.name, "Реклама", 450);
+            await createProduct(newsletter.id, newsletter.name, "Реклама", await calcNewsletterPrice(newsletter));
         }
 
         await prisma.newsletter.update({

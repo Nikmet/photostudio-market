@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { MagnetsForm } from "@/components/forms/magnets-form/magnets-form";
 import { FormValuesMagnet } from "@/components/forms/magnets-form/schema";
+import { calcMagnetPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { MagnetType } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -35,7 +36,7 @@ export default async function MagnetEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(magnet.id, magnet.name, "Сувениры", 450);
+            await createProduct(magnet.id, magnet.name, "Сувениры", await calcMagnetPrice(magnet));
         }
 
         await prisma.magnet.update({

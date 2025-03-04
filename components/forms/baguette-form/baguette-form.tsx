@@ -30,6 +30,19 @@ export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFo
             <form onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
                 <div className="flex gap-2">
                     <Controller
+                        name="serial_number"
+                        control={form.control}
+                        render={({ field }) => (
+                            <FormInput
+                                type="text"
+                                label="Серийный номер"
+                                errors={form.formState.errors}
+                                required
+                                {...field}
+                            />
+                        )}
+                    />
+                    <Controller
                         name="price"
                         control={form.control}
                         render={({ field: { onChange, ...field } }) => (

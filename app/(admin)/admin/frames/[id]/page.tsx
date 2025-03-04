@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { FramesForm } from "@/components/forms/frames-form/frames-form";
 import { FormValuesFrames } from "@/components/forms/frames-form/schema";
+import { calcFramePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -52,7 +53,7 @@ export default async function FramesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(frame.id, frame.name, "Рамки", 450);
+            await createProduct(frame.id, frame.name, "Рамки", await calcFramePrice(frame));
         }
 
         await prisma.frame.update({

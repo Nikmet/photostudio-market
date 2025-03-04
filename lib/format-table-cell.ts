@@ -30,5 +30,9 @@ export function formatTableCell<T>(value: T[keyof T]): string {
         return "Есть";
     }
 
+    if (typeof value === "number") {
+        return value.toFixed(2);
+    }
+
     return changeEnum(value as string);
 }

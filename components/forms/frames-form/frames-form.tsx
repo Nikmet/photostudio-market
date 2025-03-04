@@ -119,7 +119,7 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                         route="baguettes"
                         label={"Багет"}
                         items={{
-                            ...Object.fromEntries(baguettes.map(baguette => [baguette.id, baguette.id]))
+                            ...Object.fromEntries(baguettes.map(baguette => [baguette.id, baguette.serial_number]))
                         }}
                         defaultValue={defaultValues?.baguetteId}
                         errors={errors}

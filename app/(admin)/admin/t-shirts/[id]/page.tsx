@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { FormValuesTShirts } from "@/components/forms/t-shirts-form/schema";
 import { TShirtsForm } from "@/components/forms/t-shirts-form/t-shirts-form";
+import { calcTShirtPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingSide, Size } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -34,7 +35,7 @@ export default async function TShirtsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(t_shirt.id, t_shirt.name, "Сувениры", 450);
+            await createProduct(t_shirt.id, t_shirt.name, "Сувениры", await calcTShirtPrice(t_shirt));
         }
 
         await prisma.tShirt.update({

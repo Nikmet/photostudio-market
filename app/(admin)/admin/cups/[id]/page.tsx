@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { CupsForm } from "@/components/forms/cups-form/cups-form";
 import { FormValuesCups } from "@/components/forms/cups-form/schema";
+import { calcCupPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -31,7 +32,7 @@ export default async function CupsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(cup.id, cup.name, "Сувениры", 450);
+            await createProduct(cup.id, cup.name, "Сувениры", await calcCupPrice());
         }
 
         await prisma.cup.update({

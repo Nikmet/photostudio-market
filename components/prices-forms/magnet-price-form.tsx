@@ -24,7 +24,7 @@ export const MagnetPriceForm = ({ index, className }: IMagnetPriceFormProps): Re
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена магнита на подложке"
+                        label="Цена магнита на подложке за м²"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
@@ -39,7 +39,7 @@ export const MagnetPriceForm = ({ index, className }: IMagnetPriceFormProps): Re
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена акрилового магнита"
+                        label="Цена акрилового магнита за м²"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required

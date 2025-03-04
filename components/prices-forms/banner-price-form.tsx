@@ -50,11 +50,12 @@ export const BannerPriceForm = ({ index, className }: IBannerPriceFormProps): Re
             <Controller
                 control={control}
                 name="luvers"
-                render={({ field }) => (
+                render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
                         label="Цена люверса за штуку"
+                        onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
                         className="w-[400px]"

@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { PrintingsForm } from "@/components/forms/printings-form/printings-form";
 import { FormValuesPrintings } from "@/components/forms/printings-form/schema";
+import { calcPrintingPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingType } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -33,7 +34,7 @@ export default async function PrintingsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(printing.id, printing.name, "Сувениры", 450);
+            await createProduct(printing.id, printing.name, "Сувениры", await calcPrintingPrice(printing));
         }
 
         await prisma.printing.update({

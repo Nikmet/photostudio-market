@@ -36,7 +36,7 @@ export default async function PrintingsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(lec.id, lec.name, "Сувениры", calcLECPrice(lec));
+            await createProduct(lec.id, lec.name, "Сувениры", await calcLECPrice(lec));
         }
 
         await prisma.lEC.update({

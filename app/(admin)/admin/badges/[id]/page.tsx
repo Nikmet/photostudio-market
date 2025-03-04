@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { BadgesForm } from "@/components/forms/badges-form/badges-form";
 import { FormValuesBadges } from "@/components/forms/badges-form/schema";
+import { calcBadgePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -31,7 +32,7 @@ export default async function BadgesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(badge.id, badge.name, "Сувениры", 450);
+            await createProduct(badge.id, badge.name, "Сувениры", await calcBadgePrice());
         }
 
         await prisma.badge.update({

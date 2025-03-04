@@ -42,7 +42,7 @@ export default async function NewslettersPage() {
 
     return (
         <div>
-            <h2 className="text-2xl font-medium mb-10">Список информационных табличек</h2>
+            <h2 className="text-2xl font-medium mb-10">Список информационных вывесок</h2>
             <AdminTable<(typeof flattenedNewsletters)[0]>
                 data={flattenedNewsletters}
                 route="newsletters"

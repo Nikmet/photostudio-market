@@ -57,7 +57,7 @@ export const PaperTypesForm = ({ onSubmit, defaultValues, className }: IPaperTyp
                         render={({ field: { onChange, ...field } }) => (
                             <FormInput
                                 type="number"
-                                label="Цена за лист"
+                                label="Цена за м²"
                                 onChange={e => onNumberValueChange(e, onChange)}
                                 errors={form.formState.errors}
                                 required

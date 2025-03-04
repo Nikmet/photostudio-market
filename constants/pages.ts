@@ -61,7 +61,7 @@ export const adminPages: IAdminPage[] = [
                 href: "/admin/business-cards"
             },
             {
-                name: "Информационные таблички",
+                name: "Информационные вывески",
                 href: "/admin/newsletters"
             },
             {

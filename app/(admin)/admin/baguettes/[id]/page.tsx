@@ -27,6 +27,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
                 data: {
                     id: id,
                     price: data.price,
+                    serial_number: data.serial_number,
                     image: ""
                 }
             });
@@ -37,7 +38,8 @@ export default async function PaperTypesEditPage({ params }: Props) {
                 id: id
             },
             data: {
-                price: data.price
+                price: data.price,
+                serial_number: data.serial_number
             }
         });
         redirect("/admin/baguettes");
@@ -47,7 +49,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
         <div>
             <h1>{findBaguette?.id ? `Багет | ${findBaguette.id}` : `Новый багет | ${id}`}</h1>
             {findBaguette ? (
-                <BaguetteForm defaultValues={{ price: findBaguette?.price }} onSubmit={handleSubmit} />
+                <BaguetteForm defaultValues={findBaguette} onSubmit={handleSubmit} />
             ) : (
                 <BaguetteForm onSubmit={handleSubmit} />
             )}

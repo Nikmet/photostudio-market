@@ -15,7 +15,13 @@ export const updatePrices = async (data: PricesFormValues) => {
 };
 
 export const getDefaultPrices = async () => {
-    const prices = await prisma.prices.findMany();
+    const prices = await prisma.prices.findMany({
+        orderBy: {
+            id: "asc"
+        }
+    });
+
+    console.log(prices);
 
     const defaultValues: PricesFormValues = {
         cupPrice: prices[0].value,

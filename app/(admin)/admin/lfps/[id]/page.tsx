@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { LfpForm } from "@/components/forms/lfp-form/lfp-form";
 import { FormValuesLFP } from "@/components/forms/lfp-form/schema";
+import { calcLFPPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -35,7 +36,7 @@ export default async function TablesEditPage({ params }: Props) {
         });
 
         if (!findLFP) {
-            const lfps = await prisma.lFP.create({
+            const lfp = await prisma.lFP.create({
                 data: {
                     id: id,
                     name: data.name,
@@ -49,7 +50,7 @@ export default async function TablesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(lfps.id, lfps.name, "Реклама", 450);
+            await createProduct(lfp.id, lfp.name, "Реклама", await calcLFPPrice(lfp));
         }
 
         await prisma.lFP.update({
