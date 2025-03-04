@@ -36,7 +36,7 @@ export default async function MagnetEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(magnet.id, magnet.name, "Сувениры", await calcMagnetPrice(magnet));
+            await createProduct(magnet.id, magnet.name, "Сувениры", await calcMagnetPrice(magnet), "magnets");
         }
 
         await prisma.magnet.update({

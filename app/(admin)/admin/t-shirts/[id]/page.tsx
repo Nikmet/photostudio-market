@@ -35,7 +35,7 @@ export default async function TShirtsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(t_shirt.id, t_shirt.name, "Сувениры", await calcTShirtPrice(t_shirt));
+            await createProduct(t_shirt.id, t_shirt.name, "Сувениры", await calcTShirtPrice(t_shirt), "t-shirts");
         }
 
         await prisma.tShirt.update({

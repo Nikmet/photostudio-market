@@ -34,7 +34,7 @@ export default async function PrintingsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(printing.id, printing.name, "Сувениры", await calcPrintingPrice(printing));
+            await createProduct(printing.id, printing.name, "Сувениры", await calcPrintingPrice(printing), "printings");
         }
 
         await prisma.printing.update({

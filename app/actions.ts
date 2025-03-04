@@ -1,7 +1,13 @@
 import { createUid, getId } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
 
-export const createProduct = async (itemId: string, itemName: string, categoryName: string, price: number) => {
+export const createProduct = async (
+    itemId: string,
+    itemName: string,
+    categoryName: string,
+    price: number,
+    route: string
+) => {
     try {
         const category = await prisma.category.findFirst({
             where: {
@@ -27,15 +33,27 @@ export const createProduct = async (itemId: string, itemName: string, categoryNa
             id = createUid("ПР", (Number(getId(lastProduct.id)) + 1).toString());
         }
 
+        console.log({
+            id: createUid("ПР", getId(id)),
+            itemId,
+            itemName,
+            categoryId: category.id,
+            price,
+            route
+        });
+
         await prisma.product.create({
             data: {
                 id: createUid("ПР", getId(id)),
                 itemId,
                 itemName,
                 categoryId: category.id,
-                price
+                price,
+                route
             }
         });
+
+        console.log("Product created");
     } catch (e) {
         console.error("[CREATE_PRODUCT_ACTION]", e);
     }

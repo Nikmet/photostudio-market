@@ -32,7 +32,7 @@ export default async function BadgesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(badge.id, badge.name, "Сувениры", await calcBadgePrice());
+            await createProduct(badge.id, badge.name, "Сувениры", await calcBadgePrice(), "badges");
         }
 
         await prisma.badge.update({

@@ -35,7 +35,7 @@ export default async function StandsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(stand.id, stand.name, "Реклама", await calcStandPrice(stand));
+            await createProduct(stand.id, stand.name, "Реклама", await calcStandPrice(stand), "stands");
         }
 
         await prisma.stand.update({

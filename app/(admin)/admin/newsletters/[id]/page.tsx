@@ -50,7 +50,13 @@ export default async function TablesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(newsletter.id, newsletter.name, "Реклама", await calcNewsletterPrice(newsletter));
+            await createProduct(
+                newsletter.id,
+                newsletter.name,
+                "Реклама",
+                await calcNewsletterPrice(newsletter),
+                "newsletters"
+            );
         }
 
         await prisma.newsletter.update({

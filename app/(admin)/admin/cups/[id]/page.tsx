@@ -32,7 +32,7 @@ export default async function CupsEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(cup.id, cup.name, "Сувениры", await calcCupPrice());
+            await createProduct(cup.id, cup.name, "Сувениры", await calcCupPrice(), "cups");
         }
 
         await prisma.cup.update({

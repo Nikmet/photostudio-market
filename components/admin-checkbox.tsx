@@ -1,3 +1,4 @@
+import { cn } from "@/lib";
 import { Checkbox } from "./ui/checkbox";
 
 export interface IAdminCheckboxProps {
@@ -19,7 +20,7 @@ export const AdminCheckbox = ({
     ...props
 }: IAdminCheckboxProps): React.JSX.Element => {
     return (
-        <div className={className}>
+        <div className={cn("flex gap-2", className)}>
             <Checkbox
                 id={name + label}
                 name={name}

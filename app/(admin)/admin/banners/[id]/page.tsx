@@ -38,7 +38,7 @@ export default async function BannersEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(banner.id, banner.name, "Реклама", await calcBannerPrice(banner));
+            await createProduct(banner.id, banner.name, "Реклама", await calcBannerPrice(banner), "banners");
         }
 
         await prisma.banner.update({

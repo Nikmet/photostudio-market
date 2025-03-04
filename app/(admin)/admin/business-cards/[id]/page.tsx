@@ -38,7 +38,8 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                 businessCard.id,
                 businessCard.name,
                 "Сувениры",
-                await calcBusinessCardPrice(businessCard)
+                await calcBusinessCardPrice(businessCard),
+                "business-cards"
             );
         }
 

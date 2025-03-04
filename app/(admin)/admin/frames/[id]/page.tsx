@@ -53,7 +53,9 @@ export default async function FramesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(frame.id, frame.name, "Рамки", await calcFramePrice(frame));
+            console.log(frame);
+
+            await createProduct(frame.id, frame.name, "Рамки", await calcFramePrice(frame), "frames");
         }
 
         await prisma.frame.update({

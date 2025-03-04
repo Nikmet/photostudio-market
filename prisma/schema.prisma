@@ -159,16 +159,18 @@ model CartItem {
 
 // Таблица Продуктов
 model Product {
-    id                String     @id //Prefix: ПР
+    id                String    @id //Prefix: ПР
     price             Float
-    design            Boolean?
-    design_difficulty Difficile?
+    design            Boolean   @default(false)
+    design_difficulty Difficile @default(EASY)
 
     categoryId Int
     category   Category @relation(fields: [categoryId], references: [id])
     itemId     String   @unique
     itemName   String
     comments   String?
+
+    route String
 
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt

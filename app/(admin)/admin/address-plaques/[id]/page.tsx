@@ -66,7 +66,8 @@ export default async function FramesEditPage({ params }: Props) {
                 addressPlaque.id,
                 addressPlaque.name,
                 "Реклама",
-                await calcAddressPlaquePrice(addressPlaque)
+                await calcAddressPlaquePrice(addressPlaque),
+                "address-plaques"
             );
         }
 

@@ -37,7 +37,7 @@ export default async function ProductsPage() {
     return (
         <div>
             <h2 className="text-2xl font-medium mb-10">Список всех продуктов</h2>
-            <AdminTable<(typeof flattenedData)[0]> data={flattenedData} route="product" columns={columns} />
+            <AdminTable<(typeof flattenedData)[0]> data={flattenedData} route="products" columns={columns} />
         </div>
     );
 }

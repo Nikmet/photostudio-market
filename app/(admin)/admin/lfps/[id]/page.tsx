@@ -50,7 +50,7 @@ export default async function TablesEditPage({ params }: Props) {
                 }
             });
 
-            await createProduct(lfp.id, lfp.name, "Реклама", await calcLFPPrice(lfp));
+            await createProduct(lfp.id, lfp.name, "Реклама", await calcLFPPrice(lfp), "lfps");
         }
 
         await prisma.lFP.update({
