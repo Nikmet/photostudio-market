@@ -3,12 +3,12 @@ import { FormInput } from "../form-input";
 import { Controller, useFormContext } from "react-hook-form";
 import { onNumberValueChange } from "@/lib/inputs";
 
-export interface ITShirtPriceFormProps {
+export interface IPrintingPriceFormProps {
     className?: string;
     index: number;
 }
 
-export const TShirtPriceForm = ({ index, className }: ITShirtPriceFormProps): React.JSX.Element => {
+export const PrintingPriceForm = ({ index, className }: IPrintingPriceFormProps): React.JSX.Element => {
     const {
         control,
         formState: { errors }
@@ -16,15 +16,15 @@ export const TShirtPriceForm = ({ index, className }: ITShirtPriceFormProps): Re
 
     return (
         <div className={cn("bg-secondary/60 flex flex-col gap-2 p-5", className)}>
-            <h3 className="font-bold text-xl">{index}. Футболки</h3>
+            <h3 className="font-bold text-xl">{index}. Печати</h3>
             <Controller
                 control={control}
-                name="tShirtOneSidePrice"
+                name="printingWithTooling"
                 render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена футболки с односторонней печатью"
+                        label="Цена печати с оснасткой"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
@@ -34,12 +34,12 @@ export const TShirtPriceForm = ({ index, className }: ITShirtPriceFormProps): Re
             />
             <Controller
                 control={control}
-                name="tShirtTwoSidesPrice"
+                name="printingWithoutTooling"
                 render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена футболки с двусторонней печатью"
+                        label="Цена печати без оснастки"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required

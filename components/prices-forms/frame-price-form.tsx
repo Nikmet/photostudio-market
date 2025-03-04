@@ -3,12 +3,12 @@ import { FormInput } from "../form-input";
 import { Controller, useFormContext } from "react-hook-form";
 import { onNumberValueChange } from "@/lib/inputs";
 
-export interface ITShirtPriceFormProps {
+export interface IFramePriceFormProps {
     className?: string;
     index: number;
 }
 
-export const TShirtPriceForm = ({ index, className }: ITShirtPriceFormProps): React.JSX.Element => {
+export const FramePriceForm = ({ index, className }: IFramePriceFormProps): React.JSX.Element => {
     const {
         control,
         formState: { errors }
@@ -16,15 +16,15 @@ export const TShirtPriceForm = ({ index, className }: ITShirtPriceFormProps): Re
 
     return (
         <div className={cn("bg-secondary/60 flex flex-col gap-2 p-5", className)}>
-            <h3 className="font-bold text-xl">{index}. Футболки</h3>
+            <h3 className="font-bold text-xl">{index}. Рамки</h3>
             <Controller
                 control={control}
-                name="tShirtOneSidePrice"
+                name="backdrop"
                 render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена футболки с односторонней печатью"
+                        label="Цена задника за м²"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
@@ -34,13 +34,27 @@ export const TShirtPriceForm = ({ index, className }: ITShirtPriceFormProps): Re
             />
             <Controller
                 control={control}
-                name="tShirtTwoSidesPrice"
+                name="suspension"
                 render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена футболки с двусторонней печатью"
+                        label="Цена подвеса за штуку"
                         onChange={e => onNumberValueChange(e, onChange)}
+                        errors={errors}
+                        required
+                        className="w-[400px]"
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="glass"
+                render={({ field }) => (
+                    <FormInput
+                        {...field}
+                        type="number"
+                        label="Цена стекла за м²"
                         errors={errors}
                         required
                         className="w-[400px]"

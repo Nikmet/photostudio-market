@@ -1,14 +1,14 @@
 import { cn } from "@/lib";
-import { FormInput } from "../form-input";
 import { Controller, useFormContext } from "react-hook-form";
+import { FormInput } from "../form-input";
 import { onNumberValueChange } from "@/lib/inputs";
 
-export interface ICupPriceFormProps {
+export interface ILecPriceFormProps {
     className?: string;
     index: number;
 }
 
-export const CupPriceForm = ({ index, className }: ICupPriceFormProps): React.JSX.Element => {
+export const LecPriceForm = ({ index, className }: ILecPriceFormProps): React.JSX.Element => {
     const {
         control,
         formState: { errors }
@@ -16,15 +16,15 @@ export const CupPriceForm = ({ index, className }: ICupPriceFormProps): React.JS
 
     return (
         <div className={cn("bg-secondary/60 flex flex-col gap-2 p-5", className)}>
-            <h3 className="font-bold text-xl">{index}. Кружки</h3>
+            <h3 className="font-bold text-xl">{index}. ЛГР</h3>
             <Controller
                 control={control}
-                name="cupPrice"
+                name="lecPrice"
                 render={({ field: { onChange, ...field } }) => (
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена кружки за штуку"
+                        label="Цена ЛГР за м²"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
