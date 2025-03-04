@@ -29,7 +29,8 @@ export const FormInput = ({
                 </div>
             )}
 
-            <Input {...props} />
+            <Input {...props} className="bg-white" />
+
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
         </div>
     );

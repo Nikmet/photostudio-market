@@ -33,6 +33,7 @@ enum PriceType {
     TWO_SIDES_BUSINESS_CARD
     BACKDROP
     SUSPENSION
+    GLASS
 }
 
 // Перечисление ролей пользователей

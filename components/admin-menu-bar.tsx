@@ -5,6 +5,7 @@ import { cn } from "@/lib";
 import { usePagesStore } from "@/store/pages-store";
 import Link from "next/link";
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface IAdminMenuBarProps {
     className?: string;
@@ -49,17 +50,27 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                             </span>
                             {page.category}
                         </div>
-                        {expandedCategories.includes(page.category) &&
-                            page.pages.map(page => (
-                                <Link
-                                    key={page.href}
-                                    href={page.href}
-                                    className="block p-2 dark:text-white text-black/80 hover:bg-primary/5 pl-8"
-                                    onClick={() => handleClick(page)}
+                        <AnimatePresence>
+                            {expandedCategories.includes(page.category) && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    transition={{ duration: 0.2 }}
                                 >
-                                    {page.name}
-                                </Link>
-                            ))}
+                                    {page.pages.map(page => (
+                                        <Link
+                                            key={page.href}
+                                            href={page.href}
+                                            className="block p-2 dark:text-white text-black/80 hover:bg-primary/5 pl-8"
+                                            onClick={() => handleClick(page)}
+                                        >
+                                            {page.name}
+                                        </Link>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 ))}
                 <Link
@@ -67,6 +78,12 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
                 >
                     Все продукты
+                </Link>
+                <Link
+                    href="/admin/prices"
+                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                >
+                    Цены
                 </Link>
             </div>
         </div>

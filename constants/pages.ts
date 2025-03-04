@@ -20,16 +20,16 @@ export const adminPages: IAdminPage[] = [
         category: "Сувениры",
         pages: [
             {
-                name: "Кружки",
-                href: "/admin/cups"
-            },
-            {
                 name: "Значки",
                 href: "/admin/badges"
             },
             {
-                name: "Футболки",
-                href: "/admin/t-shirts"
+                name: "Кружки",
+                href: "/admin/cups"
+            },
+            {
+                name: "ЛГР",
+                href: "/admin/lec"
             },
             {
                 name: "Магниты",
@@ -40,8 +40,8 @@ export const adminPages: IAdminPage[] = [
                 href: "/admin/printings"
             },
             {
-                name: "ЛГР",
-                href: "/admin/lec"
+                name: "Футболки",
+                href: "/admin/t-shirts"
             }
         ]
     },
@@ -49,28 +49,28 @@ export const adminPages: IAdminPage[] = [
         category: "Реклама",
         pages: [
             {
-                name: "Визитки",
-                href: "/admin/business-cards"
+                name: "Адресные аншлаги",
+                href: "/admin/address-plaques"
             },
             {
-                name: "Таблички",
-                href: "/admin/tables"
+                name: "Банеры",
+                href: "/admin/banners"
+            },
+            {
+                name: "Визитки",
+                href: "/admin/business-cards"
             },
             {
                 name: "Информационные таблички",
                 href: "/admin/newsletters"
             },
             {
-                name: "ШФП",
-                href: "/admin/lfps"
-            },
-            {
                 name: "Стенды",
                 href: "/admin/stands"
             },
             {
-                name: "Цвета",
-                href: "/admin/colors"
+                name: "Таблички",
+                href: "/admin/tables"
             },
             {
                 name: "Типы бумаги",
@@ -81,12 +81,12 @@ export const adminPages: IAdminPage[] = [
                 href: "/admin/address-plaque-form"
             },
             {
-                name: "Адресные аншлаги",
-                href: "/admin/address-plaques"
+                name: "ШФП",
+                href: "/admin/lfps"
             },
             {
-                name: "Банеры",
-                href: "/admin/banners"
+                name: "Цвета",
+                href: "/admin/colors"
             }
         ]
     },
@@ -94,12 +94,12 @@ export const adminPages: IAdminPage[] = [
         category: "Рамки",
         pages: [
             {
-                name: "Рамки",
-                href: "/admin/frames"
-            },
-            {
                 name: "Багет",
                 href: "/admin/baguettes"
+            },
+            {
+                name: "Рамки",
+                href: "/admin/frames"
             }
         ]
     }
