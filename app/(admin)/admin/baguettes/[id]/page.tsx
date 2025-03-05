@@ -1,6 +1,10 @@
 import { BaguetteForm } from "@/components/forms/baguette-form/baguette-form";
 import { FormValuesBaguette } from "@/components/forms/baguette-form/schema";
+import { PageTitle } from "@/components/page-title";
+import { imageToFile } from "@/lib/image-to-file";
+import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
+import { Image } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -16,11 +20,21 @@ export default async function PaperTypesEditPage({ params }: Props) {
     const findBaguette = await prisma.baguette.findFirst({
         where: {
             id: id
+        },
+        include: {
+            image: true
         }
     });
 
     const handleSubmit = async (data: FormValuesBaguette) => {
         "use server";
+
+        let image: Image | undefined;
+
+        // Загружаем изображение, если оно есть
+        if (data.image) {
+            image = await uploadImage(data.image);
+        }
 
         if (!findBaguette) {
             await prisma.baguette.create({
@@ -28,7 +42,13 @@ export default async function PaperTypesEditPage({ params }: Props) {
                     id: id,
                     price: data.price,
                     serial_number: data.serial_number,
-                    image: ""
+                    image: image
+                        ? {
+                              connect: {
+                                  id: image.id
+                              }
+                          }
+                        : undefined
                 }
             });
         }
@@ -39,7 +59,14 @@ export default async function PaperTypesEditPage({ params }: Props) {
             },
             data: {
                 price: data.price,
-                serial_number: data.serial_number
+                serial_number: data.serial_number,
+                image: image
+                    ? {
+                          connect: {
+                              id: image.id
+                          }
+                      }
+                    : undefined
             }
         });
         redirect("/admin/baguettes");
@@ -47,9 +74,16 @@ export default async function PaperTypesEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findBaguette?.id ? `Багет | ${findBaguette.id}` : `Новый багет | ${id}`}</h1>
+            <PageTitle>{findBaguette?.id ? `Багет | ${findBaguette.id}` : `Новый багет | ${id}`}</PageTitle>
             {findBaguette ? (
-                <BaguetteForm defaultValues={findBaguette} onSubmit={handleSubmit} />
+                <BaguetteForm
+                    defaultValues={{
+                        price: findBaguette.price,
+                        serial_number: findBaguette.serial_number,
+                        image: imageToFile(findBaguette.image)
+                    }}
+                    onSubmit={handleSubmit}
+                />
             ) : (
                 <BaguetteForm onSubmit={handleSubmit} />
             )}

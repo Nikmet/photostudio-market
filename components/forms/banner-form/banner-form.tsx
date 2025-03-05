@@ -10,6 +10,7 @@ import { Button } from "../../ui";
 import React from "react";
 import { onNumberValueChange } from "@/lib/inputs";
 import { formSchemaBanners, FormValuesBanner } from "./schema";
+import { ImageInput } from "@/components/image-input";
 
 export interface IBannerFormProps {
     defaultValues?: FormValuesBanner;
@@ -50,12 +51,17 @@ export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormPr
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
+                <Controller
+                    name="printing_image"
+                    control={control}
+                    render={({ field }) => (
+                        <ImageInput
+                            {...field}
+                            label="Изображение"
+                            errors={errors}
+                            onChange={file => field.onChange(file)}
+                        />
+                    )}
                 />
                 <div className="flex flex-col gap-2">
                     <Controller

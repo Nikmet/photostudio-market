@@ -9,6 +9,7 @@ import { AdminSelect } from "@/components/admin-select";
 import { magnetTypes } from "@/@types/enums";
 import { onNumberValueChange } from "@/lib/inputs";
 import { FormInput } from "@/components/form-input";
+import { ImageInput } from "@/components/image-input";
 
 export interface IMagnetsFormProps {
     defaultValues?: FormValuesMagnet;
@@ -39,7 +40,18 @@ export const MagnetsForm = ({ onSubmit, defaultValues, className }: IMagnetsForm
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
                 <div className="flex gap-2">
-                    {/* <ImageInput name="image" /> */}
+                    <Controller
+                        name="printing_image"
+                        control={control}
+                        render={({ field }) => (
+                            <ImageInput
+                                {...field}
+                                label="Изображение"
+                                errors={errors}
+                                onChange={file => field.onChange(file)} // Передаем файл в форму
+                            />
+                        )}
+                    />
                     <div className="flex flex-col gap-2">
                         <Controller
                             name="name"

@@ -26,6 +26,10 @@ export function formatTableCell<T>(value: T[keyof T]): string {
         return "Отсутствует";
     }
 
+    if (typeof value === "object") {
+        return "Есть";
+    }
+
     if (typeof value === "boolean") {
         return "Есть";
     }

@@ -8,6 +8,9 @@ export const imageToFile = (image: Image | null): File | undefined => {
     // Преобразуем ArrayBuffer в Uint8Array
     const uint8Array = new Uint8Array(arrayBuffer);
 
-    // Создаем File из Uint8Array
-    return new File([uint8Array], image.fileName, { type: image.mimeType });
+    // Создаем Blob из Uint8Array
+    const blob = new Blob([uint8Array], { type: image.mimeType });
+
+    // Создаем File из Blob, если нужно указать имя файла
+    return new File([blob], image.fileName, { type: image.mimeType });
 };

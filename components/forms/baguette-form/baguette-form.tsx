@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { formSchemaBaguette, FormValuesBaguette } from "./schema";
 import { onNumberValueChange } from "@/lib/inputs";
+import { ImageInput } from "@/components/image-input";
 
 export interface IBaguetteFormProps {
     defaultValues?: FormValuesBaguette;
@@ -17,7 +18,9 @@ export interface IBaguetteFormProps {
 export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFormProps): React.JSX.Element => {
     const form = useForm<FormValuesBaguette>({
         resolver: zodResolver(formSchemaBaguette),
-        defaultValues: defaultValues
+        defaultValues: defaultValues || {
+            image: undefined
+        }
     });
 
     const submitAction = (data: FormValuesBaguette) => {
@@ -28,6 +31,18 @@ export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFo
     return (
         <div className={className}>
             <form onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
+                <Controller
+                    name="image"
+                    control={form.control}
+                    render={({ field }) => (
+                        <ImageInput
+                            {...field}
+                            label="Изображение"
+                            errors={form.formState.errors}
+                            onChange={file => field.onChange(file)} // Передаем файл в форму
+                        />
+                    )}
+                />
                 <div className="flex gap-2">
                     <Controller
                         name="serial_number"

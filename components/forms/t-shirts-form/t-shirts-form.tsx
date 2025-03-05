@@ -41,7 +41,7 @@ export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsForm
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <div className="flex gap-2">
+                <div className="flex gap-4">
                     <Controller
                         name="printing_image"
                         control={control}
@@ -54,7 +54,7 @@ export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsForm
                             />
                         )}
                     />
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-4 w-[500px]">
                         <Controller
                             name="name"
                             control={control}

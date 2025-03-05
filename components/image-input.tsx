@@ -58,13 +58,16 @@ export const ImageInput = ({
                 </div>
             )}
 
+            <div className="w-[600px] h-[500px] border border-gray-300 rounded-md mb-4">
+                {previewUrl ? (
+                    <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <p className="text-gray-500">Изображение отсутствует</p>
+                    </div>
+                )}
+            </div>
             <Input {...props} className="bg-white" type="file" accept="image/*" onChange={handleFileChange} />
-
-            {previewUrl && (
-                <div>
-                    <img src={previewUrl} alt="Preview" style={{ maxWidth: "100%", height: "auto" }} />
-                </div>
-            )}
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
         </div>
     );

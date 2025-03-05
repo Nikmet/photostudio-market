@@ -1,3 +1,4 @@
+import { imageSchema } from "@/@types/image-schema";
 import { z } from "zod";
 
 export const formSchemaStands = z.object({
@@ -13,7 +14,8 @@ export const formSchemaStands = z.object({
     pocket_count: z.number({
         required_error: "Поле обязательно",
         invalid_type_error: "Значение должно быть числом"
-    })
+    }),
+    printing_image: imageSchema.optional()
 });
 
 export type FormValuesStands = z.infer<typeof formSchemaStands>;

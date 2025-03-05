@@ -1,9 +1,12 @@
 import { createProduct } from "@/app/actions";
 import { MagnetsForm } from "@/components/forms/magnets-form/magnets-form";
 import { FormValuesMagnet } from "@/components/forms/magnets-form/schema";
+import { PageTitle } from "@/components/page-title";
+import { imageToFile } from "@/lib/image-to-file";
 import { calcMagnetPrice } from "@/lib/prices";
+import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
-import { MagnetType } from "@prisma/client";
+import { Image, MagnetType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -19,11 +22,21 @@ export default async function MagnetEditPage({ params }: Props) {
     const findMagnet = await prisma.magnet.findFirst({
         where: {
             id: id
+        },
+        include: {
+            printing_image: true
         }
     });
 
     const handleSubmit = async (data: FormValuesMagnet) => {
         "use server";
+
+        let printing_image: Image | undefined;
+
+        // Загружаем изображение, если оно есть
+        if (data.printing_image) {
+            printing_image = await uploadImage(data.printing_image);
+        }
 
         if (!findMagnet) {
             const magnet = await prisma.magnet.create({
@@ -32,7 +45,14 @@ export default async function MagnetEditPage({ params }: Props) {
                     name: data.name,
                     height: data.height,
                     width: data.width,
-                    magnet_type: data.magnet_type as MagnetType
+                    magnet_type: data.magnet_type as MagnetType,
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
                 }
             });
 
@@ -47,7 +67,14 @@ export default async function MagnetEditPage({ params }: Props) {
                 name: data.name,
                 height: data.height,
                 width: data.width,
-                magnet_type: data.magnet_type as MagnetType
+                magnet_type: data.magnet_type as MagnetType,
+                printing_image: printing_image
+                    ? {
+                          connect: {
+                              id: printing_image.id
+                          }
+                      }
+                    : undefined
             }
         });
         redirect("/admin/magnets");
@@ -55,9 +82,18 @@ export default async function MagnetEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findMagnet?.id ? `Магнит | ${findMagnet.id}` : `Новый магнит | ${id}`}</h1>
+            <PageTitle>{findMagnet?.id ? `Магнит | ${findMagnet.id}` : `Новый магнит | ${id}`}</PageTitle>
             {findMagnet ? (
-                <MagnetsForm defaultValues={findMagnet} onSubmit={handleSubmit} />
+                <MagnetsForm
+                    defaultValues={{
+                        name: findMagnet.name,
+                        height: findMagnet.height,
+                        width: findMagnet.width,
+                        magnet_type: findMagnet.magnet_type,
+                        printing_image: imageToFile(findMagnet.printing_image)
+                    }}
+                    onSubmit={handleSubmit}
+                />
             ) : (
                 <MagnetsForm onSubmit={handleSubmit} />
             )}

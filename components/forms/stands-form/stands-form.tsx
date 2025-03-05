@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FormInput } from "@/components/form-input";
 import { onNumberValueChange } from "@/lib/inputs";
 import { Button } from "@/components/ui";
+import { ImageInput } from "@/components/image-input";
 
 export interface IStandsFormProps {
     className?: string;
@@ -35,7 +36,18 @@ export const StandsForm = ({ onSubmit, defaultValues, className }: IStandsFormPr
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
                 <div className="flex gap-2">
-                    {/* <ImageInput name="image" /> */}
+                    <Controller
+                        name="printing_image"
+                        control={control}
+                        render={({ field }) => (
+                            <ImageInput
+                                {...field}
+                                label="Изображение"
+                                errors={errors}
+                                onChange={file => field.onChange(file)}
+                            />
+                        )}
+                    />
                     <div className="flex flex-col gap-2">
                         <Controller
                             name="name"

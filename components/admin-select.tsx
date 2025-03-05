@@ -56,7 +56,7 @@ export const AdminSelect = ({
             )}
             <div className="flex gap-2">
                 <Select name={name} defaultValue={defaultValue} value={value} onValueChange={e => handleChange(e)}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger>
                         <SelectValue placeholder={label} />
                     </SelectTrigger>
                     <SelectContent>

@@ -1,8 +1,12 @@
 import { createProduct } from "@/app/actions";
 import { LfpForm } from "@/components/forms/lfp-form/lfp-form";
 import { FormValuesLFP } from "@/components/forms/lfp-form/schema";
+import { PageTitle } from "@/components/page-title";
+import { imageToFile } from "@/lib/image-to-file";
 import { calcLFPPrice } from "@/lib/prices";
+import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
+import { Image } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -20,7 +24,8 @@ export default async function TablesEditPage({ params }: Props) {
             id: id
         },
         include: {
-            paper_type: true
+            paper_type: true,
+            printing_image: true
         }
     });
 
@@ -28,6 +33,13 @@ export default async function TablesEditPage({ params }: Props) {
 
     const handleSubmit = async (data: FormValuesLFP) => {
         "use server";
+
+        let printing_image: Image | undefined;
+
+        // Загружаем изображение, если оно есть
+        if (data.printing_image) {
+            printing_image = await uploadImage(data.printing_image);
+        }
 
         const findPaperType = await prisma.paperType.findFirst({
             where: {
@@ -46,7 +58,14 @@ export default async function TablesEditPage({ params }: Props) {
                         connect: {
                             id: findPaperType?.id
                         }
-                    }
+                    },
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
                 }
             });
 
@@ -65,7 +84,14 @@ export default async function TablesEditPage({ params }: Props) {
                     connect: {
                         id: findPaperType?.id
                     }
-                }
+                },
+                printing_image: printing_image
+                    ? {
+                          connect: {
+                              id: printing_image.id
+                          }
+                      }
+                    : undefined
             }
         });
         redirect("/admin/lfps");
@@ -73,9 +99,21 @@ export default async function TablesEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findLFP?.id ? `Широкоформатная печать | ${findLFP.id}` : `Новая широкоформатная печать | ${id}`}</h1>
+            <PageTitle>
+                {findLFP?.id ? `Широкоформатная печать | ${findLFP.id}` : `Новая широкоформатная печать | ${id}`}
+            </PageTitle>
             {findLFP ? (
-                <LfpForm defaultValues={findLFP} onSubmit={handleSubmit} paperTypes={paperTypes} />
+                <LfpForm
+                    defaultValues={{
+                        height: findLFP.height,
+                        width: findLFP.width,
+                        name: findLFP.name,
+                        paper_type_id: findLFP.paper_type.id,
+                        printing_image: imageToFile(findLFP.printing_image)
+                    }}
+                    onSubmit={handleSubmit}
+                    paperTypes={paperTypes}
+                />
             ) : (
                 <LfpForm onSubmit={handleSubmit} paperTypes={paperTypes} />
             )}

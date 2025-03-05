@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { FormValuesTShirts } from "@/components/forms/t-shirts-form/schema";
 import { TShirtsForm } from "@/components/forms/t-shirts-form/t-shirts-form";
+import { PageTitle } from "@/components/page-title";
 import { imageToFile } from "@/lib/image-to-file";
 import { calcTShirtPrice } from "@/lib/prices";
 import { uploadImage } from "@/lib/upload-image";
@@ -79,7 +80,7 @@ export default async function TShirtsEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{find_t_shirts?.id ? `Футболка | ${find_t_shirts.id}` : `Новая футболка | ${id}`}</h1>
+            <PageTitle>{find_t_shirts?.id ? `Футболка | ${find_t_shirts.id}` : `Новая футболка | ${id}`}</PageTitle>
             {find_t_shirts ? (
                 <TShirtsForm
                     defaultValues={{

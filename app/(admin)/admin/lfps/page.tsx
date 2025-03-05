@@ -7,7 +7,8 @@ import React from "react";
 export default async function TablesPage() {
     const lfps = await prisma.lFP.findMany({
         include: {
-            paper_type: true
+            paper_type: true,
+            printing_image: true
         }
     });
 
@@ -16,7 +17,8 @@ export default async function TablesPage() {
         name: lfp.name,
         width: lfp.width,
         height: lfp.height,
-        paper_type: lfp.paper_type.name
+        paper_type: lfp.paper_type.name,
+        printing_image: lfp.printing_image
     }));
 
     const columns: IColumnsProps<(typeof flattenedTables)[0]>[] = [
@@ -24,7 +26,8 @@ export default async function TablesPage() {
         { title: "Название", key: "name" },
         { title: "Ширина", key: "width" },
         { title: "Высота", key: "height" },
-        { title: "Тип бумаги", key: "paper_type" }
+        { title: "Тип бумаги", key: "paper_type" },
+        { title: "Изображение", key: "printing_image" }
     ];
 
     const handleDelete = async (ids: string[]) => {

@@ -8,6 +8,7 @@ import { FormInput } from "@/components/form-input";
 import { printingSides } from "@/@types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import { ImageInput } from "@/components/image-input";
 
 export interface IBusinessCardsFormProps {
     defaultValues?: FormValuesBusinessCards;
@@ -42,7 +43,18 @@ export const BusinessCardsForm = ({
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
                 <div className="flex gap-2">
-                    {/* <ImageInput name="image" /> */}
+                    <Controller
+                        name="printing_image"
+                        control={control}
+                        render={({ field }) => (
+                            <ImageInput
+                                {...field}
+                                label="Изображение"
+                                errors={errors}
+                                onChange={file => field.onChange(file)} // Передаем файл в форму
+                            />
+                        )}
+                    />
                     <div className="flex flex-col gap-2">
                         <Controller
                             name="name"

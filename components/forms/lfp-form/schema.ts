@@ -1,3 +1,4 @@
+import { imageSchema } from "@/@types/image-schema";
 import { z } from "zod";
 
 export const formSchemaLFP = z.object({
@@ -10,7 +11,8 @@ export const formSchemaLFP = z.object({
     width: z.number({
         required_error: "Поле обязательно",
         invalid_type_error: "Значение должно быть числом"
-    })
+    }),
+    printing_image: imageSchema.optional()
 });
 
 export type FormValuesLFP = z.infer<typeof formSchemaLFP>;

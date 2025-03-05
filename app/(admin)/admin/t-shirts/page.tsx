@@ -1,18 +1,25 @@
+import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
-import { TShirt } from "@prisma/client";
 import React from "react";
 
-interface IColumnsProps {
-    title: string;
-    key: keyof TShirt;
-}
-
 export default async function TShirtsPage() {
-    const t_shirts = await prisma.tShirt.findMany();
+    const t_shirts = await prisma.tShirt.findMany({
+        include: {
+            printing_image: true
+        }
+    });
 
-    const columns: IColumnsProps[] = [
+    const flattenedData = t_shirts.map(t_shirt => ({
+        id: t_shirt.id,
+        name: t_shirt.name,
+        printingSide: t_shirt.printingSide,
+        size: t_shirt.size,
+        printing_image: t_shirt.printing_image
+    }));
+
+    const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
         { title: "Стороны печати", key: "printingSide" },
@@ -36,8 +43,8 @@ export default async function TShirtsPage() {
     return (
         <div>
             <h2 className="text-2xl font-medium mb-10">Список футболок</h2>
-            <AdminTable<TShirt>
-                data={t_shirts}
+            <AdminTable<(typeof flattenedData)[0]>
+                data={flattenedData}
                 route="t-shirts"
                 columns={columns}
                 handleDeleteProp={handleDelete}

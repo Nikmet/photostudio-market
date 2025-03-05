@@ -1,13 +1,27 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
-import { Banner } from "@prisma/client";
 import React from "react";
 
 export default async function BannersPage() {
-    const banners = await prisma.banner.findMany();
+    const banners = await prisma.banner.findMany({
+        include: {
+            printing_image: true
+        }
+    });
 
-    const columns: IColumnsProps<Banner>[] = [
+    const flattenedData = banners.map(banner => ({
+        id: banner.id,
+        name: banner.name,
+        density: banner.density,
+        width: banner.width,
+        height: banner.height,
+        luvers_step: banner.luvers_step,
+        luvers_count: banner.luvers_count,
+        printing_image: banner.printing_image
+    }));
+
+    const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
         { title: "Плотность", key: "density" },
@@ -33,8 +47,8 @@ export default async function BannersPage() {
     return (
         <div>
             <h2 className="text-2xl font-medium mb-10">Список банеров</h2>
-            <AdminTable<Banner>
-                data={banners}
+            <AdminTable<(typeof flattenedData)[0]>
+                data={flattenedData}
                 route="banners"
                 columns={columns}
                 handleDeleteProp={handleDelete}

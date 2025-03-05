@@ -1,18 +1,24 @@
+import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
-import { BusinessCard } from "@prisma/client";
 import React from "react";
 
-interface IColumnsProps {
-    title: string;
-    key: keyof BusinessCard;
-}
-
 export default async function BusinessCardsPage() {
-    const cards = await prisma.businessCard.findMany();
+    const cards = await prisma.businessCard.findMany({
+        include: {
+            printing_image: true
+        }
+    });
 
-    const columns: IColumnsProps[] = [
+    const flattenedData = cards.map(card => ({
+        id: card.id,
+        name: card.name,
+        printing_side: card.printing_side,
+        printing_image: card.printing_image
+    }));
+
+    const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
         { title: "Стороны печати", key: "printing_side" },
@@ -35,8 +41,8 @@ export default async function BusinessCardsPage() {
     return (
         <div>
             <h2 className="text-2xl font-medium mb-10">Список визиток</h2>
-            <AdminTable<BusinessCard>
-                data={cards}
+            <AdminTable<(typeof flattenedData)[0]>
+                data={flattenedData}
                 route="business-cards"
                 columns={columns}
                 handleDeleteProp={handleDelete}

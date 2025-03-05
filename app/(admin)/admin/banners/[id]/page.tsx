@@ -1,9 +1,12 @@
 import { createProduct } from "@/app/actions";
 import { BannerForm } from "@/components/forms/banner-form/banner-form";
 import { FormValuesBanner } from "@/components/forms/banner-form/schema";
+import { PageTitle } from "@/components/page-title";
+import { imageToFile } from "@/lib/image-to-file";
 import { calcBannerPrice } from "@/lib/prices";
+import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
-import { BannerDensity } from "@prisma/client";
+import { BannerDensity, Image } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -19,11 +22,21 @@ export default async function BannersEditPage({ params }: Props) {
     const findBanner = await prisma.banner.findFirst({
         where: {
             id: id
+        },
+        include: {
+            printing_image: true
         }
     });
 
     const handleSubmit = async (data: FormValuesBanner) => {
         "use server";
+
+        let printing_image: Image | undefined;
+
+        // Загружаем изображение, если оно есть
+        if (data.printing_image) {
+            printing_image = await uploadImage(data.printing_image);
+        }
 
         if (!findBanner) {
             const banner = await prisma.banner.create({
@@ -34,7 +47,14 @@ export default async function BannersEditPage({ params }: Props) {
                     height: data.height,
                     width: data.width,
                     luvers_count: data.luvers_count,
-                    luvers_step: data.luvers_step
+                    luvers_step: data.luvers_step,
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
                 }
             });
 
@@ -51,7 +71,14 @@ export default async function BannersEditPage({ params }: Props) {
                 height: data.height,
                 width: data.width,
                 luvers_count: data.luvers_count,
-                luvers_step: data.luvers_step
+                luvers_step: data.luvers_step,
+                printing_image: printing_image
+                    ? {
+                          connect: {
+                              id: printing_image.id
+                          }
+                      }
+                    : undefined
             }
         });
         redirect("/admin/banners");
@@ -59,7 +86,7 @@ export default async function BannersEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findBanner?.id ? `Банер | ${findBanner.id}` : `Новый банер | ${id}`}</h1>
+            <PageTitle>{findBanner?.id ? `Банер | ${findBanner.id}` : `Новый банер | ${id}`}</PageTitle>
             {findBanner ? (
                 <BannerForm
                     onSubmit={handleSubmit}
@@ -69,7 +96,8 @@ export default async function BannersEditPage({ params }: Props) {
                         height: findBanner?.height,
                         width: findBanner?.width,
                         luvers_count: findBanner?.luvers_count,
-                        luvers_step: findBanner?.luvers_step
+                        luvers_step: findBanner?.luvers_step,
+                        printing_image: imageToFile(findBanner.printing_image)
                     }}
                 />
             ) : (

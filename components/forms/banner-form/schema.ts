@@ -1,3 +1,4 @@
+import { imageSchema } from "@/@types/image-schema";
 import { BannerDensity } from "@prisma/client";
 import { z } from "zod";
 
@@ -21,7 +22,8 @@ export const formSchemaBanners = z.object({
     luvers_step: z.number({
         required_error: "Поле обязательно", // Кастомное сообщение для обязательного поля
         invalid_type_error: "Значение должно быть числом"
-    })
+    }),
+    printing_image: imageSchema.optional()
 });
 
 export type FormValuesBanner = z.infer<typeof formSchemaBanners>;
