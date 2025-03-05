@@ -1,4 +1,13 @@
-import { BannerDensity, Difficile, MagnetType, PrintingSide, PrintingType, Size } from "@prisma/client";
+import {
+    BannerDensity,
+    Difficile,
+    MagnetType,
+    OrderPaymentStatus,
+    OrderStatus,
+    PrintingSide,
+    PrintingType,
+    Size
+} from "@prisma/client";
 
 const changeEnum = (value: string) => {
     const enumsValues = [
@@ -14,7 +23,13 @@ const changeEnum = (value: string) => {
         { key: MagnetType.ACRYLIC, title: "Акрил" },
         { key: MagnetType.SUBSTRATE, title: "Подложка" },
         { key: BannerDensity.FOUR_HUNDRED, title: "400 г/м²" },
-        { key: BannerDensity.THREE_HUNDRED, title: "300 г/м²" }
+        { key: BannerDensity.THREE_HUNDRED, title: "300 г/м²" },
+        { key: OrderStatus.ACCEPTED, title: "Принят" },
+        { key: OrderStatus.COMPLETED, title: "Готов" },
+        { key: OrderStatus.IN_WORK, title: "В работе" },
+        { key: OrderPaymentStatus.CANCELED, title: "Отменен" },
+        { key: OrderPaymentStatus.SUCCEEDED, title: "Оплачен" },
+        { key: OrderPaymentStatus.PENDING, title: "В ожидании оплаты" }
     ];
 
     const findEnum = enumsValues.find(item => item.key === value);

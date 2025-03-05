@@ -1,6 +1,6 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./ui/table";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib";
 import { Checkbox } from "./ui/checkbox";
@@ -25,6 +25,9 @@ export interface IAdminTableProps<T> {
     handleDeleteProp?: (ids: string[]) => void;
     prefix?: string;
     has_actions?: boolean;
+    total?: string;
+    rows_count?: number;
+    margin?: number;
 }
 
 export const AdminTable = <T extends { id: string }>({
@@ -34,12 +37,20 @@ export const AdminTable = <T extends { id: string }>({
     handleDeleteProp,
     prefix,
     has_actions,
+    total,
+    rows_count,
+    margin,
     className
 }: IAdminTableProps<T>): React.JSX.Element => {
     const { sortedData, sortConfig, handleSort } = useSort<T>(data);
     const { selected, handleSelect, clearSelection } = useSelection();
     const { handleAdd, redirectToPage } = useTableActions<T>(data, route, prefix);
-    const { currentItems: currentSortedItems, currentPage, totalPages, paginate } = usePagination(sortedData, 15);
+    const {
+        currentItems: currentSortedItems,
+        currentPage,
+        totalPages,
+        paginate
+    } = usePagination(sortedData, rows_count ?? 15);
 
     const handleDelete = async (ids: string[]) => {
         handleDeleteProp?.(ids);
@@ -47,9 +58,8 @@ export const AdminTable = <T extends { id: string }>({
     };
 
     return (
-        <div className={cn("pr-5 flex flex-col min-h-[calc(100vh-290px)]", className)}>
-            <div className="pr-5 flex flex-col min-h-[calc(100vh-290px)]">
-                {!has_actions && <TableSearch<T> data={data} route={route} className="absolute top-[65px] right-10" />}
+        <div className={cn(`pr-5 flex flex-col min-h-[calc(100vh-${margin ?? 290}px)]`, className)}>
+            <div className={`pr-5 flex flex-col min-h-[calc(100vh-${margin ?? 290}px)]`}>
                 {has_actions && (
                     <div className="flex justify-between mb-3">
                         <Button onClick={handleAdd}>Добавить</Button>
@@ -76,7 +86,11 @@ export const AdminTable = <T extends { id: string }>({
                                             className="cursor-pointer"
                                             onClick={() => handleSort(column.key)}
                                         >
-                                            <div className="flex items-center gap-2">
+                                            <div
+                                                className={cn("flex items-center gap-2", {
+                                                    "justify-end": column.key === "price"
+                                                })}
+                                            >
                                                 {column.title}
                                                 {sortConfig.key === column.key &&
                                                     (sortConfig.direction === "asc" ? (
@@ -107,13 +121,24 @@ export const AdminTable = <T extends { id: string }>({
                                             </TableCell>
                                         )}
                                         {columns.map(column => (
-                                            <TableCell key={String(column.key)}>
+                                            <TableCell
+                                                key={String(column.key)}
+                                                className={cn({ "text-right": column.key === "price" })}
+                                            >
                                                 {formatTableCell<T>(item[column.key])}
                                             </TableCell>
                                         ))}
                                     </TableRow>
                                 ))}
                             </TableBody>
+                            {total && (
+                                <TableFooter>
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length - 1}>Итого:</TableCell>
+                                        <TableCell className="text-right">{total} ₽</TableCell>
+                                    </TableRow>
+                                </TableFooter>
+                            )}
                         </Table>
                         <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
                     </>

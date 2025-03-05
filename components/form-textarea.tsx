@@ -9,6 +9,7 @@ export interface IFormInputProps extends InputHTMLAttributes<HTMLTextAreaElement
     required?: boolean;
     className?: string;
     errors?: any;
+    rows?: number;
 }
 
 export const FormTextarea = ({
@@ -16,6 +17,7 @@ export const FormTextarea = ({
     label,
     required,
     errors,
+    rows,
     className,
     ...props
 }: IFormInputProps): React.JSX.Element => {
@@ -29,7 +31,7 @@ export const FormTextarea = ({
                 </div>
             )}
 
-            <Textarea {...props} className="bg-white resize-none" rows={4} />
+            <Textarea {...props} className="bg-white resize-none" rows={rows ?? 4} />
 
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
         </div>

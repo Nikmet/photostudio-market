@@ -44,7 +44,6 @@ export const NewslettersForm = ({
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                {/* <ImageInput name="image" /> */}
                 <div className="flex flex-col gap-2">
                     <Controller
                         name="name"

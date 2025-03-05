@@ -1,6 +1,7 @@
 import { createProduct } from "@/app/actions";
 import { FramesForm } from "@/components/forms/frames-form/frames-form";
 import { FormValuesFrames } from "@/components/forms/frames-form/schema";
+import { PageTitle } from "@/components/page-title";
 import { calcFramePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
@@ -81,7 +82,7 @@ export default async function FramesEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findFrame?.id ? `Табличка | ${findFrame.id}` : `Новая табличка | ${id}`}</h1>
+            <PageTitle>{findFrame?.id ? `Рамка | ${findFrame.id}` : `Новая рамка | ${id}`}</PageTitle>
             {findFrame ? (
                 <FramesForm defaultValues={findFrame} onSubmit={handleSubmit} baguettes={baguettes} />
             ) : (

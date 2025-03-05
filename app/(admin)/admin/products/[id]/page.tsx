@@ -1,5 +1,6 @@
 import { ProductForm } from "@/components/forms/product-form/product-form";
 import { FormValuesProducts } from "@/components/forms/product-form/schema";
+import { PageTitle } from "@/components/page-title";
 import { prisma } from "@/prisma/prisma-client";
 import { Difficile } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -44,7 +45,7 @@ export default async function ProductPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findProduct?.id ? `Продукт | ${findProduct.id}` : `Новый продукт | ${id}`}</h1>
+            <PageTitle>{findProduct?.id ? `Продукт | ${findProduct.id}` : `Новый продукт | ${id}`}</PageTitle>
             {findProduct ? (
                 <ProductForm
                     defaultValues={{

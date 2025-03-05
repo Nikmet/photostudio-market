@@ -193,29 +193,34 @@ model Image {
 }
 
 // Перечисление статусов заказа
-enum OrderStatus {
+enum OrderPaymentStatus {
     PENDING
     SUCCEEDED
     CANCELED
 }
 
+enum OrderStatus {
+    ACCEPTED
+    IN_WORK
+    COMPLETED
+}
+
 // Таблица заказов
 model Order {
-    id Int @id @default(autoincrement())
+    id String @id
 
     userId Int
     user   User @relation(fields: [userId], references: [id])
 
-    totalAmount Int
-    status      OrderStatus @default(PENDING)
-    paymentId   String?
+    status OrderStatus @default(ACCEPTED)
+
+    totalAmount    Int
+    payment_status OrderPaymentStatus @default(PENDING)
+    paymentId      String?
 
     products Product[]
 
-    fullName String
-    phone    String
-    email    String
-    comment  String?
+    comment String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

@@ -1,4 +1,13 @@
-import { BannerDensity, Difficile, MagnetType, PrintingSide, PrintingType, Size } from "@prisma/client";
+import {
+    BannerDensity,
+    Difficile,
+    MagnetType,
+    OrderPaymentStatus,
+    OrderStatus,
+    PrintingSide,
+    PrintingType,
+    Size
+} from "@prisma/client";
 
 export const printingTypes: Record<PrintingType, string> = {
     [PrintingType.WITH_TOOLING]: "С оснасткой",
@@ -34,4 +43,16 @@ export const difficile: Record<Difficile, string> = {
 export const density: Record<BannerDensity, string> = {
     [BannerDensity.FOUR_HUNDRED]: "400 г/м²",
     [BannerDensity.THREE_HUNDRED]: "300 г/м²"
+};
+
+export const orderStatus: Record<OrderStatus, string> = {
+    [OrderStatus.ACCEPTED]: "Принят",
+    [OrderStatus.IN_WORK]: "В работе",
+    [OrderStatus.COMPLETED]: "Готов"
+};
+
+export const orderPaymentStatus: Record<OrderPaymentStatus, string> = {
+    [OrderPaymentStatus.PENDING]: "В ожидании оплаты",
+    [OrderPaymentStatus.CANCELED]: "Отменен",
+    [OrderPaymentStatus.SUCCEEDED]: "Оплачен"
 };
