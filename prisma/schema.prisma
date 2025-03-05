@@ -84,12 +84,6 @@ enum BannerDensity {
     FOUR_HUNDRED
 }
 
-model Image {
-    id        Int      @id @default(autoincrement())
-    url       String // Ссылка на изображение
-    createdAt DateTime @default(now())
-}
-
 // Таблица пользователей
 //TODO: добавить поле для хранения фотографии
 //TODO: Подумать на счет юр лиц
@@ -178,6 +172,24 @@ model Product {
     Order     Order[]
 }
 
+// Таблица картинок
+model Image {
+    id        Int      @id @default(autoincrement())
+    fileName  String // Имя файла
+    mimeType  String // MIME-тип (например, image/jpeg)
+    data      Bytes // Байтовый код изображения
+    createdAt DateTime @default(now())
+
+    Cup          Cup[]
+    Baguette     Baguette[]
+    BusinessCard BusinessCard[]
+    LFP          LFP[]
+    Stand        Stand[]
+    Banner       Banner[]
+    Magnet       Magnet[]
+    TShirt       TShirt[]
+}
+
 // Перечисление статусов заказа
 enum OrderStatus {
     PENDING
@@ -230,9 +242,10 @@ model Prices {
 // Таблица Кружек
 //! ФИКСИРОВАННАЯ ЦЕНА (СТРАНИЦА)
 model Cup {
-    id             String  @id //Prefix: К
-    name           String
-    printing_image String?
+    id                String @id //Prefix: К
+    name              String
+    printing_image_id Int?
+    printing_image    Image? @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -241,11 +254,12 @@ model Cup {
 // Таблица Футболок
 //! ЦЕНА ОДНОСТОРОННЕЙ ПЕЧАТИ И ДВУСТОРОННЕЙ ПЕЧАТИ (СТРАНИЦА)
 model TShirt {
-    id             String       @id //Prefix: Ф
-    name           String
-    printingSide   PrintingSide
-    printing_image String?
-    size           Size
+    id                String       @id //Prefix: Ф
+    name              String
+    printingSide      PrintingSide
+    printing_image_id Int?
+    printing_image    Image?       @relation(fields: [printing_image_id], references: [id])
+    size              Size
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -278,12 +292,13 @@ model Badge {
 // Таблица Магнитов
 //! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И ТИПА МАГНИТА (СТРАНИЦА, ТИП МАГНИТА)
 model Magnet {
-    id             String     @id //Prefix: МГ
-    name           String
-    width          Float
-    height         Float
-    magnet_type    MagnetType
-    printing_image String?
+    id                String     @id //Prefix: МГ
+    name              String
+    width             Float
+    height            Float
+    magnet_type       MagnetType
+    printing_image_id Int?
+    printing_image    Image?     @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -303,14 +318,15 @@ model Printing {
 // Таблица Банеров
 //! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА, ПЛОТНОСТИ И КОЛИЧЕСТВА ЛЮВЕРСОВ (СТРАНИЦА, ПЛОТНОСТЬ, ЦЕНА ЛЮВЕРСА)
 model Banner {
-    id             String        @id //Prefix: БАН
-    name           String
-    width          Float
-    height         Float
-    luvers_count   Int
-    luvers_step    Float
-    density        BannerDensity
-    printing_image String?
+    id                String        @id //Prefix: БАН
+    name              String
+    width             Float
+    height            Float
+    luvers_count      Int
+    luvers_step       Float
+    density           BannerDensity
+    printing_image_id Int?
+    printing_image    Image?        @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -319,12 +335,13 @@ model Banner {
 // Таблица Стендов
 //! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И КОЛИЧЕСТВА КАРМАНОВ (СТРАНИЦА, ЦЕНА КАРМАНА)
 model Stand {
-    id             String  @id //Prefix: СТ
-    name           String
-    width          Float
-    height         Float
-    pocket_count   Int
-    printing_image String?
+    id                String @id //Prefix: СТ
+    name              String
+    width             Float
+    height            Float
+    pocket_count      Int
+    printing_image_id Int?
+    printing_image    Image? @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -415,13 +432,14 @@ model PaperType {
 // Таблица Широкоформатной печати
 //! ЦЕНА ЗАВИСИТ ОТ РАЗМЕРА И ТИПА БУМАГИ
 model LFP {
-    id             String    @id //Prefix: ШФП
-    name           String
-    width          Float
-    height         Float
-    paper_type_id  String
-    paper_type     PaperType @relation(fields: [paper_type_id], references: [id])
-    printing_image String?
+    id                String    @id //Prefix: ШФП
+    name              String
+    width             Float
+    height            Float
+    paper_type_id     String
+    paper_type        PaperType @relation(fields: [paper_type_id], references: [id])
+    printing_image_id Int?
+    printing_image    Image?    @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -430,10 +448,11 @@ model LFP {
 // Таблица Визиток
 //! ЦЕНА ЗАВИСИТ ОТ СТОРОНЫ ПЕЧАТИ (СТРАНИЦА)
 model BusinessCard {
-    id             String       @id //Prefix: В
-    name           String
-    printing_side  PrintingSide
-    printing_image String?
+    id                String       @id //Prefix: В
+    name              String
+    printing_side     PrintingSide
+    printing_image_id Int?
+    printing_image    Image?       @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -443,7 +462,8 @@ model BusinessCard {
 model Baguette {
     id            String  @id //Prefix: БАГ
     serial_number String //Настоящий серийный номер 
-    image         String
+    image_id      Int?
+    image         Image?  @relation(fields: [image_id], references: [id])
     price         Float
     Frame         Frame[]
 

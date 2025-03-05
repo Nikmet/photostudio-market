@@ -8,6 +8,7 @@ import { FormInput } from "@/components/form-input";
 import { AdminSelect } from "@/components/admin-select";
 import { printingSides, sizes } from "@/@types/enums";
 import { Button } from "@/components/ui";
+import { ImageInput } from "@/components/image-input";
 
 export interface ITShirtsFormProps {
     className?: string;
@@ -25,9 +26,12 @@ export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsForm
     } = useForm<FormValuesTShirts>({
         resolver: zodResolver(formSchemaTShirts),
         defaultValues: defaultValues || {
-            name: ""
+            name: "",
+            printing_image: undefined
         }
     });
+
+    console.log(defaultValues);
 
     const submitAction = (data: FormValuesTShirts) => {
         onSubmit(data);
@@ -38,7 +42,18 @@ export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsForm
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
                 <div className="flex gap-2">
-                    {/* <ImageInput name="image" /> */}
+                    <Controller
+                        name="printing_image"
+                        control={control}
+                        render={({ field }) => (
+                            <ImageInput
+                                {...field}
+                                label="Изображение"
+                                errors={errors}
+                                onChange={file => field.onChange(file)} // Передаем файл в форму
+                            />
+                        )}
+                    />
                     <div className="flex flex-col gap-2">
                         <Controller
                             name="name"
