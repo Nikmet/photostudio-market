@@ -40,16 +40,20 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
         toast.success(`Рамка ${data.name} успешно сохранена!`);
     };
 
+    const selectedBaguetteId = watch("baguetteId");
+    const selectedBaguette = baguettes.find(b => b.id === selectedBaguetteId);
+
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
-                />
+                <div className="w-[600px] h-[500px] border border-gray-300 rounded-md mb-4">
+                    <img
+                        src={`/api/image/${selectedBaguette?.image_id}`}
+                        alt={selectedBaguette?.serial_number || "кружка"}
+                        className="w-full h-full object-contain"
+                    />
+                </div>
+
                 <div className="flex flex-col gap-2">
                     <Controller
                         name="name"
@@ -90,12 +94,7 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                         name="has_glass"
                         control={control}
                         render={({ field }) => (
-                            <AdminCheckbox
-                                {...field}
-                                checked={field.value} // Передаем значение
-                                onChange={field.onChange} // Передаем обработчик
-                                label="Стекло"
-                            />
+                            <AdminCheckbox {...field} checked={field.value} onChange={field.onChange} label="Стекло" />
                         )}
                     />
                     <Controller

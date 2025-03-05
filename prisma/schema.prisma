@@ -188,6 +188,8 @@ model Image {
     Banner       Banner[]
     Magnet       Magnet[]
     TShirt       TShirt[]
+
+    Frame Frame[]
 }
 
 // Перечисление статусов заказа
@@ -483,6 +485,8 @@ model Frame {
     has_glass      Boolean
     has_backdrop   Boolean
     has_suspension Boolean
+    image_id       Int?
+    image          Image?   @relation(fields: [image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
