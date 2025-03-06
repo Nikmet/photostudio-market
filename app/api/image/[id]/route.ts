@@ -1,11 +1,12 @@
+import { prisma } from "@/prisma/prisma-client";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+    const { id: resolvedId } = await params;
+    const id = Number(decodeURIComponent(resolvedId));
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
     const image = await prisma.image.findUnique({
-        where: { id: parseInt(params.id) }
+        where: { id }
     });
 
     if (!image) {
