@@ -74,6 +74,12 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                     </div>
                 ))}
                 <Link
+                    href="/admin/orders"
+                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                >
+                    Заказы
+                </Link>
+                <Link
                     href="/admin/products"
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
                 >

@@ -129,7 +129,7 @@ model Cart {
 
     items CartItem[]
 
-    totalAmount Int @default(0)
+    totalAmount Float @default(0)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -169,7 +169,8 @@ model Product {
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
     CartItem  CartItem[]
-    Order     Order[]
+
+    ProductItem ProductItem[]
 }
 
 // Таблица картинок
@@ -190,6 +191,10 @@ model Image {
     TShirt       TShirt[]
 
     Frame Frame[]
+
+    Badge Badge[]
+
+    AddressPlaqueForm AddressPlaqueForm[]
 }
 
 // Перечисление статусов заказа
@@ -218,10 +223,24 @@ model Order {
     payment_status OrderPaymentStatus @default(PENDING)
     paymentId      String?
 
-    products Product[]
+    products ProductItem[]
 
     comment String?
 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    // Product   Product? @relation(fields: [productId], references: [id])
+    // productId String?
+}
+
+model ProductItem {
+    id        Int      @id @default(autoincrement())
+    productId String
+    product   Product  @relation(fields: [productId], references: [id])
+    count     Int
+    total     Float
+    orderId   String?
+    Order     Order?   @relation(fields: [orderId], references: [id])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
@@ -230,8 +249,8 @@ model Order {
 model VerificationCode {
     id Int @id @default(autoincrement())
 
-    user   User @relation(fields: [userId], references: [id])
     userId Int  @unique
+    user   User @relation(fields: [userId], references: [id])
 
     code String
 
@@ -288,9 +307,10 @@ model LEC {
 // Таблица Значков
 //! ЦЕНА ФИКСИРОВАННАЯ (СТРАНИЦА)
 model Badge {
-    id             String  @id //Prefix: ЗН
-    name           String
-    printing_image String?
+    id                String @id //Prefix: ЗН
+    name              String
+    printing_image_id Int?
+    printing_image    Image? @relation(fields: [printing_image_id], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -386,7 +406,8 @@ model Table {
 model AddressPlaqueForm {
     id              String          @id //Prefix: ФАА
     name            String
-    image           String
+    image_id        Int?
+    image           Image?          @relation(fields: [image_id], references: [id])
     price           Float
     width           Float
     height          Float

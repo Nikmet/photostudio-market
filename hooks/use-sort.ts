@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export const useSort = <T>(initialData: T[]) => {
-    const [sortedData, setSortedData] = useState<T[]>(initialData);
+export const useSort = <T>(initialData: T[] | undefined) => {
+    const [sortedData, setSortedData] = useState<T[]>(initialData ?? []);
     const [sortConfig, setSortConfig] = useState<{
         key: keyof T | null;
         direction: "asc" | "desc" | null;
@@ -35,7 +35,7 @@ export const useSort = <T>(initialData: T[]) => {
             return 0;
         });
 
-        setSortedData(direction === null ? initialData : sorted);
+        setSortedData(direction === null ? initialData ?? [] : sorted);
     };
 
     return {

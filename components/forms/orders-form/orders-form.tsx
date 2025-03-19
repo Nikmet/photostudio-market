@@ -5,18 +5,20 @@ import { formSchemaOrders, FormValuesOrders } from "./schema";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdminSelect } from "@/components/admin-select";
-import { orderStatus } from "@/@types/enums";
+import { orderPaymentStatus, orderStatus } from "@/@types/enums";
 import { FormTextarea } from "@/components/form-textarea";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/form-input";
+import { ReactNode } from "react";
 
 export interface IOrderFormProps {
     defaultValues?: FormValuesOrders;
     onSubmit: (data: FormValuesOrders) => void;
     className?: string;
+    children: ReactNode;
 }
 
-export const OrderForm = ({ onSubmit, defaultValues, className }: IOrderFormProps): React.JSX.Element => {
+export const OrderForm = ({ onSubmit, defaultValues, children, className }: IOrderFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -27,6 +29,8 @@ export const OrderForm = ({ onSubmit, defaultValues, className }: IOrderFormProp
         resolver: zodResolver(formSchemaOrders),
         defaultValues: defaultValues
     });
+
+    console.log("New order");
 
     const submitAction = (data: FormValuesOrders) => {
         onSubmit(data);
@@ -78,7 +82,7 @@ export const OrderForm = ({ onSubmit, defaultValues, className }: IOrderFormProp
                             value={watch("order_payment_status")}
                             onChange={value => setValue("order_payment_status", value)}
                             label={"Статус оплаты"}
-                            items={orderStatus}
+                            items={orderPaymentStatus}
                             defaultValue={defaultValues?.order_status}
                             errors={errors}
                         />
@@ -92,9 +96,12 @@ export const OrderForm = ({ onSubmit, defaultValues, className }: IOrderFormProp
                     )}
                 />
             </form>
-            <Button type="submit" className="mt-4">
-                Сохранить
-            </Button>
+            <div className="p-1">{children}</div>
+            <div className="flex items-center justify-end mt-5">
+                <Button type="submit" className="w-40">
+                    Сохранить
+                </Button>
+            </div>
         </div>
     );
 };

@@ -1,9 +1,9 @@
-import { IColumnsProps } from "@/@types/column-props";
-import { AdminTable } from "@/components/admin-table";
 import { OrderForm } from "@/components/forms/orders-form/orders-form";
 import { FormValuesOrders } from "@/components/forms/orders-form/schema";
+import { OrdersTable, ProductItemWithProduct } from "@/components/orders-table";
 import { PageTitle } from "@/components/page-title";
 import { prisma } from "@/prisma/prisma-client";
+import { OrderPaymentStatus, OrderStatus } from "@prisma/client";
 
 interface Props {
     params: Promise<{
@@ -19,58 +19,38 @@ export default async function ProductPage({ params }: Props) {
             id: id
         },
         include: {
-            products: true,
+            products: {
+                include: {
+                    product: true
+                }
+            },
             user: true
         }
     });
 
-    const flattenedProduct = findOrder?.products.map(product => ({
-        id: product.id,
-        itemId: product.itemId,
-        itemName: product.itemName,
-        price: product.price
-    }));
-
-    if (!flattenedProduct) {
-        return (
-            <div>
-                <PageTitle>{findOrder?.id ? `Заказ | ${findOrder.id}` : `Новый заказ | ${id}`}</PageTitle>
-            </div>
-        );
-    }
-
-    const columns: IColumnsProps<(typeof flattenedProduct)[0]>[] = [
-        { title: "Номер", key: "id" },
-        { title: "Номер продукта", key: "itemId" },
-        { title: "Название продукта", key: "itemName" },
-        { title: "Цена", key: "price" }
-    ];
+    const orderProducts: ProductItemWithProduct[] =
+        findOrder?.products?.map(product => ({
+            id: Number(product.id),
+            productId: product.productId,
+            count: product.count,
+            total: product.total,
+            categoryId: product.product.categoryId,
+            createdAt: product.product.createdAt,
+            updatedAt: product.product.updatedAt,
+            price: product.product.price,
+            design: product.product.design,
+            design_difficulty: product.product.design_difficulty,
+            itemId: product.product.itemId,
+            itemName: product.product.itemName,
+            comments: product.product.comments,
+            route: product.product.route
+        })) || [];
 
     const handleSubmit = async (data: FormValuesOrders) => {
         "use server";
 
         console.log(data);
     };
-
-    // const handleSubmit = async (data: FormValuesProducts) => {
-    //     "use server";
-
-    //     if (!findOrder) {
-    //         throw new Error("Product not found");
-    //     }
-
-    //     await prisma.product.update({
-    //         where: {
-    //             id: id
-    //         },
-    //         data: {
-    //             design: data.design,
-    //             design_difficulty: data.design_difficulty as Difficile,
-    //             comments: data.comment
-    //         }
-    //     });
-    //     redirect("/admin/products");
-    // };
 
     return (
         <div className="h-[77vh] overflow-auto scrollbar">
@@ -86,20 +66,26 @@ export default async function ProductPage({ params }: Props) {
                         comment: findOrder.comment || undefined
                     }}
                     onSubmit={handleSubmit}
-                />
+                >
+                    <p className="text-2xl mb-2 mt-2">Таблица товаров</p>
+                    <OrdersTable data={orderProducts} rows_count={5} totalProp={findOrder.totalAmount} />
+                </OrderForm>
             ) : (
-                <OrderForm onSubmit={handleSubmit} />
+                <OrderForm
+                    onSubmit={handleSubmit}
+                    defaultValues={{
+                        order_payment_status: OrderPaymentStatus.PENDING,
+                        order_status: OrderStatus.ACCEPTED,
+                        userName: "",
+                        userEmail: "",
+                        userPhone: "",
+                        comment: ""
+                    }}
+                >
+                    <p className="text-2xl mb-2 mt-2">Таблица товаров</p>
+                    <OrdersTable rows_count={5} totalProp={0} />
+                </OrderForm>
             )}
-            <p className="text-2xl mb-2 mt-2">Таблица товаров</p>
-
-            <AdminTable<(typeof flattenedProduct)[0]>
-                data={flattenedProduct}
-                route="products"
-                columns={columns}
-                total={findOrder?.totalAmount.toString()}
-                rows_count={5}
-                margin={200}
-            />
         </div>
     );
 }

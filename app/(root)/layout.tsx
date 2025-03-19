@@ -10,8 +10,8 @@ export default async function RootLayout({
     return (
         <>
             <Header admin={false} />
-            <main className="flex h-[91vh] w-full">
-                <MenuBar pages={clientPages} />
+            <main className="flex h-[89vh] w-full">
+                <MenuBar pages={clientPages} className="ml-4 mt-4" />
                 <div className="w-full h-full">{children}</div>
             </main>
         </>
