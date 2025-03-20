@@ -34,16 +34,23 @@ export interface IOrdersTableProps {
     data?: ProductItemWithProduct[];
     totalProp?: number;
     rows_count?: number;
+    onProductsChange?: (products: ProductItemWithProduct[]) => void;
 }
 
-export const OrdersTable = ({ data, rows_count, totalProp, className }: IOrdersTableProps): React.JSX.Element => {
+export const OrdersTable = ({
+    data,
+    rows_count,
+    totalProp,
+    onProductsChange,
+    className
+}: IOrdersTableProps): React.JSX.Element => {
     const [products, setProducts] = React.useState<ProductItemWithProduct[]>(data ?? []);
     const { sortConfig, handleSort } = useSort<ProductItemWithProduct>(products);
     const { selected, handleSelect, clearSelection } = useSelection();
     const [productsForTable, setProductsForTable] = React.useState<Product[]>([]);
+    const [loading, setLoading] = React.useState(false);
     const [total, setTotal] = React.useState<number>(totalProp ?? 0);
     const [addWindow, setAddWindow] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
 
     const sortedData = React.useMemo(() => {
         if (!sortConfig.key) return products;
@@ -96,6 +103,12 @@ export const OrdersTable = ({ data, rows_count, totalProp, className }: IOrdersT
         }
     }, [productsForTable]);
 
+    React.useEffect(() => {
+        if (onProductsChange) {
+            onProductsChange(products);
+        }
+    }, [products, onProductsChange]);
+
     const handleAdd = () => {
         setLoading(true);
         const fetchAndSetProducts = async () => {
@@ -139,7 +152,8 @@ export const OrdersTable = ({ data, rows_count, totalProp, className }: IOrdersT
                 categoryId: 1,
                 itemId: product.itemId,
                 comments: null,
-                route: "ПР"
+                route: "ПР",
+                orderId: null
             };
             return [...prevProducts, newProduct];
         });
@@ -148,6 +162,14 @@ export const OrdersTable = ({ data, rows_count, totalProp, className }: IOrdersT
     };
 
     const handleDelete = async (ids: string[]) => {
+        setTotal(
+            prevTotal =>
+                prevTotal -
+                ids.reduce((acc, id) => {
+                    const product = products.find(p => p.productId === id);
+                    return acc + (product?.total || 0);
+                }, 0)
+        );
         setProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.productId)));
         clearSelection();
     };
@@ -182,13 +204,12 @@ export const OrdersTable = ({ data, rows_count, totalProp, className }: IOrdersT
             <div className={cn(`pr-5 flex flex-col min-h-[calc(100vh-1000px)]`, className)}>
                 <div className={`pr-5 flex flex-col min-h-[calc(100vh-1000px)]`}>
                     <div className="flex justify-between mb-3">
-                        <Button onClick={handleAdd}>Добавить</Button>
+                        <Button onClick={handleAdd} type="button">
+                            Добавить
+                        </Button>
                         <div className="flex gap-2">
-                            <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
+                            <Button className="bg-red-500" onClick={() => handleDelete(selected)} type="button">
                                 Удалить
-                            </Button>
-                            <Button className="bg-blue-500">
-                                Редактировать <ArrowDown />
                             </Button>
                         </div>
                     </div>
@@ -223,7 +244,6 @@ export const OrdersTable = ({ data, rows_count, totalProp, className }: IOrdersT
                                 </TableHeader>
                                 <TableBody>
                                     {currentSortedItems.map(item => {
-                                        console.log("Rendering item:", item); // Логируем каждый элемент
                                         return (
                                             <TableRow key={item.id} className="cursor-pointer" onDoubleClick={() => {}}>
                                                 <TableCell>

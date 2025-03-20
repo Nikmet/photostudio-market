@@ -1,6 +1,6 @@
 import { OrderForm } from "@/components/forms/orders-form/orders-form";
 import { FormValuesOrders } from "@/components/forms/orders-form/schema";
-import { OrdersTable, ProductItemWithProduct } from "@/components/orders-table";
+import { ProductItemWithProduct } from "@/components/orders-table";
 import { PageTitle } from "@/components/page-title";
 import { prisma } from "@/prisma/prisma-client";
 import { OrderPaymentStatus, OrderStatus } from "@prisma/client";
@@ -43,15 +43,97 @@ export default async function ProductPage({ params }: Props) {
             itemId: product.product.itemId,
             itemName: product.product.itemName,
             comments: product.product.comments,
-            route: product.product.route
+            route: product.product.route,
+            orderId: product.orderId
         })) || [];
 
-    const handleSubmit = async (data: FormValuesOrders) => {
+    const handleSubmit = async (data: FormValuesOrders, products: ProductItemWithProduct[]) => {
         "use server";
 
-        console.log(data);
-    };
+        const total = products.reduce((acc, product) => acc + product.total, 0);
 
+        try {
+            const findOrder = await prisma.order.findFirst({
+                where: {
+                    id: id
+                }
+            });
+
+            const findUser = await prisma.user.findFirst({
+                where: {
+                    fullName: data.userName,
+                    phone: data.userPhone
+                }
+            });
+
+            if (findOrder) {
+                console.log(data);
+
+                await prisma.order.update({
+                    where: {
+                        id: id
+                    },
+                    data: {
+                        user: {
+                            connect: {
+                                id: findUser?.id
+                            }
+                        },
+                        status: data.order_status as OrderStatus,
+                        payment_status: data.order_payment_status as OrderPaymentStatus,
+                        totalAmount: total,
+                        comment: data.comment
+                    }
+                });
+
+                await prisma.productItem.deleteMany({
+                    where: {
+                        orderId: id
+                    }
+                });
+            } else {
+                await prisma.order.create({
+                    data: {
+                        id: id,
+                        user: {
+                            connect: {
+                                id: findUser?.id
+                            }
+                        },
+                        status: data.order_status as OrderStatus,
+                        payment_status: data.order_payment_status as OrderPaymentStatus,
+                        totalAmount: total,
+                        comment: data.comment
+                    }
+                });
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        products.forEach(async product => {
+            try {
+                await prisma.productItem.create({
+                    data: {
+                        product: {
+                            connect: {
+                                id: product.productId
+                            }
+                        },
+                        count: product.count,
+                        total: product.total,
+                        Order: {
+                            connect: {
+                                id: id
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    };
     return (
         <div className="h-[77vh] overflow-auto scrollbar">
             <PageTitle>{findOrder?.id ? `Заказ | ${findOrder.id}` : `Новый заказ | ${id}`}</PageTitle>
@@ -66,10 +148,9 @@ export default async function ProductPage({ params }: Props) {
                         comment: findOrder.comment || undefined
                     }}
                     onSubmit={handleSubmit}
-                >
-                    <p className="text-2xl mb-2 mt-2">Таблица товаров</p>
-                    <OrdersTable data={orderProducts} rows_count={5} totalProp={findOrder.totalAmount} />
-                </OrderForm>
+                    productsProp={orderProducts}
+                    orderTotal={findOrder.totalAmount}
+                />
             ) : (
                 <OrderForm
                     onSubmit={handleSubmit}
@@ -81,10 +162,9 @@ export default async function ProductPage({ params }: Props) {
                         userPhone: "",
                         comment: ""
                     }}
-                >
-                    <p className="text-2xl mb-2 mt-2">Таблица товаров</p>
-                    <OrdersTable rows_count={5} totalProp={0} />
-                </OrderForm>
+                    productsProp={[]}
+                    orderTotal={0}
+                />
             )}
         </div>
     );

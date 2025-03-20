@@ -14,7 +14,9 @@ export const EmptyTable = ({ text, action, textButton, className }: IEmptyTableP
         <div className={cn("flex flex-col gap-2 items-center border border-solid mt-3 p-4 rounded-md", className)}>
             <ShoppingBasket size={32} />
             <p>{text}</p>
-            <Button onClick={action}>{textButton}</Button>
+            <Button type="button" onClick={action}>
+                {textButton}
+            </Button>
         </div>
     );
 };

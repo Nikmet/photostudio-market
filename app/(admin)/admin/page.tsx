@@ -3,12 +3,31 @@ import { deleteProducts } from "@/app/actions";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
+
 export default async function AdminPage() {
-    const orders = await prisma.order.findMany({
-        include: {
-            user: true
+    const getOrders = async () => {
+        try {
+            return await prisma.order.findMany({
+                include: {
+                    user: true
+                }
+            });
+        } catch (e) {
+            console.log(e);
+            return undefined;
         }
-    });
+    };
+
+    const orders = await getOrders();
+
+    if (!orders) {
+        return (
+            <>
+                <h2 className="text-2xl font-medium mb-10">Заказы</h2>
+                <div>Заказы не найдены</div>
+            </>
+        );
+    }
 
     const flattenedTables = orders.map(order => ({
         id: order.id,

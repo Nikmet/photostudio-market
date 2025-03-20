@@ -9,16 +9,21 @@ import { orderPaymentStatus, orderStatus } from "@/@types/enums";
 import { FormTextarea } from "@/components/form-textarea";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/form-input";
-import { ReactNode } from "react";
+import React from "react";
+import { SelectedUserWindow } from "@/components/selected-user-window";
+import { User } from "@prisma/client";
+import { AppWindow } from "lucide-react";
+import { OrdersTable, ProductItemWithProduct } from "@/components/orders-table";
 
 export interface IOrderFormProps {
     defaultValues?: FormValuesOrders;
-    onSubmit: (data: FormValuesOrders) => void;
+    onSubmit: (data: FormValuesOrders, products: ProductItemWithProduct[]) => void;
     className?: string;
-    children: ReactNode;
+    productsProp: ProductItemWithProduct[];
+    orderTotal: number;
 }
 
-export const OrderForm = ({ onSubmit, defaultValues, children, className }: IOrderFormProps): React.JSX.Element => {
+export const OrderForm = ({ onSubmit, defaultValues, productsProp, orderTotal, className }: IOrderFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -29,11 +34,44 @@ export const OrderForm = ({ onSubmit, defaultValues, children, className }: IOrd
         resolver: zodResolver(formSchemaOrders),
         defaultValues: defaultValues
     });
+    const [usersForTable, setUsersForTable] = React.useState<User[]>([]);
+    const [loading, setLoading] = React.useState(false);
+    const [addWindow, setAddWindow] = React.useState(false);
+    const [products, setProducts] = React.useState<ProductItemWithProduct[]>(productsProp);
 
-    console.log("New order");
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch("/api/users");
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            return [];
+        }
+    };
+
+    const handleAdd = async () => {
+        setLoading(true);
+        const users: User[] = await fetchUsers();
+        setUsersForTable(users);
+        setLoading(false);
+        setAddWindow(true);
+    };
+
+    const handleAddUser = (user: User) => {
+        setValue("userEmail", user.email);
+        setValue("userName", user.fullName);
+        setValue("userPhone", user.phone);
+        setAddWindow(false);
+    };
 
     const submitAction = (data: FormValuesOrders) => {
-        onSubmit(data);
+        onSubmit(data, products);
+        console.log(data);
+
         toast.success(`Заказ для ${data.userName} успешно сохранен!`);
     };
 
@@ -43,26 +81,52 @@ export const OrderForm = ({ onSubmit, defaultValues, children, className }: IOrd
                 <div className="flex gap-5">
                     <div className="flex flex-col gap-2 w-[500px]">
                         <h3>Информация о клиенте</h3>
-                        {/* Сделать выбором как в 1с */}
-                        <Controller
-                            name="userName"
-                            control={control}
-                            render={({ field }) => (
-                                <FormInput type="text" label="ФИО клиента" {...field} errors={errors} required />
-                            )}
-                        />
+                        <div className="flex gap-2">
+                            <Controller
+                                name="userName"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormInput
+                                        type="text"
+                                        label="ФИО клиента"
+                                        {...field}
+                                        errors={errors}
+                                        required
+                                        className="w-full"
+                                        disabled
+                                    />
+                                )}
+                            />
+                            <Button onClick={handleAdd} className="mt-8" variant="secondary" type="button">
+                                <AppWindow />
+                            </Button>
+                        </div>
                         <Controller
                             name="userEmail"
                             control={control}
                             render={({ field }) => (
-                                <FormInput type="text" label="Электронная почта" {...field} errors={errors} required />
+                                <FormInput
+                                    type="text"
+                                    label="Электронная почта"
+                                    {...field}
+                                    errors={errors}
+                                    required
+                                    disabled
+                                />
                             )}
                         />
                         <Controller
                             name="userPhone"
                             control={control}
                             render={({ field }) => (
-                                <FormInput type="text" label="Номер телефона" {...field} errors={errors} required />
+                                <FormInput
+                                    type="text"
+                                    label="Номер телефона"
+                                    {...field}
+                                    errors={errors}
+                                    required
+                                    disabled
+                                />
                             )}
                         />
                     </div>
@@ -95,13 +159,19 @@ export const OrderForm = ({ onSubmit, defaultValues, children, className }: IOrd
                         <FormTextarea className="w-[500px] mt-4" label="Комментарий" errors={errors} {...field} />
                     )}
                 />
+                <div className="p-1">
+                    <p className="text-2xl mb-2 mt-2">Таблица товаров</p>
+                    <OrdersTable rows_count={5} totalProp={orderTotal} onProductsChange={setProducts} data={products} />
+                </div>
+                <div className="flex items-center justify-end mt-5">
+                    <Button type="submit" className="w-40">
+                        Сохранить
+                    </Button>
+                </div>
             </form>
-            <div className="p-1">{children}</div>
-            <div className="flex items-center justify-end mt-5">
-                <Button type="submit" className="w-40">
-                    Сохранить
-                </Button>
-            </div>
+            {addWindow && !loading && (
+                <SelectedUserWindow users={usersForTable} onClose={() => setAddWindow(false)} action={handleAddUser} />
+            )}
         </div>
     );
 };
