@@ -1,3 +1,4 @@
+// OrdersTable.tsx
 "use client";
 
 import { usePagination } from "@/hooks/use-pagination";
@@ -5,7 +6,7 @@ import { useSelection } from "@/hooks/use-selection";
 import { useSort } from "@/hooks/use-sort";
 import { cn } from "@/lib";
 import { Button } from "./ui";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Minus, Plus } from "lucide-react"; // Добавляем иконки
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Checkbox } from "./ui/checkbox";
 import { IColumnsProps } from "@/@types/column-props";
@@ -76,6 +77,10 @@ export const OrdersTable = ({
         paginate
     } = usePagination(sortedData, rows_count ?? 15);
 
+    const calculateTotal = (products: ProductItemWithProduct[]) => {
+        return products.reduce((acc, item) => acc + item.total, 0);
+    };
+
     const fetchProducts = async () => {
         try {
             const response = await fetch("/api/products");
@@ -93,6 +98,7 @@ export const OrdersTable = ({
     React.useEffect(() => {
         if (data) {
             setProducts(data);
+            setTotal(calculateTotal(data));
         }
     }, [data]);
 
@@ -119,27 +125,15 @@ export const OrdersTable = ({
     };
 
     const handleAddProduct = (product: Product) => {
-        if (products.some(item => item.itemId === product.itemId)) {
-            setProducts(prevProducts => {
-                const updatedProducts = prevProducts.map(item => {
-                    if (item.itemId === product.itemId) {
-                        return {
-                            ...item,
-                            count: item.count + 1,
-                            total: item.total + product.price
-                        };
-                    }
-                    return item;
-                });
-                return updatedProducts;
-            });
-            setTotal(prevTotal => prevTotal + product.price);
-            setAddWindow(false);
-            return;
-        }
-        setProducts(prevProducts => {
-            const newProduct: ProductItemWithProduct = {
-                id: prevProducts.length + 1,
+        const updatedProducts = [...products];
+        const existingProduct = updatedProducts.find(item => item.itemId === product.itemId);
+
+        if (existingProduct) {
+            existingProduct.count += 1;
+            existingProduct.total = existingProduct.count * existingProduct.price;
+        } else {
+            updatedProducts.push({
+                id: updatedProducts.length + 1,
                 productId: product.id,
                 itemName: product.itemName,
                 price: product.price,
@@ -154,11 +148,33 @@ export const OrdersTable = ({
                 comments: null,
                 route: "ПР",
                 orderId: null
-            };
-            return [...prevProducts, newProduct];
-        });
-        setTotal(prevTotal => prevTotal + product.price);
+            });
+        }
+
+        setProducts(updatedProducts);
+        setTotal(calculateTotal(updatedProducts));
         setAddWindow(false);
+    };
+
+    const handleChangeQuantity = (productId: string, delta: number) => {
+        setProducts(prevProducts =>
+            prevProducts.map(item => {
+                if (item.productId === productId) {
+                    const newCount = item.count + delta;
+                    const newTotal = newCount * item.price;
+
+                    // Обновляем общую сумму
+                    setTotal(prevTotal => prevTotal + (newTotal - item.total));
+
+                    return {
+                        ...item,
+                        count: newCount,
+                        total: newTotal
+                    };
+                }
+                return item;
+            })
+        );
     };
 
     const handleDelete = async (ids: string[]) => {
@@ -191,11 +207,35 @@ export const OrdersTable = ({
     }
 
     const columns: IColumnsProps<ProductItemWithProduct>[] = [
-        { title: "Номер", key: "id" },
         { title: "Номер продукта", key: "productId" },
         { title: "Название продукта", key: "itemName" },
         { title: "Цена", key: "price" },
-        { title: "Количество", key: "count" },
+        {
+            title: "Количество",
+            key: "count",
+            render: item => (
+                <div className="flex items-center justify-center gap-2">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleChangeQuantity(item.productId, -1)}
+                        disabled={item.count <= 1}
+                        type="button"
+                    >
+                        <Minus size={14} />
+                    </Button>
+                    <span>{item.count}</span>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleChangeQuantity(item.productId, 1)}
+                        type="button"
+                    >
+                        <Plus size={14} />
+                    </Button>
+                </div>
+            )
+        },
         { title: "Сумма", key: "total" }
     ];
 
@@ -227,7 +267,8 @@ export const OrdersTable = ({
                                             >
                                                 <div
                                                     className={cn("flex items-center gap-2", {
-                                                        "justify-end": column.key === "price"
+                                                        "justify-end": column.key === "price" || column.key === "total",
+                                                        "justify-center": column.key === "count"
                                                     })}
                                                 >
                                                     {column.title}
@@ -255,9 +296,15 @@ export const OrdersTable = ({
                                                 {columns.map(column => (
                                                     <TableCell
                                                         key={String(column.key)}
-                                                        className={cn({ "text-right": column.key === "price" })}
+                                                        className={cn({
+                                                            "text-right":
+                                                                column.key === "price" || column.key === "total",
+                                                            "justify-center": column.key === "count"
+                                                        })}
                                                     >
-                                                        {formatTableCell<(typeof products)[0]>(item[column.key])}
+                                                        {column.render
+                                                            ? column.render(item) // Используем render для колонки "Количество"
+                                                            : formatTableCell<(typeof products)[0]>(item[column.key])}
                                                     </TableCell>
                                                 ))}
                                             </TableRow>
