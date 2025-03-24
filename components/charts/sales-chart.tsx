@@ -2,7 +2,7 @@
 
 import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis, ResponsiveContainer } from "recharts";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
@@ -136,7 +136,7 @@ export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element =
                         </ResponsiveContainer>
                     </ChartContainer>
                 </CardContent>
-                <CardFooter className="flex-shrink-0">
+                <Card className="flex-shrink-0 p-4">
                     <div className="flex flex-col w-full gap-2 text-sm">
                         <div className="flex gap-2 font-medium leading-none">
                             {growthPercentage >= 0 ? "Тренд роста" : "Тренд падения"} на {Math.abs(growthPercentage)}%
@@ -150,7 +150,7 @@ export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element =
                             Показаны общие продажи за последние 6 месяцев
                         </div>
                     </div>
-                </CardFooter>
+                </Card>
             </Card>
         </div>
     );
