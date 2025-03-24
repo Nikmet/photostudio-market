@@ -88,13 +88,16 @@ enum BannerDensity {
 //TODO: добавить поле для хранения фотографии
 //TODO: Подумать на счет юр лиц
 model User {
-    id Int @id @default(autoincrement())
+    id String @id
 
     fullName String
     email    String   @unique
     phone    String   @unique
     password String
     role     UserRole @default(USER)
+
+    photoId Int?
+    photo   Image? @relation(fields: [photoId], references: [id])
 
     provider   String?
     providerId String?
@@ -124,8 +127,8 @@ model Category {
 model Cart {
     id Int @id @default(autoincrement())
 
-    userId Int  @unique
-    user   User @relation(fields: [userId], references: [id])
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id])
 
     items CartItem[]
 
@@ -195,6 +198,7 @@ model Image {
     Badge Badge[]
 
     AddressPlaqueForm AddressPlaqueForm[]
+    User              User[]
 }
 
 // Перечисление статусов заказа
@@ -214,8 +218,8 @@ enum OrderStatus {
 model Order {
     id String @id
 
-    userId Int
-    user   User @relation(fields: [userId], references: [id])
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
 
     status OrderStatus @default(ACCEPTED)
 
@@ -249,8 +253,8 @@ model ProductItem {
 model VerificationCode {
     id Int @id @default(autoincrement())
 
-    userId Int  @unique
-    user   User @relation(fields: [userId], references: [id])
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id])
 
     code String
 
