@@ -72,3 +72,4 @@ export const deleteProducts = async (ids: string[]) => {
         console.error("[DELETE_PRODUCTS_ACTION]", e);
     }
 };
+

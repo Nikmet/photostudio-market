@@ -8,9 +8,10 @@ import React from "react";
 export interface IMenuBarProps {
     className?: string;
     pages: IPage[];
+    isAdmin?: boolean;
 }
 
-export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element => {
+export const MenuBar = ({ pages, isAdmin, className }: IMenuBarProps): React.JSX.Element => {
     return (
         <div
             className={cn(
@@ -29,9 +30,11 @@ export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element 
                     </Link>
                 ))}
             </div>
-            <Link href="/admin" className="p-4 dark:text-white text-black underline">
-                Панель Администратора
-            </Link>
+            {isAdmin && (
+                <Link href="/admin" className="p-4 dark:text-white text-black underline">
+                    Панель Администратора
+                </Link>
+            )}
         </div>
     );
 };

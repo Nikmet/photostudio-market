@@ -3,6 +3,8 @@ import { Header } from "@/components/header";
 import { adminPages } from "@/constants/pages";
 import { PagesTab } from "@/components/pages-tab";
 import { AdminMenuBar } from "@/components/admin-menu-bar";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Панель Администратора"
@@ -13,6 +15,12 @@ export default async function AdminLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const authCookie = (await cookies()).get("auth");
+
+    if (!Boolean(authCookie?.value)) {
+        redirect("/not-allowed");
+    }
+
     return (
         <>
             <Header admin={true} />
