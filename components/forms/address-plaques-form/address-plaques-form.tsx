@@ -1,3 +1,5 @@
+//TODO: Картинки добавить
+
 "use client";
 
 import { Button } from "@/components/ui";
@@ -8,6 +10,7 @@ import { AddressPlaqueForm, Color } from "@prisma/client";
 import toast from "react-hot-toast";
 import { FormInput } from "../../form-input";
 import { formSchemaAddressPlaques, FormValuesAddressPlaques } from "./schema";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IAddressPlaquesFormProps {
     className?: string;
@@ -15,6 +18,8 @@ export interface IAddressPlaquesFormProps {
     onSubmit: (data: FormValuesAddressPlaques) => void;
     colors: Color[];
     forms: AddressPlaqueForm[];
+    id: string;
+    href: string;
 }
 
 export const AddressPlaquesForm = ({
@@ -22,6 +27,8 @@ export const AddressPlaquesForm = ({
     defaultValues,
     colors,
     forms,
+    href,
+    id,
     className
 }: IAddressPlaquesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesAddressPlaques>({
@@ -34,8 +41,11 @@ export const AddressPlaquesForm = ({
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesAddressPlaques) => {
         onSubmit(data);
+        closeTab(id, href, "Адресные аншлаги");
         toast.success(`Адресный аншлаг "${data.name}" успешно сохранен!`);
     };
 

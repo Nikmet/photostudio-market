@@ -1,3 +1,5 @@
+//TODO: Картинки добавить
+
 import { AddressPlaqueFormsForm } from "@/components/forms/address-plaque-forms-form/address-plaque-forms-form";
 import { FormValuesAddressPlaqueForms } from "@/components/forms/address-plaque-forms-form/schema";
 import { prisma } from "@/prisma/prisma-client";
@@ -29,8 +31,7 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
                     name: data.name,
                     price: data.price,
                     height: data.height,
-                    width: data.width,
-                    image: ""
+                    width: data.width
                 }
             });
         }
@@ -43,8 +44,7 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
                 name: data.name,
                 price: data.price,
                 height: data.height,
-                width: data.width,
-                image: ""
+                width: data.width
             }
         });
         redirect("/admin/address-plaque-form");
@@ -54,9 +54,14 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
         <div>
             <h1>{findAPF?.id ? `Форма адресного аншлага | ${findAPF.id}` : `Новая форма адресного аншлага | ${id}`}</h1>
             {findAPF ? (
-                <AddressPlaqueFormsForm defaultValues={findAPF} onSubmit={handleSubmit} />
+                <AddressPlaqueFormsForm
+                    defaultValues={findAPF}
+                    onSubmit={handleSubmit}
+                    id={id}
+                    href="/admin/address-plaque-form"
+                />
             ) : (
-                <AddressPlaqueFormsForm onSubmit={handleSubmit} />
+                <AddressPlaqueFormsForm onSubmit={handleSubmit} id={id} href="/admin/address-plaque-form" />
             )}
         </div>
     );

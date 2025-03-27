@@ -68,9 +68,6 @@ export const AdminTable = <T extends { id: string }>({
                             <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
                                 Удалить
                             </Button>
-                            <Button className="bg-blue-500">
-                                Редактировать <ArrowDown />
-                            </Button>
                         </div>
                     </div>
                 )}

@@ -1,3 +1,5 @@
+//TODO: Картинки добавить
+
 "use client";
 
 import { Button } from "@/components/ui";
@@ -6,14 +8,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { formSchemaBadges, FormValuesBadges } from "./schema";
 import { FormInput } from "@/components/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IBadgesFormProps {
     defaultValues?: FormValuesBadges;
     onSubmit: (data: FormValuesBadges) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const BadgesForm = ({ onSubmit, defaultValues, className }: IBadgesFormProps): React.JSX.Element => {
+export const BadgesForm = ({ onSubmit, defaultValues, id, href, className }: IBadgesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesBadges>({
         resolver: zodResolver(formSchemaBadges),
         defaultValues: defaultValues || {
@@ -21,8 +26,11 @@ export const BadgesForm = ({ onSubmit, defaultValues, className }: IBadgesFormPr
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesBadges) => {
         onSubmit(data);
+        closeTab(id, href, "Значки");
         toast.success(`Значок "${data.name}" успешно сохранен!`);
     };
 

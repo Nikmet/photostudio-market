@@ -5,13 +5,20 @@ import { createUid, getId } from "@/lib/uid";
 
 export const useTableActions = <T extends { id: string }>(data: T[], route: string, prefix?: string) => {
     const router = useRouter();
-    const { addPage, setActivePage } = usePagesStore();
+    const { addPage, setActivePage, openPages } = usePagesStore();
 
     const redirectToPage = (id: string) => {
         const page: IPage = {
             href: `/admin/${route}/${id}`,
             name: id
         };
+
+        if (openPages.find(p => p.name === page.name)) {
+            router.push(page.href);
+            setActivePage(page);
+            return;
+        }
+
         router.push(page.href);
         addPage(page);
         setActivePage(page);

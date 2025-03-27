@@ -10,6 +10,7 @@ export default async function PaperTypesPage() {
 
     const columns: IColumnsProps<Baguette>[] = [
         { title: "Номер", key: "id" },
+        { title: "Серийный номер", key: "serial_number" },
         { title: "Цена", key: "price" }
     ];
 

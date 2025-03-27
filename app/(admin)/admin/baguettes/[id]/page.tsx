@@ -34,6 +34,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
         // Загружаем изображение, если оно есть
         if (data.image) {
             image = await uploadImage(data.image);
+            console.log(image);
         }
 
         if (!findBaguette) {
@@ -51,24 +52,31 @@ export default async function PaperTypesEditPage({ params }: Props) {
                         : undefined
                 }
             });
+        } else {
+            await prisma.baguette.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    price: data.price,
+                    serial_number: data.serial_number,
+                    image: image
+                        ? {
+                              connect: {
+                                  id: image.id
+                              }
+                          }
+                        : findBaguette.image
+                        ? {
+                              connect: {
+                                  id: findBaguette.image.id
+                              }
+                          }
+                        : undefined
+                }
+            });
         }
 
-        await prisma.baguette.update({
-            where: {
-                id: id
-            },
-            data: {
-                price: data.price,
-                serial_number: data.serial_number,
-                image: image
-                    ? {
-                          connect: {
-                              id: image.id
-                          }
-                      }
-                    : undefined
-            }
-        });
         redirect("/admin/baguettes");
     };
 
@@ -83,9 +91,11 @@ export default async function PaperTypesEditPage({ params }: Props) {
                         image: imageToFile(findBaguette.image)
                     }}
                     onSubmit={handleSubmit}
+                    id={id}
+                    href="/admin/baguettes"
                 />
             ) : (
-                <BaguetteForm onSubmit={handleSubmit} />
+                <BaguetteForm onSubmit={handleSubmit} href="/admin/baguettes" id={id} />
             )}
         </div>
     );

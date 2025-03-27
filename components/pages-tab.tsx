@@ -22,7 +22,6 @@ export const PagesTab = ({ className }: IPagesTabProps): React.JSX.Element => {
         if (openPages.length === 1) {
             router.push("/admin");
             removePage(page);
-            setActivePage(null);
             return;
         }
 

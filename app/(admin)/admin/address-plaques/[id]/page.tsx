@@ -109,9 +109,17 @@ export default async function FramesEditPage({ params }: Props) {
                     colors={colors}
                     forms={forms}
                     onSubmit={handleSubmit}
+                    id={id}
+                    href="/admin/address-plaques"
                 />
             ) : (
-                <AddressPlaquesForm onSubmit={handleSubmit} colors={colors} forms={forms} />
+                <AddressPlaquesForm
+                    onSubmit={handleSubmit}
+                    colors={colors}
+                    forms={forms}
+                    id={id}
+                    href="/admin/address-plaques"
+                />
             )}
         </div>
     );

@@ -8,6 +8,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { usePagesStore } from "@/store/pages-store";
 import { IPage } from "@/@types/page";
+import toast from "react-hot-toast";
 
 export interface ITableSearchProps<T> {
     className?: string;
@@ -20,7 +21,7 @@ export const TableSearch = <T extends { id: string }>({
     route,
     className
 }: ITableSearchProps<T>): React.JSX.Element => {
-    const { setActivePage, addPage } = usePagesStore();
+    const { setActivePage, addPage, openPages } = usePagesStore();
     const [search, setSearch] = React.useState("");
     const router = useRouter();
 
@@ -28,7 +29,8 @@ export const TableSearch = <T extends { id: string }>({
         const filteredSearch = data.filter(item => item.id == search);
 
         if (filteredSearch.length === 0) {
-            //TODO: Toaster
+            toast.error("Не найдено");
+            setSearch("");
             return;
         }
 
@@ -36,6 +38,12 @@ export const TableSearch = <T extends { id: string }>({
             href: `/admin/${route}/${search}`,
             name: search
         };
+
+        if (openPages.find(p => p.name === page.name)) {
+            router.push(page.href);
+            setActivePage(page);
+            return;
+        }
 
         addPage(page);
         setActivePage(page);

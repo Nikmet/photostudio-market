@@ -12,7 +12,7 @@ export interface ILinkButtonProps {
 }
 
 export const LinkButton = ({ href, name, className }: ILinkButtonProps): React.JSX.Element => {
-    const { setActivePage, addPage } = usePagesStore();
+    const { setActivePage, addPage, openPages } = usePagesStore();
     const router = useRouter();
 
     const handleClick = () => {
@@ -21,6 +21,12 @@ export const LinkButton = ({ href, name, className }: ILinkButtonProps): React.J
                 href,
                 name
             };
+
+            if (openPages.find(p => p.name === page.name)) {
+                router.push(page.href);
+                setActivePage(page);
+                return;
+            }
 
             router.push(page.href);
             setActivePage(page);

@@ -7,17 +7,22 @@ import toast from "react-hot-toast";
 import { FormInput } from "../../form-input";
 import { formSchemaAddressPlaqueForms, FormValuesAddressPlaqueForms } from "./schema";
 import { onNumberValueChange } from "@/lib/inputs";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IAddressPlaqueFormsFormProps {
     className?: string;
     defaultValues?: FormValuesAddressPlaqueForms;
     onSubmit: (data: FormValuesAddressPlaqueForms) => void;
+    id: string;
+    href: string;
 }
 
 export const AddressPlaqueFormsForm = ({
     className,
     defaultValues,
-    onSubmit
+    onSubmit,
+    id,
+    href
 }: IAddressPlaqueFormsFormProps): React.JSX.Element => {
     const {
         handleSubmit,
@@ -30,8 +35,13 @@ export const AddressPlaqueFormsForm = ({
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesAddressPlaqueForms) => {
         onSubmit(data);
+        console.log(onSubmit);
+        
+        closeTab(id, href, "Формы адресных аншлагов");
         toast.success(`Форма адресного аншлага "${data.name}" успешно сохранен!`);
     };
 

@@ -1,7 +1,7 @@
 import { prisma } from "@/prisma/prisma-client";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const isRegistered = async (email: string) => {
+async function isRegistered(email: string) {
     const findUser = await prisma.user.findFirst({
         where: {
             email: email
@@ -9,10 +9,10 @@ export const isRegistered = async (email: string) => {
     });
 
     return findUser != null;
-};
+}
 
-export async function GET(request: Request, { params }: { params: { email: string } }) {
-    const email = decodeURIComponent(params.email);
+export async function GET(request: NextRequest, { params }: { params: Promise<{ email: string }> }) {
+    const email = decodeURIComponent((await params).email);
 
     if (!email) {
         return NextResponse.json(false);

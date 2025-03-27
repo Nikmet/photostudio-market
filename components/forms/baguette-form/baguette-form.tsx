@@ -8,14 +8,23 @@ import toast from "react-hot-toast";
 import { formSchemaBaguette, FormValuesBaguette } from "./schema";
 import { onNumberValueChange } from "@/lib/inputs";
 import { ImageInput } from "@/components/image-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IBaguetteFormProps {
     defaultValues?: FormValuesBaguette;
     onSubmit: (data: FormValuesBaguette) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFormProps): React.JSX.Element => {
+export const BaguetteForm = ({
+    onSubmit,
+    defaultValues,
+    id,
+    href,
+    className
+}: IBaguetteFormProps): React.JSX.Element => {
     const form = useForm<FormValuesBaguette>({
         resolver: zodResolver(formSchemaBaguette),
         defaultValues: defaultValues || {
@@ -23,8 +32,15 @@ export const BaguetteForm = ({ onSubmit, defaultValues, className }: IBaguetteFo
         }
     });
 
+    console.log(defaultValues);
+
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesBaguette) => {
+        console.log(onSubmit);
+
         onSubmit(data);
+        closeTab(id, href, "Багет");
         toast.success(`Багет успешно сохранен!`);
     };
 

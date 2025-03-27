@@ -76,24 +76,28 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                 <Link
                     href="/admin/clients"
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                    onClick={() => handleClick({ name: "Клиенты", href: "/admin/clients" })}
                 >
                     Клиенты
                 </Link>
                 <Link
                     href="/admin/orders"
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                    onClick={() => handleClick({ name: "Заказы", href: "/admin/orders" })}
                 >
                     Заказы
                 </Link>
                 <Link
                     href="/admin/products"
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                    onClick={() => handleClick({ name: "Продукты", href: "/admin/products" })}
                 >
                     Все продукты
                 </Link>
                 <Link
                     href="/admin/prices"
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                    onClick={() => handleClick({ name: "Цены", href: "/admin/prices" })}
                 >
                     Цены
                 </Link>
