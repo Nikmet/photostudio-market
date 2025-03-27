@@ -18,6 +18,9 @@ export default async function CupsEditPage({ params }: Props) {
     const findClient = await prisma.user.findFirst({
         where: {
             id: id
+        },
+        include: {
+            orders: true
         }
     });
 
@@ -73,9 +76,16 @@ export default async function CupsEditPage({ params }: Props) {
                         phone: findClient.phone,
                         email: findClient.email
                     }}
+                    orders={findClient.orders.map(order => ({
+                        id: order.id,
+                        payment_status: order.payment_status,
+                        createdAt: order.createdAt.toLocaleDateString(),
+                        totalAmount: order.totalAmount,
+                        status: order.status
+                    }))}
                 />
             ) : (
-                <ClientForm onSubmit={handleSubmit} />
+                <ClientForm onSubmit={handleSubmit} orders={[]} />
             )}
         </div>
     );
