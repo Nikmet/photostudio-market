@@ -59,7 +59,7 @@ export const BaguetteForm = ({
                         />
                     )}
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-col w-[300px]">
                     <Controller
                         name="serial_number"
                         control={form.control}

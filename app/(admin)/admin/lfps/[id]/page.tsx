@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { LfpForm } from "@/components/forms/lfp-form/lfp-form";
 import { FormValuesLFP } from "@/components/forms/lfp-form/schema";
 import { PageTitle } from "@/components/page-title";
@@ -70,30 +70,32 @@ export default async function TablesEditPage({ params }: Props) {
             });
 
             await createProduct(lfp.id, lfp.name, "Реклама", await calcLFPPrice(lfp), "lfps");
+        } else {
+            const updatedLFP = await prisma.lFP.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
+                    paper_type: {
+                        connect: {
+                            id: findPaperType?.id
+                        }
+                    },
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
+                }
+            });
+            await updateProduct(updatedLFP.id, updatedLFP.name, await calcLFPPrice(updatedLFP));
         }
 
-        await prisma.lFP.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                width: data.width,
-                height: data.height,
-                paper_type: {
-                    connect: {
-                        id: findPaperType?.id
-                    }
-                },
-                printing_image: printing_image
-                    ? {
-                          connect: {
-                              id: printing_image.id
-                          }
-                      }
-                    : undefined
-            }
-        });
         redirect("/admin/lfps");
     };
 

@@ -1,5 +1,6 @@
 import { createUid, getId } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
+import { Difficile } from "@prisma/client";
 
 export const createProduct = async (
     itemId: string,
@@ -59,6 +60,36 @@ export const createProduct = async (
     }
 };
 
+export const updateProduct = async (itemId: string, itemName: string, price: number) => {
+    try {
+        const findProduct = await prisma.product.findFirst({
+            where: {
+                itemId
+            }
+        });
+
+        console.log(findProduct);
+
+        if (!findProduct) {
+            throw new Error("Продукт не найден");
+        }
+
+        await prisma.product.update({
+            where: {
+                id: findProduct.id
+            },
+            data: {
+                itemName,
+                price,
+                design: false,
+                design_difficulty: Difficile.EASY
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 export const deleteProducts = async (ids: string[]) => {
     try {
         await prisma.product.deleteMany({
@@ -72,4 +103,3 @@ export const deleteProducts = async (ids: string[]) => {
         console.error("[DELETE_PRODUCTS_ACTION]", e);
     }
 };
-

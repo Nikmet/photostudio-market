@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { LecForm } from "@/components/forms/lec-form/lec-form";
 import { FormValuesLEC } from "@/components/forms/lec-form/schema";
 import { calcLECPrice } from "@/lib/prices";
@@ -37,19 +37,21 @@ export default async function PrintingsEditPage({ params }: Props) {
             });
 
             await createProduct(lec.id, lec.name, "Сувениры", await calcLECPrice(lec), "lec");
+        } else {
+            const updatedLEC = await prisma.lEC.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    height: data.height,
+                    width: data.width,
+                    difficile: data.difficile as Difficile
+                }
+            });
+            await updateProduct(updatedLEC.id, updatedLEC.name, await calcLECPrice(updatedLEC));
         }
 
-        await prisma.lEC.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                height: data.height,
-                width: data.width,
-                difficile: data.difficile as Difficile
-            }
-        });
         redirect("/admin/lec");
     };
 

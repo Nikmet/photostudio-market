@@ -37,7 +37,8 @@ export default async function ProductPage({ params }: Props) {
             data: {
                 design: data.design,
                 design_difficulty: data.design_difficulty as Difficile,
-                comments: data.comment
+                comments: data.comment,
+                price: Number(data.price)
             }
         });
         redirect("/admin/products");
@@ -51,14 +52,14 @@ export default async function ProductPage({ params }: Props) {
                     defaultValues={{
                         design: findProduct.design,
                         design_difficulty: findProduct.design_difficulty,
-                        comment: findProduct.comments || undefined
+                        comment: findProduct.comments || undefined,
+                        price: findProduct.price.toFixed(2)
                     }}
                     onSubmit={handleSubmit}
                     category={findProduct.category.name}
                     itemId={findProduct.itemId}
                     itemName={findProduct.itemName}
                     route={findProduct.route}
-                    price={findProduct.price.toFixed(2)}
                 />
             ) : (
                 <ProductForm onSubmit={handleSubmit} />

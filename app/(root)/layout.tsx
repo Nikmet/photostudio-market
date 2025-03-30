@@ -10,12 +10,11 @@ export default async function RootLayout({
 }>) {
     const authCookie = (await cookies()).get("auth");
 
-
     return (
         <>
             <Header admin={Boolean(authCookie?.value)} />
-            <main className="flex h-[89vh] w-full">
-                <MenuBar pages={clientPages} className="ml-4 mt-4" isAdmin={Boolean(authCookie?.value)} />
+            <main className="flex h-[85vh] w-full">
+                <MenuBar pages={clientPages} className="ml-4 mt-4 h-[82vh]" isAdmin={Boolean(authCookie?.value)} />
                 <div className="w-full h-full">{children}</div>
             </main>
         </>

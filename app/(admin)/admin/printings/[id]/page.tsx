@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { PrintingsForm } from "@/components/forms/printings-form/printings-form";
 import { FormValuesPrintings } from "@/components/forms/printings-form/schema";
 import { calcPrintingPrice } from "@/lib/prices";
@@ -35,17 +35,19 @@ export default async function PrintingsEditPage({ params }: Props) {
             });
 
             await createProduct(printing.id, printing.name, "Сувениры", await calcPrintingPrice(printing), "printings");
+        } else {
+            const updatedPrinting = await prisma.printing.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    printing_type: data.printing_type as PrintingType
+                }
+            });
+            await updateProduct(updatedPrinting.id, updatedPrinting.name, await calcPrintingPrice(updatedPrinting));
         }
 
-        await prisma.printing.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                printing_type: data.printing_type as PrintingType
-            }
-        });
         redirect("/admin/printings");
     };
 

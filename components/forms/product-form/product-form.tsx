@@ -1,3 +1,5 @@
+//TODO: Сделать изменение цены по сложности дизайна
+
 "use client";
 
 import { Controller, useForm } from "react-hook-form";
@@ -10,7 +12,9 @@ import { AdminCheckbox } from "@/components/admin-checkbox";
 import { FormTextarea } from "@/components/form-textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui";
-import { useRouter } from "next/navigation";
+import { LinkButton } from "@/components/link-button";
+import { FormInput } from "@/components/form-input";
+import { onNumberValueChange } from "@/lib/inputs";
 
 export interface IProductFormProps {
     defaultValues?: FormValuesProducts;
@@ -20,7 +24,6 @@ export interface IProductFormProps {
     itemId?: string;
     itemName?: string;
     route?: string;
-    price?: string;
 }
 
 export const ProductForm = ({
@@ -30,7 +33,6 @@ export const ProductForm = ({
     itemId,
     itemName,
     route,
-    price,
     className
 }: IProductFormProps): React.JSX.Element => {
     const {
@@ -43,20 +45,44 @@ export const ProductForm = ({
         resolver: zodResolver(formSchemaProducts),
         defaultValues: defaultValues
     });
-    const router = useRouter();
+
+    const calcPriceWithDifficulty = (price: number) => {
+        const difficulty = watch("design_difficulty");
+
+        if (difficulty === "EASY") {
+            return price + price * 0.2;
+        }
+
+        if (difficulty === "MEDIUM") {
+            return price + price * 0.5;
+        }
+
+        if (difficulty === "HARD") {
+            return price + price * 0.8;
+        }
+        return 0;
+    };
+
+    const onChangePrice = () => {
+        const isDesigned = watch("design");
+
+        if (defaultValues?.price) {
+            if (isDesigned) {
+                setValue("price", calcPriceWithDifficulty(Number(defaultValues.price)).toFixed(2));
+            } else {
+                setValue("price", defaultValues.price);
+            }
+        }
+    };
 
     const submitAction = (data: FormValuesProducts) => {
         onSubmit(data);
         toast.success(`Печать "${itemName}" успешно сохранена!`);
     };
 
-    const linkIn = () => {
-        router.push(`/admin/${route}/${itemId}`);
-    };
-
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)}>
+            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2 flex-col w-[500px] mb-4">
                 <div>
                     <div className="font-medium mb-2">Имя продукта</div>
                     <Input value={itemName} disabled />
@@ -77,7 +103,10 @@ export const ProductForm = ({
                         <AdminCheckbox
                             {...field}
                             checked={value} // Передаем значение
-                            onChange={onChange} // Передаем обработчик
+                            onChange={() => {
+                                onChange(!value);
+                                onChangePrice();
+                            }} // Передаем обработчик
                             label="Наличие дизайна"
                         />
                     )}
@@ -85,7 +114,10 @@ export const ProductForm = ({
                 <AdminSelect
                     name="design_difficulty"
                     value={watch("design_difficulty")}
-                    onChange={value => setValue("design_difficulty", value)}
+                    onChange={value => {
+                        setValue("design_difficulty", value);
+                        onChangePrice();
+                    }}
                     label={"Сложность"}
                     items={difficile}
                     defaultValue={defaultValues?.design_difficulty}
@@ -96,15 +128,26 @@ export const ProductForm = ({
                     control={control}
                     render={({ field }) => <FormTextarea label="Комментарий" errors={errors} {...field} />}
                 />
-                <div>
-                    <div className="font-medium mb-2">Сумма</div>
-                    <Input value={price} disabled />
+                <Controller
+                    name="price"
+                    control={control}
+                    render={({ field: { onChange, ...field } }) => (
+                        <FormInput
+                            type="number"
+                            label="Цена"
+                            {...field}
+                            onChange={e => onNumberValueChange(e, onChange)}
+                            errors={errors}
+                            required
+                            disabled
+                        />
+                    )}
+                />
+                <div className="flex gap-2 mt-2">
+                    <Button type="submit">Сохранить</Button>
+                    <LinkButton href={`/admin/${route}/${itemId}`} name={itemId} text="Перейти к продукту" />
                 </div>
             </form>
-            <Button type="submit">Сохранить</Button>
-            <Button variant={"outline"} onClick={linkIn}>
-                Перейти к продукту
-            </Button>
         </div>
     );
 };

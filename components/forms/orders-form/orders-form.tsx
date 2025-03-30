@@ -23,7 +23,13 @@ export interface IOrderFormProps {
     orderTotal: number;
 }
 
-export const OrderForm = ({ onSubmit, defaultValues, productsProp, orderTotal, className }: IOrderFormProps): React.JSX.Element => {
+export const OrderForm = ({
+    onSubmit,
+    defaultValues,
+    productsProp,
+    orderTotal,
+    className
+}: IOrderFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -38,6 +44,7 @@ export const OrderForm = ({ onSubmit, defaultValues, productsProp, orderTotal, c
     const [loading, setLoading] = React.useState(false);
     const [addWindow, setAddWindow] = React.useState(false);
     const [products, setProducts] = React.useState<ProductItemWithProduct[]>(productsProp);
+
 
     const fetchUsers = async () => {
         try {

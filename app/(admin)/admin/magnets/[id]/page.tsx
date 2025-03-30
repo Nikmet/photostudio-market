@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { MagnetsForm } from "@/components/forms/magnets-form/magnets-form";
 import { FormValuesMagnet } from "@/components/forms/magnets-form/schema";
 import { PageTitle } from "@/components/page-title";
@@ -57,26 +57,28 @@ export default async function MagnetEditPage({ params }: Props) {
             });
 
             await createProduct(magnet.id, magnet.name, "Сувениры", await calcMagnetPrice(magnet), "magnets");
+        } else {
+            const updatedMagnet = await prisma.magnet.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    height: data.height,
+                    width: data.width,
+                    magnet_type: data.magnet_type as MagnetType,
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
+                }
+            });
+            await updateProduct(id, updatedMagnet.name, await calcMagnetPrice(updatedMagnet));
         }
 
-        await prisma.magnet.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                height: data.height,
-                width: data.width,
-                magnet_type: data.magnet_type as MagnetType,
-                printing_image: printing_image
-                    ? {
-                          connect: {
-                              id: printing_image.id
-                          }
-                      }
-                    : undefined
-            }
-        });
         redirect("/admin/magnets");
     };
 

@@ -9,9 +9,10 @@ export interface ILinkButtonProps {
     className?: string;
     href?: string;
     name?: string;
+    text?: string;
 }
 
-export const LinkButton = ({ href, name, className }: ILinkButtonProps): React.JSX.Element => {
+export const LinkButton = ({ href, name, text, className }: ILinkButtonProps): React.JSX.Element => {
     const { setActivePage, addPage, openPages } = usePagesStore();
     const router = useRouter();
 
@@ -36,8 +37,9 @@ export const LinkButton = ({ href, name, className }: ILinkButtonProps): React.J
 
     return (
         <div className={className}>
-            <Button variant={"outline"} type="button" onClick={handleClick}>
+            <Button variant={"outline"} type="button" onClick={handleClick} className="flex items-center gap-2">
                 <PictureInPicture2 />
+                {text && <span>{text}</span>}
             </Button>
         </div>
     );

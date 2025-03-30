@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { FormValuesTShirts } from "@/components/forms/t-shirts-form/schema";
 import { TShirtsForm } from "@/components/forms/t-shirts-form/t-shirts-form";
 import { PageTitle } from "@/components/page-title";
@@ -57,7 +57,7 @@ export default async function TShirtsEditPage({ params }: Props) {
 
             await createProduct(t_shirt.id, t_shirt.name, "Сувениры", await calcTShirtPrice(t_shirt), "t-shirts");
         } else {
-            await prisma.tShirt.update({
+            const updatedTShirt = await prisma.tShirt.update({
                 where: {
                     id: id
                 },
@@ -74,6 +74,7 @@ export default async function TShirtsEditPage({ params }: Props) {
                         : undefined
                 }
             });
+            await updateProduct(updatedTShirt.id, updatedTShirt.name, await calcTShirtPrice(updatedTShirt));
         }
         redirect("/admin/t-shirts");
     };

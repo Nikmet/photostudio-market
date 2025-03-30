@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { BusinessCardsForm } from "@/components/forms/business-cards-form/business-cards-form";
 import { FormValuesBusinessCards } from "@/components/forms/business-cards-form/schema";
 import { PageTitle } from "@/components/page-title";
@@ -33,7 +33,6 @@ export default async function BusinessCardsEditPage({ params }: Props) {
 
         let printing_image: Image | undefined;
 
-        // Загружаем изображение, если оно есть
         if (data.printing_image) {
             printing_image = await uploadImage(data.printing_image);
         }
@@ -61,24 +60,26 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                 await calcBusinessCardPrice(businessCard),
                 "business-cards"
             );
+        } else {
+            const updatedBC = await prisma.businessCard.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    printing_side: data.printing_side as PrintingSide,
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
+                }
+            });
+            await updateProduct(updatedBC.id, updatedBC.name, await calcBusinessCardPrice(updatedBC));
         }
 
-        await prisma.businessCard.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                printing_side: data.printing_side as PrintingSide,
-                printing_image: printing_image
-                    ? {
-                          connect: {
-                              id: printing_image.id
-                          }
-                      }
-                    : undefined
-            }
-        });
         redirect("/admin/business-cards");
     };
 

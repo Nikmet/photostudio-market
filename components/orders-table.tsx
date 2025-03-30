@@ -16,6 +16,7 @@ import { EmptyTable } from "./empty-table";
 import React from "react";
 import { Difficile, Product, ProductItem } from "@prisma/client";
 import { SelectedProductWindow } from "./selected-product-window";
+import { useTableActions } from "@/hooks/use-table-actions";
 
 export type ProductItemWithProduct = ProductItem & {
     createdAt: Date;
@@ -52,6 +53,10 @@ export const OrdersTable = ({
     const [loading, setLoading] = React.useState(false);
     const [total, setTotal] = React.useState<number>(totalProp ?? 0);
     const [addWindow, setAddWindow] = React.useState(false);
+    const { redirectToPage } = useTableActions(
+        products.map(product => ({ id: product.itemId })),
+        "products",
+    );
 
     const sortedData = React.useMemo(() => {
         if (!sortConfig.key) return products;
@@ -286,7 +291,11 @@ export const OrdersTable = ({
                                 <TableBody>
                                     {currentSortedItems.map(item => {
                                         return (
-                                            <TableRow key={item.id} className="cursor-pointer" onDoubleClick={() => {}}>
+                                            <TableRow
+                                                key={item.id}
+                                                className="cursor-pointer"
+                                                onDoubleClick={() => redirectToPage(item.productId)}
+                                            >
                                                 <TableCell>
                                                     <Checkbox
                                                         checked={selected.includes(item.productId)}
@@ -315,7 +324,7 @@ export const OrdersTable = ({
                                     <TableFooter>
                                         <TableRow>
                                             <TableCell colSpan={columns.length}>Итого:</TableCell>
-                                            <TableCell className="text-right">{total} ₽</TableCell>
+                                            <TableCell className="text-right">{formatTableCell(total as never)} ₽</TableCell>
                                         </TableRow>
                                     </TableFooter>
                                 )}

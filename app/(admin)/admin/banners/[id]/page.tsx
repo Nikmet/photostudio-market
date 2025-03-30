@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { BannerForm } from "@/components/forms/banner-form/banner-form";
 import { FormValuesBanner } from "@/components/forms/banner-form/schema";
 import { PageTitle } from "@/components/page-title";
@@ -59,28 +59,30 @@ export default async function BannersEditPage({ params }: Props) {
             });
 
             await createProduct(banner.id, banner.name, "Реклама", await calcBannerPrice(banner), "banners");
+        } else {
+            const updatedBanner = await prisma.banner.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    density: data.density as BannerDensity,
+                    height: data.height,
+                    width: data.width,
+                    luvers_count: data.luvers_count,
+                    luvers_step: data.luvers_step,
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
+                }
+            });
+            await updateProduct(updatedBanner.id, updatedBanner.name, await calcBannerPrice(updatedBanner));
         }
 
-        await prisma.banner.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                density: data.density as BannerDensity,
-                height: data.height,
-                width: data.width,
-                luvers_count: data.luvers_count,
-                luvers_step: data.luvers_step,
-                printing_image: printing_image
-                    ? {
-                          connect: {
-                              id: printing_image.id
-                          }
-                      }
-                    : undefined
-            }
-        });
         redirect("/admin/banners");
     };
 

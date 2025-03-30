@@ -54,7 +54,7 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                     />
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 w-[300px]">
                     <Controller
                         name="name"
                         control={control}

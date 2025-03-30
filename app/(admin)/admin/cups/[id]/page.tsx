@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { CupsForm } from "@/components/forms/cups-form/cups-form";
 import { FormValuesCups } from "@/components/forms/cups-form/schema";
 import { PageTitle } from "@/components/page-title";
@@ -54,23 +54,25 @@ export default async function CupsEditPage({ params }: Props) {
             });
 
             await createProduct(cup.id, cup.name, "Сувениры", await calcCupPrice(), "cups");
+        } else {
+            const updatedCup = await prisma.cup.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    printing_image: printing_image
+                        ? {
+                              connect: {
+                                  id: printing_image.id
+                              }
+                          }
+                        : undefined
+                }
+            });
+            await updateProduct(updatedCup.id, updatedCup.name, await calcCupPrice());
         }
 
-        await prisma.cup.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                printing_image: printing_image
-                    ? {
-                          connect: {
-                              id: printing_image.id
-                          }
-                      }
-                    : undefined
-            }
-        });
         redirect("/admin/cups");
     };
 

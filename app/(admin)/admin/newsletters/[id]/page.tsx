@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { NewslettersForm } from "@/components/forms/newsletters-form/newsletters-form";
 import { FormValuesNewsletters } from "@/components/forms/newsletters-form/schema";
 import { calcNewsletterPrice } from "@/lib/prices";
@@ -57,23 +57,25 @@ export default async function TablesEditPage({ params }: Props) {
                 await calcNewsletterPrice(newsletter),
                 "newsletters"
             );
-        }
-
-        await prisma.newsletter.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                width: data.width,
-                height: data.height,
-                Color: {
-                    connect: {
-                        id: findColor?.id
+        } else {
+            await prisma.newsletter.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
+                    Color: {
+                        connect: {
+                            id: findColor?.id
+                        }
                     }
                 }
-            }
-        });
+            });
+            await updateProduct(findNewsletter.id, findNewsletter.name, await calcNewsletterPrice(findNewsletter));
+        }
+
         redirect("/admin/newsletters");
     };
 

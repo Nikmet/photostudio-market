@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { AddressPlaquesForm } from "@/components/forms/address-plaques-form/address-plaques-form";
 import { FormValuesAddressPlaques } from "@/components/forms/address-plaques-form/schema";
 import { calcAddressPlaquePrice } from "@/lib/prices";
@@ -69,27 +69,33 @@ export default async function FramesEditPage({ params }: Props) {
                 await calcAddressPlaquePrice(addressPlaque),
                 "address-plaques"
             );
-        }
-
-        await prisma.addressPlaque.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                address: data.address,
-                Color: {
-                    connect: {
-                        id: findColor?.id
-                    }
+        } else {
+            const updatedAP = await prisma.addressPlaque.update({
+                where: {
+                    id: id
                 },
-                form: {
-                    connect: {
-                        id: findForm?.id
+                data: {
+                    name: data.name,
+                    address: data.address,
+                    Color: {
+                        connect: {
+                            id: findColor?.id
+                        }
+                    },
+                    form: {
+                        connect: {
+                            id: findForm?.id
+                        }
                     }
                 }
-            }
-        });
+            });
+            await updateProduct(
+                updatedAP.id,
+                updatedAP.name,
+                await calcAddressPlaquePrice(updatedAP),
+            );
+        }
+
         redirect("/admin/address-plaques");
     };
 

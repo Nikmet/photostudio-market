@@ -45,7 +45,7 @@ export const CupsForm = ({ onSubmit, defaultValues, className }: ICupsFormProps)
                         />
                     )}
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-col w-[300px]">
                     <Controller
                         control={form.control}
                         name="name"

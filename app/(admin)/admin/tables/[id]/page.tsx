@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { FormValuesTables } from "@/components/forms/tabels-form/schema";
 import { TablesForm } from "@/components/forms/tabels-form/tabels-form";
 import { calcTablePrice } from "@/lib/prices";
@@ -51,23 +51,25 @@ export default async function TablesEditPage({ params }: Props) {
             });
 
             await createProduct(table.id, table.name, "Реклама", await calcTablePrice(table), "tables");
-        }
-
-        await prisma.table.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                width: data.width,
-                height: data.height,
-                Color: {
-                    connect: {
-                        id: findColor?.id
+        } else {
+            const updatedTable = await prisma.table.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
+                    Color: {
+                        connect: {
+                            id: findColor?.id
+                        }
                     }
                 }
-            }
-        });
+            });
+            await updateProduct(updatedTable.id, updatedTable.name, await calcTablePrice(updatedTable));
+        }
+
         redirect("/admin/tables");
     };
 

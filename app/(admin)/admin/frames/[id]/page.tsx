@@ -1,4 +1,4 @@
-import { createProduct } from "@/app/actions";
+import { createProduct, updateProduct } from "@/app/actions";
 import { FramesForm } from "@/components/forms/frames-form/frames-form";
 import { FormValuesFrames } from "@/components/forms/frames-form/schema";
 import { PageTitle } from "@/components/page-title";
@@ -57,26 +57,28 @@ export default async function FramesEditPage({ params }: Props) {
             console.log(frame);
 
             await createProduct(frame.id, frame.name, "Рамки", await calcFramePrice(frame), "frames");
-        }
-
-        await prisma.frame.update({
-            where: {
-                id: id
-            },
-            data: {
-                name: data.name,
-                width: data.width,
-                height: data.height,
-                has_glass: data.has_glass,
-                has_backdrop: data.has_backdrop,
-                has_suspension: data.has_suspension,
-                baguette: {
-                    connect: {
-                        id: findBaguette?.id
+        } else {
+            const updatedFrame = await prisma.frame.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: data.name,
+                    width: data.width,
+                    height: data.height,
+                    has_glass: data.has_glass,
+                    has_backdrop: data.has_backdrop,
+                    has_suspension: data.has_suspension,
+                    baguette: {
+                        connect: {
+                            id: findBaguette?.id
+                        }
                     }
                 }
-            }
-        });
+            });
+            await updateProduct(updatedFrame.id, updatedFrame.name, await calcFramePrice(updatedFrame));
+        }
+
         redirect("/admin/frames");
     };
 

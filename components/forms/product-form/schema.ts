@@ -4,7 +4,8 @@ import { z } from "zod";
 export const formSchemaProducts = z.object({
     design: z.boolean().default(false),
     design_difficulty: z.enum(Object.keys(difficile) as [string, ...string[]]).optional(),
-    comment: z.string().optional()
+    comment: z.string().optional(),
+    price: z.string()
 });
 
 export type FormValuesProducts = z.infer<typeof formSchemaProducts>;
