@@ -22,9 +22,12 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-export function TopClientsChart() {
+export interface ITopClientsChartProps {
+    onLoaded: () => void;
+}
+
+export function TopClientsChart({ onLoaded }: ITopClientsChartProps) {
     const [clients, setClients] = useState<Client[]>([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -39,21 +42,21 @@ export function TopClientsChart() {
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Unknown error");
             } finally {
-                setLoading(false);
+                onLoaded();
             }
         };
 
         fetchTopClients();
-    }, []);
+    }, [onLoaded]);
 
-    if (loading) return <div>Loading client data...</div>;
     if (error) return <div>Error: {error}</div>;
-    if (clients.length === 0) return <div>No client data available</div>;
 
     const chartData = clients.map(client => ({
         name: client.fullName,
         value: client.totalSpent
     }));
+
+    if (chartData.length === 0) return <div>No client data available</div>;
 
     return (
         <Card className="w-[50%] min-w-[500px] h-[590px]">
@@ -63,17 +66,7 @@ export function TopClientsChart() {
             </CardHeader>
             <CardContent className="h-[500px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                        data={chartData}
-                        layout="vertical"
-                        margin={{
-                            left: 20,
-                            right: 20,
-                            top: 20,
-                            bottom: 20
-                        }}
-                    >
-                        {/* Добавляем вертикальную сетку */}
+                    <BarChart data={chartData} layout="vertical" margin={{ left: 20, right: 20, top: 20, bottom: 20 }}>
                         <CartesianGrid horizontal={false} vertical={true} stroke="#eee" strokeDasharray="3 3" />
                         <XAxis
                             type="number"

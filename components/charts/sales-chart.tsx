@@ -17,6 +17,7 @@ interface Order {
 
 export interface ISalesChartProps {
     className?: string;
+    onLoaded: () => void;
 }
 
 const chartConfig = {
@@ -26,9 +27,8 @@ const chartConfig = {
     }
 } satisfies ChartConfig;
 
-export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element => {
+export const SalesChart = ({ onLoaded, className }: ISalesChartProps): React.JSX.Element => {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [growthPercentage, setGrowthPercentage] = useState<number>(0);
 
@@ -69,7 +69,7 @@ export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element =
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Неизвестная ошибка");
             } finally {
-                setLoading(false);
+                onLoaded();
             }
         };
 
@@ -109,10 +109,6 @@ export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element =
     };
 
     const chartData = getChartData();
-
-    if (loading) {
-        return <div className={className}>Загрузка данных о продажах...</div>;
-    }
 
     if (error) {
         return <div className={className}>Ошибка: {error}</div>;

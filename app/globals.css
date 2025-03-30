@@ -146,3 +146,28 @@ body {
         @apply bg-background text-foreground;
     }
 }
+
+.loader {
+    width: 10px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+    0% {
+        box-shadow: 13px 0 hsl(var(--primary)), -13px 0 hsl(var(--primary) / 0.2);
+        background: hsl(var(--primary));
+    }
+    33% {
+        box-shadow: 13px 0 hsl(var(--primary)), -13px 0 hsl(var(--primary) / 0.2);
+        background: hsl(var(--primary) / 0.2);
+    }
+    66% {
+        box-shadow: 13px 0 hsl(var(--primary) / 0.2), -13px 0 hsl(var(--primary));
+        background: hsl(var(--primary) / 0.2);
+    }
+    100% {
+        box-shadow: 13px 0 hsl(var(--primary) / 0.2), -13px 0 hsl(var(--primary));
+        background: hsl(var(--primary));
+    }
+}

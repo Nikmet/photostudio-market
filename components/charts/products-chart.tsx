@@ -9,23 +9,28 @@ interface Product {
     name: string;
 }
 
+export interface IProductTypeChartProps {
+    onLoaded: () => void;
+}
+
 const COLORS = [
-    "#0088FE", // Синий
-    "#4A90E2", // Голубой
-    "#1E3A8A", // Темно-синий
-    "#6366F1", // Индиго
-    "#8B5CF6", // Фиолетовый
-    "#A78BFA", // Светло-фиолетовый
-    "#7C3AED", // Насыщенный фиолетовый
-    "#4C1D95", // Темно-фиолетовый
-    "#2563EB", // Ярко-синий
-    "#3B82F6", // Небесно-синий
-    "#60A5FA", // Светло-синий
-    "#9333EA", // Пурпурный
-    "#5B21B6", // Глубокий фиолетовый
-    "#C4B5FD", // Пастельно-фиолетовый
-    "#2E1065" // Темно-пурпурный
+    "#0088FE",
+    "#4A90E2",
+    "#1E3A8A",
+    "#6366F1",
+    "#8B5CF6",
+    "#A78BFA",
+    "#7C3AED",
+    "#4C1D95",
+    "#2563EB",
+    "#3B82F6",
+    "#60A5FA",
+    "#9333EA",
+    "#5B21B6",
+    "#C4B5FD",
+    "#2E1065"
 ];
+
 const prefixToName: Record<string, string> = {
     К: "Кружки",
     Ф: "Футболки",
@@ -44,9 +49,8 @@ const prefixToName: Record<string, string> = {
     РМ: "Рамки"
 };
 
-export const ProductTypeChart = () => {
+export const ProductTypeChart = ({ onLoaded }: IProductTypeChartProps) => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -61,12 +65,12 @@ export const ProductTypeChart = () => {
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Unknown error");
             } finally {
-                setLoading(false);
+                onLoaded();
             }
         };
 
         fetchProducts();
-    }, []);
+    }, [onLoaded]);
 
     const getProductTypeData = () => {
         const typeCounts: Record<string, number> = {};
@@ -88,18 +92,13 @@ export const ProductTypeChart = () => {
 
     const chartData = getProductTypeData();
 
-    if (loading) {
-        return <div>Loading product data...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    if (error) return <div>Error: {error}</div>;
+    if (chartData.length === 0) return <div>No product data available</div>;
 
     return (
         <Card className="h-[600px]">
             <CardHeader>
-                <CardTitle>Соотношение видов продукции</CardTitle>
+                <CardTitle>Соотношение проданной продукции</CardTitle>
                 <CardDescription>Распределение по типам продуктов</CardDescription>
             </CardHeader>
             <CardContent className="h-[calc(100%-80px)]">
