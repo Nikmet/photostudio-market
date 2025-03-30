@@ -42,25 +42,28 @@ export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element =
                 const data = (await response.json()) as Order[];
                 setOrders(data);
 
-                // Вычисляем процент роста, если у нас достаточно данных
                 if (data.length >= 2) {
+                    // Используем 1-е число месяца для корректного сравнения
+                    const currentDate = new Date();
+                    const currentMonthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                    const prevMonthStart = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+
+                    const currentMonthKey = format(currentMonthStart, "yyyy-MM");
+                    const prevMonthKey = format(prevMonthStart, "yyyy-MM");
+
                     const currentMonthSales = data
-                        .filter(
-                            (order: Order) => format(parseISO(order.date), "yyyy-MM") === format(new Date(), "yyyy-MM")
-                        )
-                        .reduce((sum: number, order: Order) => sum + order.totalAmount, 0);
+                        .filter(order => format(parseISO(order.date), "yyyy-MM") === currentMonthKey)
+                        .reduce((sum, order) => sum + order.totalAmount, 0);
 
                     const prevMonthSales = data
-                        .filter(
-                            (order: Order) =>
-                                format(parseISO(order.date), "yyyy-MM") ===
-                                format(new Date(new Date().setMonth(new Date().getMonth() - 1)), "yyyy-MM")
-                        )
-                        .reduce((sum: number, order: Order) => sum + order.totalAmount, 0);
+                        .filter(order => format(parseISO(order.date), "yyyy-MM") === prevMonthKey)
+                        .reduce((sum, order) => sum + order.totalAmount, 0);
 
                     if (prevMonthSales > 0) {
                         const growth = ((currentMonthSales - prevMonthSales) / prevMonthSales) * 100;
                         setGrowthPercentage(Number(growth.toFixed(1)));
+                    } else if (currentMonthSales > 0) {
+                        setGrowthPercentage(100); // Рост от 0
                     }
                 }
             } catch (err) {
@@ -79,23 +82,30 @@ export const SalesChart = ({ className }: ISalesChartProps): React.JSX.Element =
 
         const monthlySales: Record<string, number> = {};
 
+        // Сначала группируем все заказы по месяцам
         orders.forEach(order => {
-            const month = format(parseISO(order.date), "LLLL", { locale: ru }); // Полное название месяца на русском
-            monthlySales[month] = (monthlySales[month] || 0) + order.totalAmount;
+            const date = parseISO(order.date);
+            const monthKey = format(date, "yyyy-MM"); // Используем год и месяц как ключ
+            monthlySales[monthKey] = (monthlySales[monthKey] || 0) + order.totalAmount;
         });
 
-        // Получаем последние 6 месяцев
+        // Получаем последние 6 месяцев, правильно обрабатывая переходы
         const months = [];
-        for (let i = 0; i < 6; i++) {
-            const date = new Date();
-            date.setMonth(date.getMonth() - i);
-            months.unshift(format(date, "LLLL", { locale: ru }));
+        const currentDate = new Date();
+
+        for (let i = 5; i >= 0; i--) {
+            // Создаем дату на 1-е число нужного месяца, чтобы избежать проблем с разным количеством дней
+            const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+            const monthKey = format(date, "yyyy-MM");
+            const monthName = format(date, "LLLL", { locale: ru });
+
+            months.push({
+                month: monthName,
+                sales: monthlySales[monthKey] || 0
+            });
         }
 
-        return months.map(month => ({
-            month,
-            sales: monthlySales[month] || 0
-        }));
+        return months;
     };
 
     const chartData = getChartData();

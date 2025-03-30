@@ -56,7 +56,7 @@ export function TopClientsChart() {
     }));
 
     return (
-        <Card className="w-[50%] min-w-[500px] h-[600px]">
+        <Card className="w-[50%] min-w-[500px] h-[590px]">
             <CardHeader>
                 <CardTitle>Топ-5 клиентов по прибыльности</CardTitle>
                 <CardDescription>Клиенты с наибольшим объемом заказов</CardDescription>

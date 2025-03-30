@@ -1,5 +1,3 @@
-//TODO: Сделать изменение цены по сложности дизайна
-
 "use client";
 
 import { Controller, useForm } from "react-hook-form";

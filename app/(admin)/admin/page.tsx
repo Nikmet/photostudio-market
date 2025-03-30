@@ -4,10 +4,10 @@ import { TopClientsChart } from "@/components/charts/top-clients-chart";
 
 export default async function AdminPage() {
     return (
-        <div className="overflow-auto scrollbar py-5 h-[70vh] pr-4">
+        <div className="overflow-auto scrollbar py-5 h-[75vh] pr-4">
             <h1 className="text-2xl font-bold mb-5">Главная страница (Отчеты)</h1>
             <div className="flex gap-10 flex-col">
-                <div className="flex gap-10 h-[580px]">
+                <div className="flex gap-10 h-[590px]">
                     <TopClientsChart />
                     <SalesChart />
                 </div>

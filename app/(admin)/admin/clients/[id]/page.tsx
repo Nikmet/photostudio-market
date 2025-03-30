@@ -47,20 +47,21 @@ export default async function CupsEditPage({ params }: Props) {
                     password: ""
                 }
             });
+        } else {
+            await prisma.user.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    fullName: data.fullName,
+                    email: data.email,
+                    phone: data.phone,
+                    role: "USER",
+                    password: ""
+                }
+            });
         }
 
-        await prisma.user.update({
-            where: {
-                id: id
-            },
-            data: {
-                fullName: data.fullName,
-                email: data.email,
-                phone: data.phone,
-                role: "USER",
-                password: ""
-            }
-        });
         redirect("/admin/clients");
     };
 
