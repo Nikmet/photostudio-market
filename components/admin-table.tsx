@@ -13,6 +13,7 @@ import { TableSearch } from "./table-search";
 import { useSort } from "@/hooks/use-sort";
 import { useSelection } from "@/hooks/use-selection";
 import { useTableActions } from "@/hooks/use-table-actions";
+import { EmptyTable } from "./empty-table";
 
 export interface IAdminTableProps<T> {
     className?: string;
@@ -42,9 +43,10 @@ export const AdminTable = <T extends { id: string }>({
     margin,
     className
 }: IAdminTableProps<T>): React.JSX.Element => {
-    const { sortedData, sortConfig, handleSort } = useSort<T>(data);
+    const [tableData, setTableData] = React.useState<T[]>(data);
+    const { sortedData, sortConfig, handleSort } = useSort<T>(tableData);
     const { selected, handleSelect, clearSelection } = useSelection();
-    const { handleAdd, redirectToPage } = useTableActions<T>(data, route, prefix);
+    const { handleAdd, redirectToPage } = useTableActions<T>(tableData, route, prefix);
     const {
         currentItems: currentSortedItems,
         currentPage,
@@ -52,10 +54,19 @@ export const AdminTable = <T extends { id: string }>({
         paginate
     } = usePagination(sortedData, rows_count ?? 15);
 
+    React.useEffect(() => {
+        setTableData(data);
+    }, [data]);
+
     const handleDelete = async (ids: string[]) => {
-        handleDeleteProp?.(ids);
+        await handleDeleteProp?.(ids);
+        setTableData(prev => prev.filter(item => !ids.includes(item.id)));
         clearSelection();
     };
+
+    if (tableData.length === 0) {
+        return <EmptyTable text="Список пустой, добавьте первую запись" textButton="Добавить" action={handleAdd} />;
+    }
 
     return (
         <div className={cn(`pr-5 flex flex-col min-h-[calc(100vh-${margin ?? 290}px)]`, className)}>
@@ -63,7 +74,7 @@ export const AdminTable = <T extends { id: string }>({
                 {has_actions && (
                     <div className="flex justify-between mb-3">
                         <Button onClick={handleAdd}>Добавить</Button>
-                        <TableSearch<T> data={data} route={route} />
+                        <TableSearch<T> data={tableData} route={route} />
                         <div className="flex gap-2">
                             <Button className="bg-red-500" onClick={() => handleDelete(selected)}>
                                 Удалить
@@ -71,7 +82,7 @@ export const AdminTable = <T extends { id: string }>({
                         </div>
                     </div>
                 )}
-                {data.length > 0 && (
+                {tableData.length > 0 && (
                     <>
                         <Table className="overflow-x-auto min-w-[1200px]">
                             <TableHeader>
