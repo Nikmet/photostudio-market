@@ -1,4 +1,5 @@
 import { ProductCard } from "@/components/product-card";
+import { CARDS } from "@/constants/cards";
 import Link from "next/link";
 
 export default function Home() {
@@ -16,19 +17,23 @@ export default function Home() {
             <div>
                 <h2 className="text-3xl font-extrabold mt-10 mb-2">Наши продукты</h2>
                 <div>
-                    <h3 className="text-2xl font-medium mb-10">Сувениры</h3>
-                    <div className="grid grid-cols-3 gap-5">
-                        {Array.from({ length: 10 }).map((_, i) => (
-                            <ProductCard
-                                key={i}
-                                title="Кружка"
-                                description="Стильная керамическая кружка с нанесенным логотипом. Идеально подходит для горячих напитков, имеет удобную ручку и прочное покрытие. Объем 330 мл."
-                                price={100}
-                                imageUrl={`${process.env.NEXT_PUBLIC_URL}/cup.png`}
-                                link={"cups"}
-                            />
-                        ))}
-                    </div>
+                    {CARDS.map((card, i) => (
+                        <div key={i}>
+                            <h3 className="text-2xl font-medium mb-10">{card.category}</h3>
+                            <div className="grid grid-cols-3 gap-5">
+                                {card.products.map((product, i) => (
+                                    <ProductCard
+                                        key={i}
+                                        title={product.title}
+                                        description={product.description}
+                                        price={product.price}
+                                        imageUrl={product.imageUrl}
+                                        link={product.link}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
