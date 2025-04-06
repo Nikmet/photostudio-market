@@ -1,12 +1,11 @@
-import { createProduct, updateProduct } from "@/app/actions";
+import { createProduct, updateProduct, uploadImage } from "@/app/actions";
 import { BusinessCardsForm } from "@/components/forms/business-cards-form/business-cards-form";
 import { FormValuesBusinessCards } from "@/components/forms/business-cards-form/schema";
 import { PageTitle } from "@/components/page-title";
-import { imageToFile } from "@/lib/image-to-file";
+import { getImage } from "@/lib/image";
 import { calcBusinessCardPrice } from "@/lib/prices";
-import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
-import { Image, PrintingSide } from "@prisma/client";
+import { PrintingSide } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -22,20 +21,11 @@ export default async function BusinessCardsEditPage({ params }: Props) {
     const findCard = await prisma.businessCard.findFirst({
         where: {
             id: id
-        },
-        include: {
-            printing_image: true
         }
     });
 
     const handleSubmit = async (data: FormValuesBusinessCards) => {
         "use server";
-
-        let printing_image: Image | undefined;
-
-        if (data.printing_image) {
-            printing_image = await uploadImage(data.printing_image);
-        }
 
         if (!findCard) {
             const businessCard = await prisma.businessCard.create({
@@ -43,13 +33,7 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                     id: id,
                     name: data.name,
                     printing_side: data.printing_side as PrintingSide,
-                    printing_image: printing_image
-                        ? {
-                              connect: {
-                                  id: printing_image.id
-                              }
-                          }
-                        : undefined
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
 
@@ -68,13 +52,7 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                 data: {
                     name: data.name,
                     printing_side: data.printing_side as PrintingSide,
-                    printing_image: printing_image
-                        ? {
-                              connect: {
-                                  id: printing_image.id
-                              }
-                          }
-                        : undefined
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
             await updateProduct(updatedBC.id, updatedBC.name, await calcBusinessCardPrice(updatedBC));
@@ -92,7 +70,7 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                     defaultValues={{
                         name: findCard?.name,
                         printing_side: findCard?.printing_side,
-                        printing_image: imageToFile(findCard.printing_image)
+                        printing_image: await getImage(findCard.printing_image)
                     }}
                 />
             ) : (

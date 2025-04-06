@@ -1,10 +1,9 @@
+import { uploadImage } from "@/app/actions";
 import { BaguetteForm } from "@/components/forms/baguette-form/baguette-form";
 import { FormValuesBaguette } from "@/components/forms/baguette-form/schema";
 import { PageTitle } from "@/components/page-title";
-import { imageToFile } from "@/lib/image-to-file";
-import { uploadImage } from "@/lib/upload-image";
+import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";
-import { Image } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -20,22 +19,11 @@ export default async function PaperTypesEditPage({ params }: Props) {
     const findBaguette = await prisma.baguette.findFirst({
         where: {
             id: id
-        },
-        include: {
-            image: true
         }
     });
 
     const handleSubmit = async (data: FormValuesBaguette) => {
         "use server";
-
-        let image: Image | undefined;
-
-        // Загружаем изображение, если оно есть
-        if (data.image) {
-            image = await uploadImage(data.image);
-            console.log(image);
-        }
 
         if (!findBaguette) {
             await prisma.baguette.create({
@@ -43,13 +31,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
                     id: id,
                     price: data.price,
                     serial_number: data.serial_number,
-                    image: image
-                        ? {
-                              connect: {
-                                  id: image.id
-                              }
-                          }
-                        : undefined
+                    image: await uploadImage(data.image)
                 }
             });
         } else {
@@ -60,19 +42,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
                 data: {
                     price: data.price,
                     serial_number: data.serial_number,
-                    image: image
-                        ? {
-                              connect: {
-                                  id: image.id
-                              }
-                          }
-                        : findBaguette.image
-                        ? {
-                              connect: {
-                                  id: findBaguette.image.id
-                              }
-                          }
-                        : undefined
+                    image: await uploadImage(data.image)
                 }
             });
         }
@@ -88,7 +58,7 @@ export default async function PaperTypesEditPage({ params }: Props) {
                     defaultValues={{
                         price: findBaguette.price,
                         serial_number: findBaguette.serial_number,
-                        image: imageToFile(findBaguette.image)
+                        image: await getImage(findBaguette.image)
                     }}
                     onSubmit={handleSubmit}
                     id={id}

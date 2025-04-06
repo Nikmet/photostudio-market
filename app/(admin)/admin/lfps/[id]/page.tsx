@@ -1,12 +1,10 @@
-import { createProduct, updateProduct } from "@/app/actions";
+import { createProduct, updateProduct, uploadImage } from "@/app/actions";
 import { LfpForm } from "@/components/forms/lfp-form/lfp-form";
 import { FormValuesLFP } from "@/components/forms/lfp-form/schema";
 import { PageTitle } from "@/components/page-title";
-import { imageToFile } from "@/lib/image-to-file";
+import { getImage } from "@/lib/image";
 import { calcLFPPrice } from "@/lib/prices";
-import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
-import { Image } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -24,8 +22,7 @@ export default async function TablesEditPage({ params }: Props) {
             id: id
         },
         include: {
-            paper_type: true,
-            printing_image: true
+            paper_type: true
         }
     });
 
@@ -33,13 +30,6 @@ export default async function TablesEditPage({ params }: Props) {
 
     const handleSubmit = async (data: FormValuesLFP) => {
         "use server";
-
-        let printing_image: Image | undefined;
-
-        // Загружаем изображение, если оно есть
-        if (data.printing_image) {
-            printing_image = await uploadImage(data.printing_image);
-        }
 
         const findPaperType = await prisma.paperType.findFirst({
             where: {
@@ -59,13 +49,7 @@ export default async function TablesEditPage({ params }: Props) {
                             id: findPaperType?.id
                         }
                     },
-                    printing_image: printing_image
-                        ? {
-                              connect: {
-                                  id: printing_image.id
-                              }
-                          }
-                        : undefined
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
 
@@ -84,13 +68,7 @@ export default async function TablesEditPage({ params }: Props) {
                             id: findPaperType?.id
                         }
                     },
-                    printing_image: printing_image
-                        ? {
-                              connect: {
-                                  id: printing_image.id
-                              }
-                          }
-                        : undefined
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
             await updateProduct(updatedLFP.id, updatedLFP.name, await calcLFPPrice(updatedLFP));
@@ -110,8 +88,8 @@ export default async function TablesEditPage({ params }: Props) {
                         height: findLFP.height,
                         width: findLFP.width,
                         name: findLFP.name,
-                        paper_type_id: findLFP.paper_type.id,
-                        printing_image: imageToFile(findLFP.printing_image)
+                        paper_type_id: findLFP.paper_type_id,
+                        printing_image: await getImage(findLFP.printing_image)
                     }}
                     onSubmit={handleSubmit}
                     paperTypes={paperTypes}

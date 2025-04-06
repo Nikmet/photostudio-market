@@ -48,8 +48,8 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
                 <div className="w-[600px] h-[500px] border border-gray-300 rounded-md mb-4">
                     <img
-                        src={`/api/image/${selectedBaguette?.image_id}`}
-                        alt={selectedBaguette?.serial_number || "кружка"}
+                        src={selectedBaguette?.image ?? "/logo_light.svg"}
+                        alt={selectedBaguette?.serial_number}
                         className="w-full h-full object-contain"
                     />
                 </div>

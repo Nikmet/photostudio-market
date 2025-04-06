@@ -504,7 +504,7 @@ model Frame {
     has_glass      Boolean
     has_backdrop   Boolean
     has_suspension Boolean
-    image          String
+    image          String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

@@ -46,6 +46,7 @@ export default async function FramesEditPage({ params }: Props) {
                     has_glass: data.has_glass,
                     has_backdrop: data.has_backdrop,
                     has_suspension: data.has_suspension,
+                    image: findBaguette?.image,
                     baguette: {
                         connect: {
                             id: findBaguette?.id
@@ -69,6 +70,7 @@ export default async function FramesEditPage({ params }: Props) {
                     has_glass: data.has_glass,
                     has_backdrop: data.has_backdrop,
                     has_suspension: data.has_suspension,
+                    image: findBaguette?.image,
                     baguette: {
                         connect: {
                             id: findBaguette?.id
