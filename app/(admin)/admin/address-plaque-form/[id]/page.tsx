@@ -1,7 +1,7 @@
-//TODO: Картинки добавить
-
+import { uploadImage } from "@/app/actions";
 import { AddressPlaqueFormsForm } from "@/components/forms/address-plaque-forms-form/address-plaque-forms-form";
 import { FormValuesAddressPlaqueForms } from "@/components/forms/address-plaque-forms-form/schema";
+import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
@@ -31,7 +31,8 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
                     name: data.name,
                     price: data.price,
                     height: data.height,
-                    width: data.width
+                    width: data.width,
+                    image: await uploadImage(data.image)
                 }
             });
         }
@@ -44,7 +45,8 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
                 name: data.name,
                 price: data.price,
                 height: data.height,
-                width: data.width
+                width: data.width,
+                image: await uploadImage(data.image)
             }
         });
         redirect("/admin/address-plaque-form");
@@ -55,7 +57,10 @@ export default async function AddressPlaqueFormsEditPage({ params }: Props) {
             <h1>{findAPF?.id ? `Форма адресного аншлага | ${findAPF.id}` : `Новая форма адресного аншлага | ${id}`}</h1>
             {findAPF ? (
                 <AddressPlaqueFormsForm
-                    defaultValues={findAPF}
+                    defaultValues={{
+                        ...findAPF,
+                        image: await getImage(findAPF.image)
+                    }}
                     onSubmit={handleSubmit}
                     id={id}
                     href="/admin/address-plaque-form"

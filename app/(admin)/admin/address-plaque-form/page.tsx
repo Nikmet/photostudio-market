@@ -1,25 +1,13 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
+import { AddressPlaqueForm } from "@prisma/client";
 import React from "react";
 
 export default async function AddressPlaqueFormsPage() {
-    const apf = await prisma.addressPlaqueForm.findMany({
-        include: {
-            image: true
-        }
-    });
+    const apf = await prisma.addressPlaqueForm.findMany();
 
-    const flattenedData = apf.map(apf => ({
-        id: apf.id,
-        name: apf.name,
-        width: apf.width,
-        height: apf.height,
-        price: apf.price,
-        image: apf.image
-    }));
-
-    const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
+    const columns: IColumnsProps<AddressPlaqueForm>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
         { title: "Ширина", key: "width" },
@@ -43,8 +31,8 @@ export default async function AddressPlaqueFormsPage() {
     return (
         <div>
             <h2 className="text-2xl font-medium mb-10">Список форм адресных аншлагов</h2>
-            <AdminTable<(typeof flattenedData)[0]>
-                data={flattenedData}
+            <AdminTable<AddressPlaqueForm>
+                data={apf}
                 route="address-plaque-form"
                 columns={columns}
                 handleDeleteProp={handleDelete}

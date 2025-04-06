@@ -10,7 +10,12 @@ export const formSchemaAddressPlaqueForms = z.object({
     width: z.number({
         required_error: "Поле обязательно",
         invalid_type_error: "Значение должно быть числом"
-    })
+    }),
+    image: z
+        .instanceof(File)
+        .refine(file => file.size === 0 || file.type.startsWith("image/"), { message: "Неверный формат изображения" })
+        .refine(file => file.size < 4000000, { message: "Размер изображения не должен превышать 4MB" })
+        .optional()
 });
 
 export type FormValuesAddressPlaqueForms = z.infer<typeof formSchemaAddressPlaqueForms>;

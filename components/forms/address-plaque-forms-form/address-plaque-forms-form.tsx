@@ -8,6 +8,7 @@ import { FormInput } from "../../form-input";
 import { formSchemaAddressPlaqueForms, FormValuesAddressPlaqueForms } from "./schema";
 import { onNumberValueChange } from "@/lib/inputs";
 import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
+import { ImageInput } from "@/components/image-input";
 
 export interface IAddressPlaqueFormsFormProps {
     className?: string;
@@ -40,7 +41,7 @@ export const AddressPlaqueFormsForm = ({
     const submitAction = (data: FormValuesAddressPlaqueForms) => {
         onSubmit(data);
         console.log(onSubmit);
-        
+
         closeTab(id, href, "Формы адресных аншлагов");
         toast.success(`Форма адресного аншлага "${data.name}" успешно сохранен!`);
     };
@@ -48,12 +49,17 @@ export const AddressPlaqueFormsForm = ({
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
+                <Controller
+                    name="image"
+                    control={control}
+                    render={({ field }) => (
+                        <ImageInput
+                            {...field}
+                            label="Изображение"
+                            errors={errors}
+                            onChange={file => field.onChange(file)} // Передаем файл в форму
+                        />
+                    )}
                 />
                 <div className="flex gap-2">
                     <Controller

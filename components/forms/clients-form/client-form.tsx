@@ -10,13 +10,14 @@ import { useEffect } from "react";
 import { formatPhoneNumber } from "@/lib/phone";
 import { ClientTable } from "@/components/client-table";
 import { OrderPaymentStatus, OrderStatus } from "@prisma/client";
+import { ImageInput } from "@/components/image-input";
 
 export interface IOrderProps {
-    id: string,
-    payment_status: OrderPaymentStatus,
-    createdAt: string,
-    totalAmount: number,
-    status: OrderStatus
+    id: string;
+    payment_status: OrderPaymentStatus;
+    createdAt: string;
+    totalAmount: number;
+    status: OrderStatus;
 }
 
 export interface IClientFormProps {
@@ -89,7 +90,19 @@ export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClie
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex flex-col gap-2">
+            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
+                <Controller
+                    name="photo"
+                    control={control}
+                    render={({ field }) => (
+                        <ImageInput
+                            {...field}
+                            label="Изображение"
+                            errors={errors}
+                            onChange={file => field.onChange(file)} // Передаем файл в форму
+                        />
+                    )}
+                />
                 <div className="flex flex-col w-[400px] gap-2">
                     <Controller
                         name="fullName"

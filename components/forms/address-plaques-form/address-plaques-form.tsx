@@ -1,5 +1,3 @@
-//TODO: Картинки добавить
-
 "use client";
 
 import { Button } from "@/components/ui";
@@ -49,16 +47,19 @@ export const AddressPlaquesForm = ({
         toast.success(`Адресный аншлаг "${data.name}" успешно сохранен!`);
     };
 
+    const selectedFormId = form.watch("formId");
+    const selectedForm = forms.find(b => b.id === selectedFormId);
+
     return (
         <div className={className}>
             <form onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
-                <img
-                    src="https://www.adverti.ru/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/4/6/4662_5.jpg"
-                    alt="кружка"
-                    width={500}
-                    height={500}
-                    className="rounded-md border border-gray-300"
-                />
+                <div className="w-[600px] h-[500px] border border-gray-300 rounded-md mb-4">
+                    <img
+                        src={selectedForm?.image ?? "/logo_light.svg"}
+                        alt={selectedForm?.name}
+                        className="w-full h-full object-contain"
+                    />
+                </div>
                 <div className="flex flex-col gap-2">
                     <Controller
                         name="name"

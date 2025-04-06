@@ -1,6 +1,8 @@
+import { uploadImage } from "@/app/actions";
 import { ClientForm } from "@/components/forms/clients-form/client-form";
 import { FormValuesClients } from "@/components/forms/clients-form/schema";
 import { PageTitle } from "@/components/page-title";
+import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";
 import { UserRole } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -27,13 +29,6 @@ export default async function CupsEditPage({ params }: Props) {
     const handleSubmit = async (data: FormValuesClients) => {
         "use server";
 
-        // let printing_image: Image | undefined;
-
-        // // Загружаем изображение, если оно есть
-        // if (data.printing_image) {
-        //     printing_image = await uploadImage(data.printing_image);
-        // }
-
         console.log(data);
 
         if (!findClient) {
@@ -44,7 +39,8 @@ export default async function CupsEditPage({ params }: Props) {
                     email: data.email,
                     phone: data.phone,
                     role: "USER" as UserRole,
-                    password: ""
+                    password: "",
+                    photo: await uploadImage(data.photo)
                 }
             });
         } else {
@@ -57,7 +53,8 @@ export default async function CupsEditPage({ params }: Props) {
                     email: data.email,
                     phone: data.phone,
                     role: "USER",
-                    password: ""
+                    password: "",
+                    photo: await uploadImage(data.photo)
                 }
             });
         }
@@ -75,7 +72,8 @@ export default async function CupsEditPage({ params }: Props) {
                     defaultValues={{
                         fullName: findClient.fullName,
                         phone: findClient.phone,
-                        email: findClient.email
+                        email: findClient.email,
+                        photo: await getImage(findClient.photo)
                     }}
                     orders={findClient.orders.map(order => ({
                         id: order.id,

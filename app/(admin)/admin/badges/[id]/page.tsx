@@ -1,6 +1,7 @@
-import { createProduct, updateProduct } from "@/app/actions";
+import { createProduct, updateProduct, uploadImage } from "@/app/actions";
 import { BadgesForm } from "@/components/forms/badges-form/badges-form";
 import { FormValuesBadges } from "@/components/forms/badges-form/schema";
+import { getImage } from "@/lib/image";
 import { calcBadgePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
@@ -28,7 +29,8 @@ export default async function BadgesEditPage({ params }: Props) {
             const badge = await prisma.badge.create({
                 data: {
                     id: id,
-                    name: data.name
+                    name: data.name,
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
 
@@ -39,7 +41,8 @@ export default async function BadgesEditPage({ params }: Props) {
                     id: id
                 },
                 data: {
-                    name: data.name
+                    name: data.name,
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
             await updateProduct(updatedBadge.id, updatedBadge.name, await calcBadgePrice());
@@ -62,7 +65,7 @@ export default async function BadgesEditPage({ params }: Props) {
             {findBadge ? (
                 <BadgesForm
                     onSubmit={handleSubmit}
-                    defaultValues={{ name: findBadge.name }}
+                    defaultValues={{ name: findBadge.name, printing_image: await getImage(findBadge.printing_image) }}
                     href="/admin/badges"
                     id={id}
                 />
