@@ -19,20 +19,23 @@ export const CupsForm = ({ onSubmit, defaultValues, className }: ICupsFormProps)
         resolver: zodResolver(formSchemaCups),
         defaultValues: defaultValues || {
             name: "",
-            printing_image: undefined
         }
     });
 
     console.log(defaultValues);
 
     const submitAction = (data: FormValuesCups) => {
-        onSubmit(data);
-        toast.success(`Кружка "${data.name}" успешно сохранена!`);
+        try {
+            onSubmit(data);
+            toast.success(`Кружка "${data.name}" успешно сохранена!`);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
         <div className={className}>
-            <form onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
+            <form encType="multipart/form-data" onSubmit={form.handleSubmit(submitAction)} className="flex gap-2">
                 <Controller
                     name="printing_image"
                     control={form.control}

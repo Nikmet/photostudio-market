@@ -1,5 +1,4 @@
 import { printingSides, sizes } from "@/@types/enums";
-import { imageSchema } from "@/@types/image-schema";
 import { z } from "zod";
 
 export const formSchemaTShirts = z.object({
@@ -10,7 +9,11 @@ export const formSchemaTShirts = z.object({
     size: z.enum(Object.keys(sizes) as [string, ...string[]], {
         required_error: "Поле обязательно"
     }),
-    printing_image: imageSchema.optional()
+    printing_image: z
+        .instanceof(File)
+        .refine(file => file.size === 0 || file.type.startsWith("image/"), { message: "Неверный формат изображения" })
+        .refine(file => file.size < 4000000, { message: "Размер изображения не должен превышать 4MB" })
+        .optional()
 });
 
 export type FormValuesTShirts = z.infer<typeof formSchemaTShirts>;

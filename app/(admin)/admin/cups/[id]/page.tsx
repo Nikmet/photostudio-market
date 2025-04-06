@@ -1,12 +1,10 @@
-import { createProduct, updateProduct } from "@/app/actions";
+import { createProduct, updateProduct, uploadImage } from "@/app/actions";
 import { CupsForm } from "@/components/forms/cups-form/cups-form";
 import { FormValuesCups } from "@/components/forms/cups-form/schema";
 import { PageTitle } from "@/components/page-title";
-import { imageToFile } from "@/lib/image-to-file";
+import { getImage } from "@/lib/image";
 import { calcCupPrice } from "@/lib/prices";
-import { uploadImage } from "@/lib/upload-image";
 import { prisma } from "@/prisma/prisma-client";
-import { Image } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -22,34 +20,18 @@ export default async function CupsEditPage({ params }: Props) {
     const findCup = await prisma.cup.findFirst({
         where: {
             id: id
-        },
-        include: {
-            printing_image: true
         }
     });
 
     const handleSubmit = async (data: FormValuesCups) => {
         "use server";
 
-        let printing_image: Image | undefined;
-
-        // Загружаем изображение, если оно есть
-        if (data.printing_image) {
-            printing_image = await uploadImage(data.printing_image);
-        }
-
         if (!findCup) {
             const cup = await prisma.cup.create({
                 data: {
                     id: id,
                     name: data.name,
-                    printing_image: printing_image
-                        ? {
-                              connect: {
-                                  id: printing_image.id
-                              }
-                          }
-                        : undefined
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
 
@@ -61,15 +43,11 @@ export default async function CupsEditPage({ params }: Props) {
                 },
                 data: {
                     name: data.name,
-                    printing_image: printing_image
-                        ? {
-                              connect: {
-                                  id: printing_image.id
-                              }
-                          }
-                        : undefined
+                    printing_image: await uploadImage(data.printing_image)
                 }
             });
+            console.log(updatedCup);
+
             await updateProduct(updatedCup.id, updatedCup.name, await calcCupPrice());
         }
 
@@ -85,7 +63,7 @@ export default async function CupsEditPage({ params }: Props) {
                     onSubmit={handleSubmit}
                     defaultValues={{
                         name: findCup.name,
-                        printing_image: imageToFile(findCup.printing_image)
+                        printing_image: await getImage(findCup.printing_image)
                     }}
                 />
             ) : (

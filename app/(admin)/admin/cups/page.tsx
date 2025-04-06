@@ -2,22 +2,13 @@ import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
 import { AdminTable } from "@/components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
+import { Cup } from "@prisma/client";
 import React from "react";
 
 export default async function CupPage() {
-    const cups = await prisma.cup.findMany({
-        include: {
-            printing_image: true
-        }
-    });
+    const cups = await prisma.cup.findMany();
 
-    const flattenedData = cups.map(cup => ({
-        id: cup.id,
-        name: cup.name,
-        printing_image: cup.printing_image
-    }));
-
-    const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [
+    const columns: IColumnsProps<Cup>[] = [
         { title: "Номер", key: "id" },
         { title: "Название", key: "name" },
         { title: "Изображение", key: "printing_image" }
@@ -39,8 +30,8 @@ export default async function CupPage() {
     return (
         <div>
             <h2 className="text-2xl font-medium mb-10">Список кружек</h2>
-            <AdminTable<(typeof flattenedData)[0]>
-                data={flattenedData}
+            <AdminTable<Cup>
+                data={cups}
                 route="cups"
                 columns={columns}
                 handleDeleteProp={handleDelete}

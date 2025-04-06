@@ -11,7 +11,7 @@ export interface IImageInputProps extends Omit<InputHTMLAttributes<HTMLInputElem
     required?: boolean;
     className?: string;
     errors?: any;
-    value?: File | null;
+    value?: File | Blob | null;
     onChange?: (file: File | null) => void;
 }
 

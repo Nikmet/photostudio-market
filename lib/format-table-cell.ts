@@ -41,6 +41,18 @@ export function formatTableCell<T>(value: T[keyof T]): string {
         return "Отсутствует";
     }
 
+    if (Array.isArray(value)) {
+        return value.join(", ");
+    }
+
+    if (typeof value === "string") {
+        if (value.includes("/images/")) {
+            return "Есть";
+        }
+
+        return value;
+    }
+
     if (typeof value === "object") {
         return "Есть";
     }

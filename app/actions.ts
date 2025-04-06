@@ -1,6 +1,7 @@
 import { createUid, getId } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
 import { Difficile } from "@prisma/client";
+import { writeFile } from "fs";
 
 export const createProduct = async (
     itemId: string,
@@ -102,4 +103,21 @@ export const deleteProducts = async (ids: string[]) => {
     } catch (e) {
         console.error("[DELETE_PRODUCTS_ACTION]", e);
     }
+};
+
+export const uploadImage = async (file: File | undefined) => {
+    if (!file) {
+        return "";
+    }
+
+    const buffer = await file.arrayBuffer();
+    const fileName = file.name.replaceAll(" ", "_");
+
+    await writeFile(`./public/images/${fileName}`, Buffer.from(buffer), err => {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    return `/images/${fileName}`;
 };

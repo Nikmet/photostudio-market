@@ -1,5 +1,4 @@
 import { magnetTypes } from "@/@types/enums";
-import { imageSchema } from "@/@types/image-schema";
 import { z } from "zod";
 
 export const formSchemaMagnet = z.object({
@@ -15,7 +14,11 @@ export const formSchemaMagnet = z.object({
         required_error: "Поле обязательно",
         invalid_type_error: "Значение должно быть числом"
     }),
-    printing_image: imageSchema.optional()
+    printing_image: z
+        .instanceof(File)
+        .refine(file => file.size === 0 || file.type.startsWith("image/"), { message: "Неверный формат изображения" })
+        .refine(file => file.size < 4000000, { message: "Размер изображения не должен превышать 4MB" })
+        .optional()
 });
 
 export type FormValuesMagnet = z.infer<typeof formSchemaMagnet>;
