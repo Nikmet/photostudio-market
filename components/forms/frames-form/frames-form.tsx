@@ -1,3 +1,7 @@
+//TODO: Добавить название для рамки
+//TODO: Добавить добавление в корзину
+//TODO: Сделать выбор стандартного размера
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,9 +20,16 @@ export interface IFramesFormProps {
     onSubmit: (data: FormValuesFrames) => void;
     className?: string;
     baguettes: Baguette[];
+    isClient?: boolean;
 }
 
-export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IFramesFormProps): React.JSX.Element => {
+export const FramesForm = ({
+    onSubmit,
+    defaultValues,
+    baguettes,
+    isClient,
+    className
+}: IFramesFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -35,8 +46,15 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
         }
     });
 
+    setValue("name", "Рамка");
+
     const submitAction = (data: FormValuesFrames) => {
+        console.log(data);
         onSubmit(data);
+        if (isClient) {
+            toast.success(`Рамка добавлена в корзину!`);
+            return;
+        }
         toast.success(`Рамка ${data.name} успешно сохранена!`);
     };
 
@@ -55,13 +73,15 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                 </div>
 
                 <div className="flex flex-col gap-2 w-[300px]">
-                    <Controller
-                        name="name"
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput type="text" label="Название" {...field} errors={errors} required />
-                        )}
-                    />
+                    {!isClient && (
+                        <Controller
+                            name="name"
+                            control={control}
+                            render={({ field }) => (
+                                <FormInput type="text" label="Название" {...field} errors={errors} required />
+                            )}
+                        />
+                    )}
                     <Controller
                         name="width"
                         control={control}

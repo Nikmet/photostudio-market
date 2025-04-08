@@ -21,7 +21,7 @@ export const ProductCard = ({
 }: IProductCardProps): React.JSX.Element => {
     return (
         <div className={className}>
-            <Link href={"/" + link}>
+            <Link href={`${process.env.NEXT_PUBLIC_URL}` + link}>
                 <div className="shadow-md rounded-md p-4 bg-slate-50">
                     <div className="h-[400px] mb-4">
                         <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
