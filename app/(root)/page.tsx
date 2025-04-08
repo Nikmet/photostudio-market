@@ -20,7 +20,7 @@ export default function Home() {
                     {CARDS.map((card, i) => (
                         <div key={i}>
                             <h3 className="text-2xl font-medium mb-10">{card.category}</h3>
-                            <div className="grid grid-cols-3 gap-5">
+                            <div className="grid grid-cols-3 gap-5 mb-10">
                                 {card.products.map((product, i) => (
                                     <ProductCard
                                         key={i}

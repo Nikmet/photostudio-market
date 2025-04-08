@@ -1,7 +1,11 @@
+import { CardsGenerator } from "@/components/cards-generator";
+import { PageTitle } from "@/components/page-title";
+
 export default function FramesPage() {
     return (
         <div>
-            <h1>Фоторамки</h1>
+            <PageTitle>Рамки</PageTitle>
+            <CardsGenerator tag="Рамки" />
         </div>
     );
 }
