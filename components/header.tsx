@@ -1,10 +1,13 @@
+"use client";
+
 import { cn } from "@/lib";
 import { ThemeSwitcher } from "./theme-switcher";
 import { Button } from "./ui";
-import { ArrowRight, ShoppingCart, User } from "lucide-react";
+import { ArrowRight, ShoppingCart } from "lucide-react";
 import React, { Suspense } from "react";
 import { HeaderLogo } from "./header-logo";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export interface IHeaderProps {
     className?: string;
@@ -12,6 +15,8 @@ export interface IHeaderProps {
 }
 
 export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
+    const session = useSession();
+
     return (
         <>
             <header
@@ -27,7 +32,7 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
                     <ThemeSwitcher />
 
                     {/* Кнопки для авторизации */}
-                    {!admin && (
+                    {!session.data?.user && (
                         <Link
                             className="dark:border-solid dark:border-white border-1 shadow-none text-black hidden md:flex border-solid border-black bg-transparent"
                             href="/login"
@@ -35,27 +40,28 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
                             Войти
                         </Link>
                     )}
-                    {admin && (
-                        <Button
-                            variant={"outline"}
-                            className="dark:border-solid dark:border-white dark:border-1 bg-transparent dark:text-white shadow-none text-black flex h-7"
+                    {session.data?.user && (
+                        <Link
+                            className="dark:border-solid dark:border-white border-1 shadow-none text-black hidden md:flex border-solid border-black bg-transparent"
+                            href="/profile"
                         >
-                            <User />
-                            Администратор
-                        </Button>
+                            <div className="flex gap-2 items-center">
+                                <img
+                                    src={session.data.user.image ?? ""}
+                                    alt="фото профиля"
+                                    className="w-8 h-8 rounded-full mr-2"
+                                />
+                                <span>Профиль</span>
+                            </div>
+                        </Link>
                     )}
-
                     {/* Кнопки для корзин */}
-                    {!admin && (
-                        <>
-                            <Button className="dark:text-white hidden md:flex">
-                                Корзина <ArrowRight />
-                            </Button>
-                            <Button className="dark:text-white md:hidden h-7 w-7">
-                                <ShoppingCart />
-                            </Button>
-                        </>
-                    )}
+                    <Button className="dark:text-white hidden md:flex">
+                        Корзина <ArrowRight />
+                    </Button>
+                    <Button className="dark:text-white md:hidden h-7 w-7">
+                        <ShoppingCart />
+                    </Button>
                 </div>
             </header>
         </>

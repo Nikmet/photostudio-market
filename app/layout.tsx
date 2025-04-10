@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import { Providers } from "@/components/providers";
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Главная"
@@ -23,6 +24,12 @@ export default async function MainLayout({
 
     return (
         <html lang="ru" className={theme} style={{ colorScheme: theme }}>
+            <head>
+                <Script
+                    src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"
+                    strategy="beforeInteractive"
+                />
+            </head>
             <body className={main_font.className}>
                 <Providers theme={theme}>{children}</Providers>
                 <footer className="flex flex-col justify-center items-center bg-secondary/40 p-2 view-animation">

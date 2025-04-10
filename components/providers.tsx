@@ -3,6 +3,7 @@
 import { Toaster } from "react-hot-toast";
 import NextTopLoader from "nextjs-toploader";
 import { ThemeProvider } from "./theme-provider";
+import { SessionProvider } from "next-auth/react";
 
 interface IProvidersProps {
     children: React.ReactNode;
@@ -12,9 +13,11 @@ interface IProvidersProps {
 export const Providers = ({ theme, children }: IProvidersProps): React.JSX.Element => {
     return (
         <>
-            <Toaster />
-            <NextTopLoader />
-            <ThemeProvider defaultTheme={theme}>{children}</ThemeProvider>
+            <SessionProvider>
+                <Toaster />
+                <NextTopLoader />
+                <ThemeProvider defaultTheme={theme}>{children}</ThemeProvider>
+            </SessionProvider>
         </>
     );
 };

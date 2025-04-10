@@ -5,6 +5,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
+import { YandexButton } from "./yandex-button";
+import { VkButton } from "./vk-button";
 
 // Определяем интерфейс для пропсов
 export interface IAuthFormProps {
@@ -75,6 +77,11 @@ export const AuthForm = ({ className, onSubmit }: IAuthFormProps): React.JSX.Ele
                 >
                     {isSubmitting ? "Вход..." : "Войти"}
                 </button>
+                <div className="flex flex-col gap-3">
+                    <p className="text-center">Или войдите с помощью сервисов</p>
+                    <YandexButton />
+                    <VkButton />
+                </div>
             </form>
         </div>
     );
