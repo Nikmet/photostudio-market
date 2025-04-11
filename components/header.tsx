@@ -47,7 +47,7 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
                         >
                             <div className="flex gap-2 items-center">
                                 <img
-                                    src={session.data.user.image ?? ""}
+                                    src={session.data.user.photo ?? "/avatar.png"}
                                     alt="фото профиля"
                                     className="w-8 h-8 rounded-full mr-2"
                                 />

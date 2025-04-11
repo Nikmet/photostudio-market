@@ -4,7 +4,7 @@ import { cn } from "@/lib";
 import { Button } from "./ui";
 import { signIn } from "next-auth/react";
 
-export interface IVkButtonProps {
+export interface IVkButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
 }
 

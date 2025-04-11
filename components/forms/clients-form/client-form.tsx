@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/form-input";
 import { useEffect } from "react";
-import { formatPhoneNumber } from "@/lib/phone";
+import { formatPhoneNumber, handlePhoneChange, handlePhoneKeyDown } from "@/lib/phone";
 import { ClientTable } from "@/components/client-table";
 import { OrderPaymentStatus, OrderStatus } from "@prisma/client";
 import { ImageInput } from "@/components/image-input";
@@ -40,34 +40,6 @@ export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClie
             phone: defaultValues?.phone ? formatPhoneNumber(defaultValues.phone) : "+7 "
         }
     });
-
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (value: string) => void) => {
-        const input = e.target.value;
-
-        // Если пытаются удалить +7, игнорируем
-        if (input.length < 3) {
-            onChange("+7 ");
-            return;
-        }
-
-        // Если +7 был изменен, восстанавливаем
-        if (!input.startsWith("+7 ")) {
-            const digits = input.replace(/\D/g, "").slice(0, 10);
-            onChange(formatPhoneNumber("+7 " + digits));
-            return;
-        }
-
-        const formatted = formatPhoneNumber(input);
-        onChange(formatted);
-    };
-
-    const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // Запрещаем удаление +7 с помощью Backspace или Delete
-        const target = e.target as HTMLInputElement;
-        if ((e.key === "Backspace" || e.key === "Delete") && target.selectionStart && target.selectionStart <= 3) {
-            e.preventDefault();
-        }
-    };
 
     const submitAction = async (data: FormValuesClients) => {
         const res = await fetch(`isRegistered/${data.email}`);

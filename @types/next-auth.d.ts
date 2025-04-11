@@ -5,6 +5,11 @@ declare module "next-auth" {
         phone?: string;
     }
 
+    interface DefaultJWT {
+        id: string;
+        phone?: string;
+    }
+
     interface Session {
         user: {
             phone?: string;

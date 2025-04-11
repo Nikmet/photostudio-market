@@ -46,6 +46,8 @@ export const Profile = ({ orders, className }: IProfileProps) => {
 
     // Обновляем форму при изменении сессии
     React.useEffect(() => {
+        console.log(session);
+
         if (session) {
             reset({
                 name: session.user?.name || "",
@@ -96,7 +98,11 @@ export const Profile = ({ orders, className }: IProfileProps) => {
     return (
         <div className={cn(className, "p-10")}>
             <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
-                <img src={session.user.image} alt="" className="w-[300px] h-[300px] rounded-full" />
+                <img
+                    src={session.user.photo ?? "/avatar.png"}
+                    alt="Фотография пользователя"
+                    className="w-[300px] h-[300px] rounded-full border-2 border-gray-300"
+                />
                 <div className="flex flex-col w-[400px] gap-2">
                     <Controller
                         name="name"
@@ -133,9 +139,12 @@ export const Profile = ({ orders, className }: IProfileProps) => {
                             <FormInput type="email" label="Эл. Почта" required errors={errors} {...field} />
                         )}
                     />
-                    <Button type="button" onClick={() => signOut({ callbackUrl: "/" })}>
-                        Выйти
-                    </Button>
+                    <div className="flex gap-2 mt-4">
+                        <Button type="submit">Сохранить изменения</Button>
+                        <Button type="button" onClick={() => signOut({ callbackUrl: "/" })} variant={"outline"}>
+                            Выйти из аккаунта
+                        </Button>
+                    </div>
                 </div>
                 {orders.length > 0 && (
                     <div className="mb-2">

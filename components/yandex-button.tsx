@@ -4,7 +4,7 @@ import { cn } from "@/lib";
 import { Button } from "./ui";
 import { signIn } from "next-auth/react";
 
-export interface IYandexButtonProps {
+export interface IYandexButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
 }
 
@@ -12,7 +12,7 @@ export const YandexButton = ({ className }: IYandexButtonProps): React.JSX.Eleme
     return (
         <Button
             type="button"
-            onClick={() => signIn("yandex", { callbackUrl: "/" })}
+            onClick={() => signIn("yandex", { callbackUrl: "/profile" })}
             className={cn(className, "bg-slate-300 hover:bg-slate-400 transition-all duration-300")}
         >
             <div className="flex justify-center items-center gap-2 p-5">
