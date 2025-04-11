@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "./ui";
 import { signOut } from "next-auth/react";
@@ -12,6 +12,10 @@ import { ClientTable } from "./client-table";
 import { IOrderProps } from "./forms/clients-form/client-form";
 import { formatPhoneNumber } from "@/lib/phone";
 import { cn } from "@/lib";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
+import { User } from "@prisma/client";
 
 // Схема валидации
 const profileSchema = z.object({
@@ -20,14 +24,17 @@ const profileSchema = z.object({
     phone: z.string().optional()
 });
 
-type ProfileFormData = z.infer<typeof profileSchema>;
+export type ProfileFormData = z.infer<typeof profileSchema>;
 
 export interface IProfileProps {
     className?: string;
     orders: IOrderProps[];
+    verified: boolean | undefined;
+    onSubmitAction: (data: ProfileFormData) => void;
+    userPassword?: string;
 }
 
-export const Profile = ({ orders, className }: IProfileProps) => {
+export const Profile = ({ onSubmitAction, userPassword, orders, className }: IProfileProps) => {
     const { data: session } = useSession();
 
     const {
@@ -86,9 +93,13 @@ export const Profile = ({ orders, className }: IProfileProps) => {
     };
 
     const onSubmit = async (data: ProfileFormData) => {
-        // Здесь логика обновления профиля
-        console.log("Обновленные данные:", data);
-        // Можно добавить вызов API для сохранения изменений
+        await onSubmitAction(data);
+        signIn("credentials", {
+            phone: data.phone,
+            password: userPassword,
+            redirect: false
+        });
+        toast.success("Профиль успешно обновлен!");
     };
 
     if (!session) {
@@ -97,7 +108,7 @@ export const Profile = ({ orders, className }: IProfileProps) => {
 
     return (
         <div className={cn(className, "p-10")}>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10 mb-10">
                 <img
                     src={session.user.photo ?? "/avatar.png"}
                     alt="Фотография пользователя"
@@ -146,13 +157,25 @@ export const Profile = ({ orders, className }: IProfileProps) => {
                         </Button>
                     </div>
                 </div>
-                {orders.length > 0 && (
-                    <div className="mb-2">
-                        <h2 className="text-2xl mb-2">Заказы клиента</h2>
-                        <ClientTable orders={orders} />
-                    </div>
-                )}
             </form>
+            {orders.length > 0 && (
+                <div className="mb-2">
+                    <h2 className="text-2xl mb-2">Ваши заказы</h2>
+                    <ClientTable orders={orders} />
+                </div>
+            )}
+            {orders.length == 0 && (
+                <div className="flex flex-col items-center gap-2 border-2 border-dashed border-gray-300 p-5 rounded-md">
+                    <h2 className="text-2xl">У вас нет заказов</h2>
+                    <p>Вы можете сделать заказ, перейдя в каталог.</p>
+                    <Link
+                        href="/"
+                        className="text-blue-500 hover:gap-3 flex items-center gap-1 transition-all duration-100"
+                    >
+                        <span>Перейти к выбору</span> <ArrowRight />
+                    </Link>
+                </div>
+            )}
         </div>
     );
 };

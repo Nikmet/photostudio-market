@@ -6,7 +6,7 @@ import { prisma } from "@/prisma/prisma-client";
 import { JWT } from "next-auth/jwt";
 import { UserRole } from "@prisma/client";
 import { createUid } from "@/lib/uid";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 
 export const authOptions: AuthOptions = {
     providers: [
@@ -62,7 +62,7 @@ export const authOptions: AuthOptions = {
                     }
 
                     //compare
-                    const isPasswordValid = credentials.password == user.password;
+                    const isPasswordValid = compare(credentials.password, user.password);
 
                     if (!isPasswordValid) {
                         throw new Error("Неверный пароль");
@@ -222,7 +222,8 @@ export const authOptions: AuthOptions = {
         strategy: "jwt"
     },
     pages: {
-        signIn: "/login"
+        signIn: "/login",
+        newUser: "/register"
     }
 };
 

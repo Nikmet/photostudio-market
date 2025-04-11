@@ -29,14 +29,15 @@ const registerFormSchema = z
         path: ["confirmPassword"]
     });
 
-type RegisterFormData = z.infer<typeof registerFormSchema>;
+export type RegisterFormData = z.infer<typeof registerFormSchema>;
 type PasswordStrength = "weak" | "medium" | "strong";
 
 interface IRegisterFormProps {
     className?: string;
+    onSubmit: (data: RegisterFormData) => void;
 }
 
-export const RegisterForm = ({ className }: IRegisterFormProps) => {
+export const RegisterForm = ({ onSubmit, className }: IRegisterFormProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>("weak");
     const [passwordSuggestions, setPasswordSuggestions] = useState<string[]>([]);
@@ -47,10 +48,7 @@ export const RegisterForm = ({ className }: IRegisterFormProps) => {
         control,
         watch
     } = useForm<RegisterFormData>({
-        resolver: zodResolver(registerFormSchema),
-        defaultValues: {
-            phone: "+7 "
-        }
+        resolver: zodResolver(registerFormSchema)
     });
 
     const password = watch("password");
@@ -106,7 +104,8 @@ export const RegisterForm = ({ className }: IRegisterFormProps) => {
             toast.error("Пароль не надежный, придумайте пароль хотя бы средней сложности!");
             return;
         }
-        console.log(data);
+        onSubmit(data);
+        toast.success("Регистрация прошла успешно!");
     };
 
     const togglePasswordVisibility = () => {

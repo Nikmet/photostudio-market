@@ -50,7 +50,7 @@ export function formatTableCell<T>(value: T[keyof T]): string {
             return "Есть";
         }
 
-        return value;
+        return changeEnum(value as string);
     }
 
     if (typeof value === "object") {
@@ -65,5 +65,5 @@ export function formatTableCell<T>(value: T[keyof T]): string {
         return value.toFixed(2);
     }
 
-    return changeEnum(value as string);
+    return value.toString();
 }

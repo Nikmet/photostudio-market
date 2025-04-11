@@ -60,6 +60,8 @@ export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClie
         }
     }, [defaultValues, setValue]);
 
+    console.log(defaultValues);
+
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">

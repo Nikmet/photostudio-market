@@ -95,9 +95,7 @@ export const ClientTable = ({ orders, className }: IClientTableProps): React.JSX
                                                             "text-right": column.key === "totalAmount"
                                                         })}
                                                     >
-                                                        {column.render
-                                                            ? column.render(item) // Используем render для колонки "Количество"
-                                                            : formatTableCell<(typeof orders)[0]>(item[column.key])}
+                                                        {formatTableCell<(typeof orders)[0]>(item[column.key])}
                                                     </TableCell>
                                                 ))}
                                             </TableRow>
