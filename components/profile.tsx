@@ -10,12 +10,12 @@ import React from "react";
 import { FormInput } from "./form-input";
 import { ClientTable } from "./client-table";
 import { IOrderProps } from "./forms/clients-form/client-form";
-import { formatPhoneNumber } from "@/lib/phone";
+import { handlePhoneChange, handlePhoneKeyDown } from "@/lib/phone";
 import { cn } from "@/lib";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { User } from "@prisma/client";
+import { VerificationCodeInput } from "./virification-code-input";
 
 // Схема валидации
 const profileSchema = z.object({
@@ -34,8 +34,10 @@ export interface IProfileProps {
     userPassword?: string;
 }
 
-export const Profile = ({ onSubmitAction, userPassword, orders, className }: IProfileProps) => {
+export const Profile = ({ onSubmitAction, userPassword, orders, verified, className }: IProfileProps) => {
     const { data: session } = useSession();
+    const [sendingCode, setSendingCode] = React.useState(false);
+    const [verifiedState, setVerifiedState] = React.useState(verified);
 
     const {
         handleSubmit,
@@ -64,32 +66,45 @@ export const Profile = ({ onSubmitAction, userPassword, orders, className }: IPr
         }
     }, [session, reset]);
 
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (value: string) => void) => {
-        const input = e.target.value;
+    const createNewCode = async () => {
+        const data = await fetch("/api/verification/newCode", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                phone: session?.user?.phone
+            })
+        });
 
-        // Если пытаются удалить +7, игнорируем
-        if (input.length < 3) {
-            onChange("+7 ");
-            return;
+        if (data.status === 200) {
+            toast.success("Код отправлен, проверьте ваш телефон");
+            setSendingCode(true);
+        } else {
+            toast.error("Произошла ошибка. Попробуйте позже");
         }
-
-        // Если +7 был изменен, восстанавливаем
-        if (!input.startsWith("+7 ")) {
-            const digits = input.replace(/\D/g, "").slice(0, 10);
-            onChange(formatPhoneNumber("+7 " + digits));
-            return;
-        }
-
-        const formatted = formatPhoneNumber(input);
-        onChange(formatted);
     };
 
-    const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // Запрещаем удаление +7 с помощью Backspace или Delete
-        const target = e.target as HTMLInputElement;
-        if ((e.key === "Backspace" || e.key === "Delete") && target.selectionStart && target.selectionStart <= 3) {
-            e.preventDefault();
+    const onCodeSubmit = async (code: string) => {
+        const data = await fetch("/api/verification/verified", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                phone: session?.user?.phone,
+                code
+            })
+        });
+
+        if (data.status === 200) {
+            toast.success("Аккаунт подтвержден");
+            setSendingCode(false);
+            setVerifiedState(true);
+        } else {
+            toast.error("Произошла ошибка. Попробуйте позже");
         }
+        setSendingCode(false);
     };
 
     const onSubmit = async (data: ProfileFormData) => {
@@ -156,6 +171,38 @@ export const Profile = ({ onSubmitAction, userPassword, orders, className }: IPr
                             Выйти из аккаунта
                         </Button>
                     </div>
+                </div>
+                <div className="w-[2px] h-[300px] bg-slate-400"></div>
+                <div className="flex flex-col gap-2">
+                    <h2 className="text-2xl">Подтверждение аккаунта</h2>
+                    {verifiedState && (
+                        <div className="flex flex-col gap-2">
+                            <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
+                                <Check /> <span>Ваш аккаунт подтвержден.</span>
+                            </p>
+                            <p>Вы можете использовать все возможности сайта.</p>
+                        </div>
+                    )}
+                    {!verifiedState && (
+                        <div className="flex flex-col gap-2 w-[300px]">
+                            {!sendingCode && (
+                                <>
+                                    {" "}
+                                    <p className="flex items-center gap-2 bg-red-100 rounded-md p-2">
+                                        <X /> <span>Ваш аккаунт не подтвержден.</span>
+                                    </p>
+                                    <Button type="button" variant={"outline"} onClick={createNewCode}>
+                                        Отправить код подтверждения
+                                    </Button>
+                                </>
+                            )}
+                            {sendingCode && (
+                                <div className="flex flex-col gap-2  w-[300px]">
+                                    <VerificationCodeInput onComplete={onCodeSubmit} />
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </form>
             {orders.length > 0 && (
