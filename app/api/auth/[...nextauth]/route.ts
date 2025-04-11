@@ -1,5 +1,6 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import YandexProvider, { YandexProfile } from "next-auth/providers/yandex";
+import VkProvider, { VkProfile } from "next-auth/providers/vk";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/prisma/prisma-client";
 import { JWT } from "next-auth/jwt";
@@ -21,6 +22,21 @@ export const authOptions: AuthOptions = {
                         ? `https://avatars.yandex.net/get-yapic/${profile.default_avatar_id}/islands-200`
                         : null,
                     phone: profile.default_phone?.number || "",
+                    role: "USER" as UserRole
+                };
+            }
+        }),
+        VkProvider({
+            clientId: process.env.VK_CLIENT_ID!,
+            clientSecret: process.env.VK_CLIENT_SECRET!,
+            profile(profile: VkProfile) {
+                const data = profile.response[0];
+
+                return {
+                    id: data.id.toString(),
+                    name: data.first_name + " " + data.last_name,
+                    image: data.photo_200,
+                    phone: data.contacts?.mobile_phone || "",
                     role: "USER" as UserRole
                 };
             }

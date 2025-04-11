@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Фотостудия-Маркет | Авторизация",
+    description: "Страница авторизации"
+};
+
 export default async function AuthLayout({
     children
 }: Readonly<{
