@@ -40,17 +40,14 @@ export const Header: React.FC<IHeaderProps> = ({ className }) => {
                         </Link>
                     )}
                     {session.data?.user && (
-                        <Link
-                            className="dark:border-solid dark:border-white border-1 shadow-none text-black hidden md:flex border-solid border-black bg-transparent"
-                            href="/profile"
-                        >
-                            <div className="flex gap-2 items-center">
+                        <Link className="" href="/profile">
+                            <div className="gap-2 items-center dark:border-white border shadow-none hidden md:flex border-solid border-black py-1 px-3 rounded-md hover:bg-slate-100 transition-all duration-200">
                                 <img
                                     src={session.data.user.photo ?? "/avatar.png"}
                                     alt="фото профиля"
-                                    className="w-8 h-8 rounded-full mr-2"
+                                    className="w-6 h-6 rounded-full"
                                 />
-                                <span>Профиль</span>
+                                <span className="text-sm">Профиль</span>
                             </div>
                         </Link>
                     )}
