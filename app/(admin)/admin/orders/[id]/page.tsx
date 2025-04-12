@@ -44,7 +44,8 @@ export default async function ProductPage({ params }: Props) {
             itemName: product.product.itemName,
             comments: product.product.comments,
             route: product.product.route,
-            orderId: product.orderId
+            orderId: product.orderId,
+            cartId: product.cartId
         })) || [];
 
     const handleSubmit = async (data: FormValuesOrders, products: ProductItemWithProduct[]) => {

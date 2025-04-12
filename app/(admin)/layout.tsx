@@ -20,7 +20,7 @@ export default async function AdminLayout({
                 <AdminMenuBar pages={adminPages} />
                 <div className="w-full h-full view-animation">
                     <PagesTab />
-                    {children}
+                    <div className="h-full w-full overflow-auto scrollbar">{children}</div>
                 </div>
             </main>
         </>

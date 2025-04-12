@@ -199,7 +199,7 @@ export const OrdersTable = ({
         return (
             <>
                 {" "}
-                <EmptyTable text="Нет заказов" textButton="Добавить" action={handleAdd} />{" "}
+                <EmptyTable text="Нет продуктов" textButton="Добавить" action={handleAdd} />{" "}
                 {addWindow && !loading && (
                     <SelectedProductWindow
                         products={productsForTable}

@@ -181,7 +181,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                             <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
                                 <Check /> <span>Ваш аккаунт подтвержден.</span>
                             </p>
-                            <p>Вы можете использовать все возможности сайта.</p>
+                            <p>*Вы можете использовать все возможности сайта.</p>
                         </div>
                     )}
                     {!verifiedState && (

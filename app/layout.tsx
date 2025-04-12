@@ -25,7 +25,7 @@ export default async function MainLayout({
         <html lang="ru" className={theme} style={{ colorScheme: theme }}>
             <body className={main_font.className}>
                 <Providers theme={theme}>{children}</Providers>
-                <footer className="flex flex-col justify-center items-center bg-secondary/40 p-2 view-animation">
+                <footer className="flex flex-col justify-center items-center bg-secondary p-2 view-animation">
                     <p className="text-center text-sm text-gray-500">
                         © {new Date().getFullYear()} ООО &quot;Фотостудия-М&quot;
                     </p>

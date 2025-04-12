@@ -64,56 +64,59 @@ export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClie
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <Controller
-                    name="photo"
-                    control={control}
-                    render={({ field }) => (
-                        <ImageInput
-                            {...field}
-                            label="Изображение"
-                            errors={errors}
-                            onChange={file => field.onChange(file)} // Передаем файл в форму
-                        />
-                    )}
-                />
-                <div className="flex flex-col w-[400px] gap-2">
+            <form onSubmit={handleSubmit(submitAction)} className="flex flex-col gap-2">
+                <div className="flex gap-4">
                     <Controller
-                        name="fullName"
+                        name="photo"
                         control={control}
                         render={({ field }) => (
-                            <FormInput type="text" label="ФИО" required errors={errors} {...field} />
-                        )}
-                    />
-                    <Controller
-                        name="phone"
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                type="tel"
-                                name={field.name}
-                                label="Телефон"
-                                required
+                            <ImageInput
+                                {...field}
+                                label="Изображение"
                                 errors={errors}
-                                value={field.value}
-                                onChange={e => handlePhoneChange(e, field.onChange)}
-                                onKeyDown={handlePhoneKeyDown}
-                                onFocus={e => {
-                                    if (!e.target.value) {
-                                        field.onChange("+7 ");
-                                    }
-                                }}
+                                onChange={file => field.onChange(file)} // Передаем файл в форму
                             />
                         )}
                     />
-                    <Controller
-                        name="email"
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput type="email" label="Эл. Почта" required errors={errors} {...field} />
-                        )}
-                    />
+                    <div className="flex flex-col w-[400px] gap-2">
+                        <Controller
+                            name="fullName"
+                            control={control}
+                            render={({ field }) => (
+                                <FormInput type="text" label="ФИО" required errors={errors} {...field} />
+                            )}
+                        />
+                        <Controller
+                            name="phone"
+                            control={control}
+                            render={({ field }) => (
+                                <FormInput
+                                    type="tel"
+                                    name={field.name}
+                                    label="Телефон"
+                                    required
+                                    errors={errors}
+                                    value={field.value}
+                                    onChange={e => handlePhoneChange(e, field.onChange)}
+                                    onKeyDown={handlePhoneKeyDown}
+                                    onFocus={e => {
+                                        if (!e.target.value) {
+                                            field.onChange("+7 ");
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="email"
+                            control={control}
+                            render={({ field }) => (
+                                <FormInput type="email" label="Эл. Почта" required errors={errors} {...field} />
+                            )}
+                        />
+                    </div>
                 </div>
+
                 {orders.length > 0 && (
                     <div className="mb-2">
                         <h2 className="text-2xl mb-2">Заказы клиента</h2>
