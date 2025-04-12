@@ -29,6 +29,12 @@ export default function RegisterPage() {
             }
         });
 
+        await prisma.cart.create({
+            data: {
+                userId: newUserId
+            }
+        });
+
         redirect("/login");
     };
 

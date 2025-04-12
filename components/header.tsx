@@ -2,12 +2,11 @@
 
 import { cn } from "@/lib";
 import { ThemeSwitcher } from "./theme-switcher";
-import { Button } from "./ui";
-import { ArrowRight, ShoppingCart } from "lucide-react";
 import React, { Suspense } from "react";
 import { HeaderLogo } from "./header-logo";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { CartDrawer } from "./cart-drawer";
 
 export interface IHeaderProps {
     className?: string;
@@ -52,16 +51,7 @@ export const Header: React.FC<IHeaderProps> = ({ className }) => {
                         </Link>
                     )}
                     {/* Кнопки для корзин */}
-                    {session.data?.user.role === "USER" && (
-                        <>
-                            <Button className="dark:text-white hidden md:flex">
-                                Корзина <ArrowRight />
-                            </Button>
-                            <Button className="dark:text-white md:hidden h-7 w-7">
-                                <ShoppingCart />
-                            </Button>
-                        </>
-                    )}
+                    {session.data?.user.role === "USER" && <CartDrawer userId={session.data.user.id} />}
                 </div>
             </header>
         </>
