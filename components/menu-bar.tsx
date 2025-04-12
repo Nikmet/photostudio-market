@@ -2,16 +2,18 @@
 
 import { IPage } from "@/@types/page";
 import { cn } from "@/lib";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
 export interface IMenuBarProps {
     className?: string;
     pages: IPage[];
-    isAdmin?: boolean;
 }
 
-export const MenuBar = ({ pages, isAdmin, className }: IMenuBarProps): React.JSX.Element => {
+export const MenuBar = ({ pages, className }: IMenuBarProps): React.JSX.Element => {
+    const session = useSession();
+
     return (
         <div
             className={cn(
@@ -30,7 +32,7 @@ export const MenuBar = ({ pages, isAdmin, className }: IMenuBarProps): React.JSX
                     </Link>
                 ))}
             </div>
-            {isAdmin && (
+            {session.data?.user.role === "ADMIN" && (
                 <Link href="/admin" className="p-4 dark:text-white text-black underline">
                     Панель Администратора
                 </Link>

@@ -11,10 +11,9 @@ import { useSession } from "next-auth/react";
 
 export interface IHeaderProps {
     className?: string;
-    admin?: boolean;
 }
 
-export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
+export const Header: React.FC<IHeaderProps> = ({ className }) => {
     const session = useSession();
 
     return (
@@ -26,7 +25,7 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
                 )}
             >
                 <Suspense>
-                    <HeaderLogo admin={admin} />
+                    <HeaderLogo admin={session.data?.user.role === "ADMIN"} />
                 </Suspense>
                 <div className="flex items-center gap-3 2xl:gap-4">
                     <ThemeSwitcher />
@@ -56,12 +55,16 @@ export const Header: React.FC<IHeaderProps> = ({ admin, className }) => {
                         </Link>
                     )}
                     {/* Кнопки для корзин */}
-                    <Button className="dark:text-white hidden md:flex">
-                        Корзина <ArrowRight />
-                    </Button>
-                    <Button className="dark:text-white md:hidden h-7 w-7">
-                        <ShoppingCart />
-                    </Button>
+                    {session.data?.user.role === "USER" && (
+                        <>
+                            <Button className="dark:text-white hidden md:flex">
+                                Корзина <ArrowRight />
+                            </Button>
+                            <Button className="dark:text-white md:hidden h-7 w-7">
+                                <ShoppingCart />
+                            </Button>
+                        </>
+                    )}
                 </div>
             </header>
         </>

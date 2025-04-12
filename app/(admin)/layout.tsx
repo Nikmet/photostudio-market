@@ -15,8 +15,7 @@ export default async function AdminLayout({
 }>) {
     return (
         <>
-            <Header admin={true} />
-
+            <Header />
             <main className="flex h-[85vh] w-full p-4">
                 <AdminMenuBar pages={adminPages} />
                 <div className="w-full h-full view-animation">
