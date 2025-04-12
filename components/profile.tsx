@@ -114,6 +114,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
             password: userPassword,
             redirect: false
         });
+
         toast.success("Профиль успешно обновлен!");
     };
 

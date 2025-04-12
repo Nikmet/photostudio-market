@@ -19,6 +19,17 @@ export default async function ProfilePage() {
     const onSubmit = async (data: ProfileFormData) => {
         "use server";
 
+        if (data.phone != findUser?.phone) {
+            await prisma.user.update({
+                where: {
+                    phone: findUser?.phone
+                },
+                data: {
+                    verified: null
+                }
+            });
+        }
+
         //TODO: Добавить аватарку
         await prisma.user.update({
             where: {

@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import * as z from "zod";
 import { YandexButton } from "./yandex-button";
-import { VkButton } from "./vk-button";
 import { handlePhoneChange, handlePhoneKeyDown } from "@/lib/phone";
 import { FormInput } from "./form-input";
 import { Button } from "./ui";
@@ -140,7 +139,6 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
 
                 <div className="flex flex-col gap-3">
                     <YandexButton />
-                    <VkButton />
                 </div>
 
                 <div className="flex gap-1 items-center justify-center text-center text-sm mt-4">
