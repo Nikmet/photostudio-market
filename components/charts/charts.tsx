@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { ProductTypeChart } from "./products-chart";
 import { SalesChart } from "./sales-chart";
 import { TopClientsChart } from "./top-clients-chart";
@@ -20,7 +20,7 @@ export const Charts = ({ className }: IChartsProps): React.JSX.Element => {
         setLoadingStates(prev => ({ ...prev, [chart]: false }));
     };
 
-    const isLoading = Object.values(loadingStates).some(state => state);
+    const isLoading = useMemo(() => Object.values(loadingStates).some(state => state), [loadingStates]);
 
     return (
         <div className={className}>

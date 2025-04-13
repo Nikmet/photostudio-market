@@ -2,7 +2,7 @@
 
 import { Bar, BarChart, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 interface Client {
     id: string;
@@ -29,33 +29,54 @@ export interface ITopClientsChartProps {
 export function TopClientsChart({ onLoaded }: ITopClientsChartProps) {
     const [clients, setClients] = useState<Client[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchTopClients = async () => {
+            if (isLoading) return;
+            setIsLoading(true);
             try {
-                const response = await fetch("/api/users/top");
+                const response = await fetch("/api/users/top", {
+                    cache: "no-store"
+                });
                 if (!response.ok) {
                     throw new Error("Failed to fetch top clients");
                 }
                 const data = await response.json();
-                setClients(data.slice(0, 5));
+                if (isMounted) {
+                    setClients(data.slice(0, 5));
+                }
             } catch (err) {
-                setError(err instanceof Error ? err.message : "Unknown error");
+                if (isMounted) {
+                    setError(err instanceof Error ? err.message : "Unknown error");
+                }
             } finally {
-                onLoaded();
+                if (isMounted) {
+                    setIsLoading(false);
+                    onLoaded();
+                }
             }
         };
 
         fetchTopClients();
-    }, [onLoaded]);
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    const chartData = useMemo(
+        () =>
+            clients.map(client => ({
+                name: client.fullName,
+                value: client.totalSpent
+            })),
+        [clients]
+    );
 
     if (error) return <div>Error: {error}</div>;
-
-    const chartData = clients.map(client => ({
-        name: client.fullName,
-        value: client.totalSpent
-    }));
-
     if (chartData.length === 0) return <div>No client data available</div>;
 
     return (

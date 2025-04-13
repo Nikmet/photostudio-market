@@ -12,7 +12,7 @@ export default async function AuthLayout({
 }>) {
     return (
         <>
-            <main className="flex h-[94vh] w-full">
+            <main className="flex h-[92vh] w-full">
                 <div className="w-full h-full">{children}</div>
             </main>
         </>

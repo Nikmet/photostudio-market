@@ -70,7 +70,7 @@ export const ProductTypeChart = ({ onLoaded }: IProductTypeChartProps) => {
         };
 
         fetchProducts();
-    }, [onLoaded]);
+    }, []);
 
     const getProductTypeData = () => {
         const typeCounts: Record<string, number> = {};

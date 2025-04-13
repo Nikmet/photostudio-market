@@ -134,8 +134,8 @@ model Cart {
 
     totalAmount Float @default(0)
 
-    createdAt   DateTime      @default(now())
-    updatedAt   DateTime      @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Таблица Продуктов
@@ -476,12 +476,12 @@ model Frame {
 }
 
 model PromotionPage {
-    id      Int    @id @default(autoincrement())
-    title   String
-    content String
-    route   String @unique
-    image   String
-    alt    String
+    id        String   @id //Prefix: ПС
+    title     String
+    content   String
+    route     String   @unique
+    image     String
+    alt       String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

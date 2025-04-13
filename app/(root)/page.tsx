@@ -5,7 +5,7 @@ import { CARDS } from "@/constants/cards";
 export default function Home() {
     return (
         <div>
-            <PromoSlider autoplayDelay={10000} showNavigation={true} showPagination={true} />
+            <PromoSlider autoplayDelay={10000} showPagination={true} />
             <div>
                 <h2 className="text-3xl font-extrabold mt-10 mb-2">Наши продукты</h2>
                 <div>

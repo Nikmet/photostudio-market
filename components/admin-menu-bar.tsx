@@ -101,6 +101,13 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                 >
                     Цены
                 </Link>
+                <Link
+                    href="/admin/promo"
+                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                    onClick={() => handleClick({ name: "Промо-страницы", href: "/admin/promo" })}
+                >
+                    Промо-страницы
+                </Link>
             </div>
         </div>
     );

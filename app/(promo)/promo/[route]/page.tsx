@@ -22,9 +22,9 @@ export default async function PromoPage({ params }: Props) {
     }
 
     return (
-        <div>
-            <h1>{pageData?.title}</h1>
-            {pageData?.content}
+        <div className="p-10">
+            <h1 className="text-3xl font-bold">{pageData?.title}</h1>
+            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: pageData?.content || "" }} />
         </div>
     );
 }

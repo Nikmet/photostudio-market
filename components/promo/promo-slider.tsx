@@ -15,14 +15,12 @@ import { PromoItem } from "./promo-item";
 export interface IPromoSliderProps {
     className?: string;
     autoplayDelay?: number; // Задержка автопрокрутки в ms
-    showNavigation?: boolean; // Показывать кнопки навигации
     showPagination?: boolean; // Показывать пагинацию
 }
 
 export const PromoSlider = ({
     className = "",
     autoplayDelay = 5000,
-    showNavigation = true,
     showPagination = true
 }: IPromoSliderProps): React.JSX.Element => {
     const [pages, setPages] = useState<PromotionPage[]>([]);
