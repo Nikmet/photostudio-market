@@ -29,8 +29,6 @@ export default async function CupsEditPage({ params }: Props) {
     const handleSubmit = async (data: FormValuesClients) => {
         "use server";
 
-        console.log(data);
-
         if (!findClient) {
             await prisma.user.create({
                 data: {

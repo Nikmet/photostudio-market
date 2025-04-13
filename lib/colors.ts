@@ -10,8 +10,6 @@ export const hexToRgb = (hex: string): string => {
 };
 
 export const rgbStringToHex = (rgbString: string): string => {
-    console.log(rgbString);
-
     // 1. Разделяем строку на компоненты
     const [r, g, b] = rgbString.split(",").map(component => {
         // Убираем пробелы и преобразуем в число

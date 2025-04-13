@@ -55,8 +55,6 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
 
     // Обновляем форму при изменении сессии
     React.useEffect(() => {
-        console.log(session);
-
         if (session) {
             reset({
                 name: session.user?.name || "",

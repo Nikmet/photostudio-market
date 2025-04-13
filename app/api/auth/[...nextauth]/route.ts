@@ -84,8 +84,6 @@ export const authOptions: AuthOptions = {
                 token.role = findUser.role;
             }
 
-            console.log("Token after findUser:", token);
-
             return token;
         },
         async session({ session, token }) {
@@ -95,19 +93,11 @@ export const authOptions: AuthOptions = {
                 session.user.phone = token.phone as string;
                 session.user.photo = token.photo as string;
             }
-            console.log("Session after findUser:", session);
 
             return session;
         },
-        async signIn({ user, account, profile }) {
+        async signIn({ user, account }) {
             try {
-                console.log("Начало обработки signIn callback", {
-                    provider: account?.provider,
-                    user,
-                    account,
-                    profile
-                });
-
                 if (account?.provider === "credentials") {
                     return true;
                 }
@@ -135,13 +125,10 @@ export const authOptions: AuthOptions = {
                     }
                 });
 
-                console.log(user.phone);
-
                 user.phone = user.phone || existingUser?.phone;
                 user.image = user.image || existingUser?.photo;
 
                 if (existingUser) {
-                    console.log("Найден существующий пользователь:", existingUser.id);
                     await prisma.user.update({
                         where: { id: existingUser.id },
                         data: {
@@ -154,8 +141,6 @@ export const authOptions: AuthOptions = {
                     return true;
                 }
 
-                console.log("Создание нового пользователя...");
-
                 // Генерация уникального номера для id
                 const lastId = await prisma.user.findFirst({
                     orderBy: { id: "desc" },
@@ -164,19 +149,6 @@ export const authOptions: AuthOptions = {
 
                 const newUserId = createUid("КЛ", (Number(lastId?.id.split("-")[1]) + 1).toString() || "1");
                 const hashedPassword = await hash(user.id, 10);
-
-                console.log({
-                    id: newUserId,
-                    email: user.email!,
-                    phone: user.phone || "",
-                    fullName: user.name || "Пользователь",
-                    role: "USER",
-                    provider: account?.provider,
-                    providerId: account?.providerAccountId,
-                    password: hashedPassword,
-                    photo: user.image || "",
-                    verified: new Date()
-                });
 
                 await prisma.user.create({
                     data: {
@@ -193,7 +165,6 @@ export const authOptions: AuthOptions = {
                     }
                 });
 
-                console.log("Пользователь успешно создан:", newUserId);
                 return true;
             } catch (error) {
                 console.error("Ошибка в signIn callback:", error);

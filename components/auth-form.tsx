@@ -44,8 +44,6 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
 
     const handleFormSubmit = async (data: AuthFormData) => {
         try {
-            console.log(data);
-
             const result = await signIn("credentials", {
                 phone: data.phone,
                 password: data.password,

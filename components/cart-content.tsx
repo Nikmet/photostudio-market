@@ -33,7 +33,6 @@ export const CartContent = ({ cart, isLoading, setIsLoading, className }: ICartC
 
             if (response.ok) {
                 const { cart: updatedCart } = await response.json();
-                console.log(updatedCart);
 
                 setCartState(updatedCart);
                 setIsLoading(false);
@@ -106,8 +105,6 @@ export const CartContent = ({ cart, isLoading, setIsLoading, className }: ICartC
             </div>
         );
     }
-
-    console.log(cartState);
 
     // Добавляем проверку перед использованием .map()
     return (

@@ -45,7 +45,6 @@ export const OrderForm = ({
     const [addWindow, setAddWindow] = React.useState(false);
     const [products, setProducts] = React.useState<ProductItemWithProduct[]>(productsProp);
 
-
     const fetchUsers = async () => {
         try {
             const response = await fetch("/api/users");
@@ -77,7 +76,6 @@ export const OrderForm = ({
 
     const submitAction = (data: FormValuesOrders) => {
         onSubmit(data, products);
-        console.log(data);
 
         toast.success(`Заказ для ${data.userName} успешно сохранен!`);
     };

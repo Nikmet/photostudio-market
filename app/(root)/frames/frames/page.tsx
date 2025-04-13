@@ -47,11 +47,7 @@ export default async function FramesEditPage() {
             }
         });
 
-        console.log(frame);
-
         await createProduct(frame.id, frame.name, "Рамки", await calcFramePrice(frame), "frames");
-
-        console.log(frame);
 
         redirect("/frames");
     };

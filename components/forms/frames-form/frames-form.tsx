@@ -49,7 +49,6 @@ export const FramesForm = ({
     setValue("name", "Рамка");
 
     const submitAction = (data: FormValuesFrames) => {
-        console.log(data);
         onSubmit(data);
         if (isClient) {
             toast.success(`Рамка добавлена в корзину!`);

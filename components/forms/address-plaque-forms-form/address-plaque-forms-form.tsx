@@ -40,7 +40,6 @@ export const AddressPlaqueFormsForm = ({
 
     const submitAction = (data: FormValuesAddressPlaqueForms) => {
         onSubmit(data);
-        console.log(onSubmit);
 
         closeTab(id, href, "Формы адресных аншлагов");
         toast.success(`Форма адресного аншлага "${data.name}" успешно сохранен!`);

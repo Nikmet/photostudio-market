@@ -21,8 +21,6 @@ export const getDefaultPrices = async () => {
         }
     });
 
-    console.log(prices);
-
     const defaultValues: PricesFormValues = {
         cupPrice: prices[0].value,
         tShirtOneSidePrice: prices[1].value,

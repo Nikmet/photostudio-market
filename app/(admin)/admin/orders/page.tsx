@@ -13,7 +13,7 @@ export default async function OrderPage() {
                 }
             });
         } catch (e) {
-            console.log(e);
+            console.error(e);
             return undefined;
         }
     };

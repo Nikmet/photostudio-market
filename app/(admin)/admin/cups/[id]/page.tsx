@@ -46,7 +46,6 @@ export default async function CupsEditPage({ params }: Props) {
                     printing_image: await uploadImage(data.printing_image)
                 }
             });
-            console.log(updatedCup);
 
             await updateProduct(updatedCup.id, updatedCup.name, await calcCupPrice());
         }

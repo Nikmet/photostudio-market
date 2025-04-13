@@ -50,8 +50,6 @@ export const ImageInput = ({
 
     const previewUrl = preview || (value ? URL.createObjectURL(value) : undefined);
 
-    console.log(previewUrl);
-
     return (
         <div className={className}>
             {label && (

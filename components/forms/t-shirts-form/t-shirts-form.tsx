@@ -31,8 +31,6 @@ export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsForm
         }
     });
 
-    console.log(defaultValues);
-
     const submitAction = (data: FormValuesTShirts) => {
         onSubmit(data);
         toast.success(`Футболка "${data.name}" успешно сохранена!`);

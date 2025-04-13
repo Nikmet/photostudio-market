@@ -7,8 +7,6 @@ export interface ICardsGeneratorProps {
 }
 
 export const CardsGenerator = ({ tag, className }: ICardsGeneratorProps): React.JSX.Element => {
-    console.log(tag);
-
     return (
         <div className={className}>
             {CARDS.filter(card => card.category == tag).map((card, i) => (

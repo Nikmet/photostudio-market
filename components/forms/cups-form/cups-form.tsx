@@ -18,18 +18,16 @@ export const CupsForm = ({ onSubmit, defaultValues, className }: ICupsFormProps)
     const form = useForm<FormValuesCups>({
         resolver: zodResolver(formSchemaCups),
         defaultValues: defaultValues || {
-            name: "",
+            name: ""
         }
     });
-
-    console.log(defaultValues);
 
     const submitAction = (data: FormValuesCups) => {
         try {
             onSubmit(data);
             toast.success(`Кружка "${data.name}" успешно сохранена!`);
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
 

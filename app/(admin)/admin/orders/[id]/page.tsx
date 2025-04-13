@@ -68,8 +68,6 @@ export default async function ProductPage({ params }: Props) {
             });
 
             if (findOrder) {
-                console.log(data);
-
                 await prisma.order.update({
                     where: {
                         id: id
@@ -109,7 +107,7 @@ export default async function ProductPage({ params }: Props) {
                 });
             }
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
 
         products.forEach(async product => {
@@ -131,7 +129,7 @@ export default async function ProductPage({ params }: Props) {
                     }
                 });
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         });
     };

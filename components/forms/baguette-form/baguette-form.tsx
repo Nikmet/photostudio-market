@@ -32,13 +32,9 @@ export const BaguetteForm = ({
         }
     });
 
-    console.log(defaultValues);
-
     const { closeTab } = UseCloseTabOnSubmit();
 
     const submitAction = (data: FormValuesBaguette) => {
-        console.log(onSubmit);
-
         onSubmit(data);
         closeTab(id, href, "Багет");
         toast.success(`Багет успешно сохранен!`);

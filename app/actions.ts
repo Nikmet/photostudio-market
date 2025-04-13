@@ -35,15 +35,6 @@ export const createProduct = async (
             id = createUid("ПР", (Number(getId(lastProduct.id)) + 1).toString());
         }
 
-        console.log({
-            id: createUid("ПР", getId(id)),
-            itemId,
-            itemName,
-            categoryId: category.id,
-            price,
-            route
-        });
-
         await prisma.product.create({
             data: {
                 id: createUid("ПР", getId(id)),
@@ -54,8 +45,6 @@ export const createProduct = async (
                 route
             }
         });
-
-        console.log("Product created");
     } catch (e) {
         console.error("[CREATE_PRODUCT_ACTION]", e);
     }
@@ -68,8 +57,6 @@ export const updateProduct = async (itemId: string, itemName: string, price: num
                 itemId
             }
         });
-
-        console.log(findProduct);
 
         if (!findProduct) {
             throw new Error("Продукт не найден");
@@ -87,7 +74,7 @@ export const updateProduct = async (itemId: string, itemName: string, price: num
             }
         });
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 };
 
@@ -115,7 +102,7 @@ export const uploadImage = async (file: File | undefined) => {
 
     await writeFile(`./public/images/${fileName}`, Buffer.from(buffer), err => {
         if (err) {
-            console.log(err);
+            console.error(err);
         }
     });
 

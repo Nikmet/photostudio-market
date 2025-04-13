@@ -27,6 +27,6 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json(user?.cart);
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
