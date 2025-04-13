@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import { Providers } from "@/components/providers";
 import "./globals.css";
+import { CookieConsent } from "@/components/cookie-consent";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Главная"
@@ -18,13 +19,17 @@ export default async function MainLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const cookieStore = await cookies();
-    const theme = cookieStore.get("theme")?.value || "dark";
+    const cookieStore = cookies();
+    const theme = (await cookieStore).get("theme")?.value || "dark";
 
     return (
         <html lang="ru" className={theme} style={{ colorScheme: theme }}>
             <body className={main_font.className}>
-                <Providers theme={theme}>{children}</Providers>
+                <Providers theme={theme}>
+                    {children}
+                    <CookieConsent />
+                </Providers>
+
                 <footer className="flex flex-col justify-center items-center bg-secondary p-2 view-animation">
                     <p className="text-center text-sm text-gray-500">
                         © {new Date().getFullYear()} ООО &quot;Фотостудия-М&quot;

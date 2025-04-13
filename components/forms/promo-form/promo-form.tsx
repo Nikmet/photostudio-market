@@ -77,7 +77,7 @@ export const PromoForm = ({ onSubmit, defaultValues, className }: IPromoFormProp
                             render={({ field }) => (
                                 <FormInput
                                     type="text"
-                                    label="Замещающий текст"
+                                    label="Описание"
                                     {...field}
                                     errors={form.formState.errors}
                                     required
