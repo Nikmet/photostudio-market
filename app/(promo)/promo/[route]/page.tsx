@@ -1,4 +1,5 @@
 import { prisma } from "@/prisma/prisma-client";
+import { notFound } from "next/navigation";
 
 interface Props {
     params: Promise<{
@@ -15,6 +16,10 @@ export default async function PromoPage({ params }: Props) {
             route
         }
     });
+
+    if (!pageData) {
+        notFound();
+    }
 
     return (
         <div>

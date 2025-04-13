@@ -480,4 +480,8 @@ model PromotionPage {
     title   String
     content String
     route   String @unique
+    image   String
+    alt    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
