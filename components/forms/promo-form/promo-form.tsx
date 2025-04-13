@@ -112,7 +112,7 @@ export const PromoForm = ({ onSubmit, defaultValues, className }: IPromoFormProp
                     )}
                 />
 
-                <Button type="submit" className="self-start">
+                <Button type="submit" className="self-end mb-10 w-[200px]">
                     {defaultValues ? "Сохранить" : "Создать"}
                 </Button>
             </form>

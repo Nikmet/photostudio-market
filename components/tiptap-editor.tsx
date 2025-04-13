@@ -6,7 +6,8 @@ import Underline from "@tiptap/extension-underline";
 import Image from "@tiptap/extension-image";
 import Heading, { Level } from "@tiptap/extension-heading";
 import TextAlign from "@tiptap/extension-text-align";
-import { useEffect } from "react";
+import Link from "@tiptap/extension-link"; // Импорт расширения для ссылок
+import { useEffect, useState } from "react";
 
 export const TiptapEditor = ({
     value,
@@ -17,6 +18,9 @@ export const TiptapEditor = ({
     onChange: (value: string) => void;
     error?: string;
 }) => {
+    const [linkUrl, setLinkUrl] = useState("");
+    const [isLinkMenuOpen, setIsLinkMenuOpen] = useState(false);
+
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -37,6 +41,12 @@ export const TiptapEditor = ({
             TextAlign.configure({
                 types: ["heading", "paragraph"],
                 alignments: ["left", "center", "right", "justify"]
+            }),
+            Link.configure({
+                openOnClick: false,
+                HTMLAttributes: {
+                    class: "text-blue-600 hover:underline"
+                }
             })
         ],
         content: value,
@@ -66,6 +76,18 @@ export const TiptapEditor = ({
             editor?.chain().focus().setImage({ src: base64 }).run();
         };
         reader.readAsDataURL(file);
+    };
+
+    const setLink = () => {
+        if (linkUrl === "") {
+            editor?.chain().focus().extendMarkRange("link").unsetLink().run();
+            return;
+        }
+
+        editor?.chain().focus().extendMarkRange("link").setLink({ href: linkUrl }).run();
+
+        setLinkUrl("");
+        setIsLinkMenuOpen(false);
     };
 
     if (!editor) {
@@ -135,6 +157,57 @@ export const TiptapEditor = ({
                 >
                     <u>U</u>
                 </button>
+
+                {/* Кнопка ссылки */}
+                <button
+                    type="button"
+                    onClick={() => {
+                        if (editor.isActive("link")) {
+                            editor.chain().focus().unsetLink().run();
+                        } else {
+                            setIsLinkMenuOpen(!isLinkMenuOpen);
+                            setLinkUrl(editor.getAttributes("link").href || "");
+                        }
+                    }}
+                    className={`p-2 rounded hover:bg-gray-200 ${editor.isActive("link") ? "bg-gray-200" : ""}`}
+                    title="Добавить ссылку"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                </button>
+
+                {/* Меню для ввода ссылки */}
+                {isLinkMenuOpen && (
+                    <div className="absolute top-full left-0 mt-1 p-2 bg-white border rounded shadow-md z-20">
+                        <input
+                            type="text"
+                            value={linkUrl}
+                            onChange={e => setLinkUrl(e.target.value)}
+                            placeholder="Введите URL"
+                            className="p-1 border rounded mr-2"
+                            onKeyDown={e => {
+                                if (e.key === "Enter") {
+                                    setLink();
+                                }
+                            }}
+                        />
+                        <button onClick={setLink} className="p-1 bg-blue-500 text-white rounded">
+                            Применить
+                        </button>
+                    </div>
+                )}
 
                 {/* Кнопки списков */}
                 <button
@@ -272,6 +345,30 @@ export const TiptapEditor = ({
                             className={`p-1 rounded ${editor.isActive("underline") ? "bg-gray-200" : ""}`}
                         >
                             <u>U</u>
+                        </button>
+                        <button
+                            onClick={() => {
+                                const url = window.prompt("Введите URL ссылки");
+                                if (url) {
+                                    editor.chain().focus().toggleLink({ href: url }).run();
+                                }
+                            }}
+                            className={`p-1 rounded ${editor.isActive("link") ? "bg-gray-200" : ""}`}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
                         </button>
                     </div>
                 </BubbleMenu>
