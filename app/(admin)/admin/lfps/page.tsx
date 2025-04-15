@@ -1,14 +1,13 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
 
 export default async function TablesPage() {
     const lfps = await prisma.lFP.findMany({
         include: {
-            paper_type: true,
-            printing_image: true
+            paper_type: true
         }
     });
 
@@ -17,8 +16,7 @@ export default async function TablesPage() {
         name: lfp.name,
         width: lfp.width,
         height: lfp.height,
-        paper_type: lfp.paper_type.name,
-        printing_image: lfp.printing_image
+        paper_type: lfp.paper_type.name
     }));
 
     const columns: IColumnsProps<(typeof flattenedTables)[0]>[] = [
@@ -26,8 +24,7 @@ export default async function TablesPage() {
         { title: "Название", key: "name" },
         { title: "Ширина", key: "width" },
         { title: "Высота", key: "height" },
-        { title: "Тип бумаги", key: "paper_type" },
-        { title: "Изображение", key: "printing_image" }
+        { title: "Тип бумаги", key: "paper_type" }
     ];
 
     const handleDelete = async (ids: string[]) => {

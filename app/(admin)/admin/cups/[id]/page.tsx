@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { CupsForm } from "@/components/forms/cups-form/cups-form";
-import { FormValuesCups } from "@/components/forms/cups-form/schema";
+import { CupsForm } from "@/components/admin-forms/cups-form/cups-form";
+import { FormValuesCups } from "@/components/admin-forms/cups-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcCupPrice } from "@/lib/prices";

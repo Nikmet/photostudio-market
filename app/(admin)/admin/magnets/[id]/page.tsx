@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { MagnetsForm } from "@/components/forms/magnets-form/magnets-form";
-import { FormValuesMagnet } from "@/components/forms/magnets-form/schema";
+import { MagnetsForm } from "@/components/admin-forms/magnets-form/magnets-form";
+import { FormValuesMagnet } from "@/components/admin-forms/magnets-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcMagnetPrice } from "@/lib/prices";

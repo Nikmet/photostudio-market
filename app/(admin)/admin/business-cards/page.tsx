@@ -1,15 +1,11 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
 
 export default async function BusinessCardsPage() {
-    const cards = await prisma.businessCard.findMany({
-        include: {
-            printing_image: true
-        }
-    });
+    const cards = await prisma.businessCard.findMany();
 
     const flattenedData = cards.map(card => ({
         id: card.id,

@@ -1,5 +1,5 @@
-import { PaperTypesForm } from "@/components/forms/paper-types-form/paper-types-form";
-import { FormValuesPaperTypes } from "@/components/forms/paper-types-form/schema";
+import { PaperTypesForm } from "@/components/admin-forms/paper-types-form/paper-types-form";
+import { FormValuesPaperTypes } from "@/components/admin-forms/paper-types-form/schema";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 

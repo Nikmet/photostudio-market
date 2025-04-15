@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { FormValuesStands } from "@/components/forms/stands-form/schema";
-import { StandsForm } from "@/components/forms/stands-form/stands-form";
+import { FormValuesStands } from "@/components/admin-forms/stands-form/schema";
+import { StandsForm } from "@/components/admin-forms/stands-form/stands-form";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcStandPrice } from "@/lib/prices";

@@ -1,6 +1,6 @@
 import { uploadImage } from "@/app/actions";
-import { BaguetteForm } from "@/components/forms/baguette-form/baguette-form";
-import { FormValuesBaguette } from "@/components/forms/baguette-form/schema";
+import { BaguetteForm } from "@/components/admin-forms/baguette-form/baguette-form";
+import { FormValuesBaguette } from "@/components/admin-forms/baguette-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";

@@ -1,23 +1,19 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
 
 export default async function TShirtsPage() {
-    const t_shirts = await prisma.magnet.findMany({
-        include: {
-            printing_image: true
-        }
-    });
+    const magnets = await prisma.magnet.findMany();
 
-    const flattenedData = t_shirts.map(t_shirt => ({
-        id: t_shirt.id,
-        name: t_shirt.name,
-        height: t_shirt.height,
-        width: t_shirt.width,
-        magnet_type: t_shirt.magnet_type,
-        printing_image: t_shirt.printing_image
+    const flattenedData = magnets.map(magnet => ({
+        id: magnet.id,
+        name: magnet.name,
+        height: magnet.height,
+        width: magnet.width,
+        magnet_type: magnet.magnet_type,
+        printing_image: magnet.printing_image
     }));
 
     const columns: IColumnsProps<(typeof flattenedData)[0]>[] = [

@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { FormValuesTShirts } from "@/components/forms/t-shirts-form/schema";
-import { TShirtsForm } from "@/components/forms/t-shirts-form/t-shirts-form";
+import { FormValuesTShirts } from "@/components/admin-forms/t-shirts-form/schema";
+import { TShirtsForm } from "@/components/admin-forms/t-shirts-form/t-shirts-form";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcTShirtPrice } from "@/lib/prices";

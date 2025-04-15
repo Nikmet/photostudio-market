@@ -1,6 +1,6 @@
 import { createProduct, updateProduct } from "@/app/actions";
-import { AddressPlaquesForm } from "@/components/forms/address-plaques-form/address-plaques-form";
-import { FormValuesAddressPlaques } from "@/components/forms/address-plaques-form/schema";
+import { AddressPlaquesForm } from "@/components/admin-forms/address-plaques-form/address-plaques-form";
+import { FormValuesAddressPlaques } from "@/components/admin-forms/address-plaques-form/schema";
 import { calcAddressPlaquePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
@@ -89,11 +89,7 @@ export default async function FramesEditPage({ params }: Props) {
                     }
                 }
             });
-            await updateProduct(
-                updatedAP.id,
-                updatedAP.name,
-                await calcAddressPlaquePrice(updatedAP),
-            );
+            await updateProduct(updatedAP.id, updatedAP.name, await calcAddressPlaquePrice(updatedAP));
         }
 
         redirect("/admin/address-plaques");

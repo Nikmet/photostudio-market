@@ -1,5 +1,5 @@
-import { ColorsForm } from "@/components/forms/colors-form/colors-form";
-import { FormValuesColors } from "@/components/forms/colors-form/schema";
+import { ColorsForm } from "@/components/admin-forms/colors-form/colors-form";
+import { FormValuesColors } from "@/components/admin-forms/colors-form/schema";
 import { hexToRgb, rgbStringToHex } from "@/lib/colors";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";

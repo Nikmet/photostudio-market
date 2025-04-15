@@ -1,6 +1,6 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import { PromotionPage } from "@prisma/client";
 import React from "react";

@@ -1,5 +1,5 @@
 import { IColumnsProps } from "@/@types/column-props";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import { Badge } from "@prisma/client";
 import React from "react";

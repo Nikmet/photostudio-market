@@ -1,7 +1,7 @@
 import { cn } from "@/lib";
-import { FormInput } from "../form-input";
 import { Controller, useFormContext } from "react-hook-form";
 import { onNumberValueChange } from "@/lib/inputs";
+import { FormInput } from "../inputs/form-input";
 
 export interface IBusinessCardPriceFormProps {
     className?: string;
@@ -21,7 +21,7 @@ export const BusinessCardPriceForm = ({ index, className }: IBusinessCardPriceFo
                 control={control}
                 name="oneSideBusinessCard"
                 render={({ field: { onChange, ...field } }) => (
-                    <FormInput
+                    <FormInput  
                         {...field}
                         type="number"
                         label="Цена односторонней визитки за штуку"

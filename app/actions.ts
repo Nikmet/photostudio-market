@@ -35,7 +35,7 @@ export const createProduct = async (
             id = createUid("ПР", (Number(getId(lastProduct.id)) + 1).toString());
         }
 
-        await prisma.product.create({
+        const product = await prisma.product.create({
             data: {
                 id: createUid("ПР", getId(id)),
                 itemId,
@@ -45,6 +45,8 @@ export const createProduct = async (
                 route
             }
         });
+
+        return product;
     } catch (e) {
         console.error("[CREATE_PRODUCT_ACTION]", e);
     }

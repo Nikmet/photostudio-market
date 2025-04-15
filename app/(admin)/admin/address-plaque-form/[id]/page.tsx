@@ -1,6 +1,6 @@
 import { uploadImage } from "@/app/actions";
-import { AddressPlaqueFormsForm } from "@/components/forms/address-plaque-forms-form/address-plaque-forms-form";
-import { FormValuesAddressPlaqueForms } from "@/components/forms/address-plaque-forms-form/schema";
+import { AddressPlaqueFormsForm } from "@/components/admin-forms/address-plaque-forms-form/address-plaque-forms-form";
+import { FormValuesAddressPlaqueForms } from "@/components/admin-forms/address-plaque-forms-form/schema";
 import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";

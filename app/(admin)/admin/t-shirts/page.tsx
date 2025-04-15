@@ -1,15 +1,11 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
 
 export default async function TShirtsPage() {
-    const t_shirts = await prisma.tShirt.findMany({
-        include: {
-            printing_image: true
-        }
-    });
+    const t_shirts = await prisma.tShirt.findMany();
 
     const flattenedData = t_shirts.map(t_shirt => ({
         id: t_shirt.id,

@@ -1,4 +1,4 @@
-import { RegisterForm, RegisterFormData } from "@/components/register-form";
+import { RegisterForm, RegisterFormData } from "@/components/auth/register-form";
 import { createUid } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
 import { UserRole } from "@prisma/client";

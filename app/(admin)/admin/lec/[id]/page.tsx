@@ -1,6 +1,6 @@
 import { createProduct, updateProduct } from "@/app/actions";
-import { LecForm } from "@/components/forms/lec-form/lec-form";
-import { FormValuesLEC } from "@/components/forms/lec-form/schema";
+import { LecForm } from "@/components/admin-forms/lec-form/lec-form";
+import { FormValuesLEC } from "@/components/admin-forms/lec-form/schema";
 import { calcLECPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { Difficile } from "@prisma/client";

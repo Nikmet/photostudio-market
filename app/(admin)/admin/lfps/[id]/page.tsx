@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { LfpForm } from "@/components/forms/lfp-form/lfp-form";
-import { FormValuesLFP } from "@/components/forms/lfp-form/schema";
+import { LfpForm } from "@/components/admin-forms/lfp-form/lfp-form";
+import { FormValuesLFP } from "@/components/admin-forms/lfp-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcLFPPrice } from "@/lib/prices";

@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { BadgesForm } from "@/components/forms/badges-form/badges-form";
-import { FormValuesBadges } from "@/components/forms/badges-form/schema";
+import { BadgesForm } from "@/components/admin-forms/badges-form/badges-form";
+import { FormValuesBadges } from "@/components/admin-forms/badges-form/schema";
 import { getImage } from "@/lib/image";
 import { calcBadgePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";

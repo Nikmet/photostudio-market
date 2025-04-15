@@ -1,6 +1,6 @@
 import { uploadImage } from "@/app/actions";
-import { PromoForm } from "@/components/forms/promo-form/promo-form";
-import { FormValuesPromo } from "@/components/forms/promo-form/schema";
+import { PromoForm } from "@/components/admin-forms/promo-form/promo-form";
+import { FormValuesPromo } from "@/components/admin-forms/promo-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";

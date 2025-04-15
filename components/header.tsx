@@ -6,7 +6,7 @@ import React, { Suspense } from "react";
 import { HeaderLogo } from "./header-logo";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { CartDrawer } from "./cart-drawer";
+import { CartDrawer } from "./cart/cart-drawer";
 
 export interface IHeaderProps {
     className?: string;

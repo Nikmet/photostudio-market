@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/header";
 import { adminPages } from "@/constants/pages";
-import { PagesTab } from "@/components/pages-tab";
-import { AdminMenuBar } from "@/components/admin-menu-bar";
+import { PagesTab } from "@/components/admin-components/pages-tab";
+import { AdminMenuBar } from "@/components/admin-components/admin-menu-bar";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Панель Администратора"

@@ -1,5 +1,5 @@
-import { ProductForm } from "@/components/forms/product-form/product-form";
-import { FormValuesProducts } from "@/components/forms/product-form/schema";
+import { ProductForm } from "@/components/admin-forms/product-form/product-form";
+import { FormValuesProducts } from "@/components/admin-forms/product-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { prisma } from "@/prisma/prisma-client";
 import { Difficile } from "@prisma/client";

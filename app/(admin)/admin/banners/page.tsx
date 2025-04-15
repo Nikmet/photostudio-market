@@ -1,14 +1,10 @@
 import { IColumnsProps } from "@/@types/column-props";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
 
 export default async function BannersPage() {
-    const banners = await prisma.banner.findMany({
-        include: {
-            printing_image: true
-        }
-    });
+    const banners = await prisma.banner.findMany();
 
     const flattenedData = banners.map(banner => ({
         id: banner.id,

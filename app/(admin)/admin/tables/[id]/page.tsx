@@ -1,6 +1,6 @@
 import { createProduct, updateProduct } from "@/app/actions";
-import { FormValuesTables } from "@/components/forms/tabels-form/schema";
-import { TablesForm } from "@/components/forms/tabels-form/tabels-form";
+import { FormValuesTables } from "@/components/admin-forms/tabels-form/schema";
+import { TablesForm } from "@/components/admin-forms/tabels-form/tabels-form";
 import { calcTablePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";

@@ -1,6 +1,6 @@
 import { createProduct, updateProduct } from "@/app/actions";
-import { FramesForm } from "@/components/forms/frames-form/frames-form";
-import { FormValuesFrames } from "@/components/forms/frames-form/schema";
+import { FramesForm } from "@/components/admin-forms/frames-form/frames-form";
+import { FormValuesFrames } from "@/components/admin-forms/frames-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { calcFramePrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";

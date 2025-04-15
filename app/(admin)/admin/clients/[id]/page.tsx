@@ -1,6 +1,6 @@
 import { uploadImage } from "@/app/actions";
-import { ClientForm } from "@/components/forms/clients-form/client-form";
-import { FormValuesClients } from "@/components/forms/clients-form/schema";
+import { ClientForm } from "@/components/admin-forms/clients-form/client-form";
+import { FormValuesClients } from "@/components/admin-forms/clients-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { prisma } from "@/prisma/prisma-client";

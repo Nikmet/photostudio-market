@@ -1,6 +1,8 @@
-import { OrderForm } from "@/components/forms/orders-form/orders-form";
-import { FormValuesOrders } from "@/components/forms/orders-form/schema";
-import { ProductItemWithProduct } from "@/components/orders-table";
+//TODO Ошибка
+
+import { OrderForm } from "@/components/admin-forms/orders-form/orders-form";
+import { FormValuesOrders } from "@/components/admin-forms/orders-form/schema";
+import { ProductItemWithProduct } from "@/components/admin-components/orders-table";
 import { PageTitle } from "@/components/page-title";
 import { prisma } from "@/prisma/prisma-client";
 import { OrderPaymentStatus, OrderStatus } from "@prisma/client";

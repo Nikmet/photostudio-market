@@ -1,6 +1,6 @@
 import { createProduct, updateProduct } from "@/app/actions";
-import { PrintingsForm } from "@/components/forms/printings-form/printings-form";
-import { FormValuesPrintings } from "@/components/forms/printings-form/schema";
+import { PrintingsForm } from "@/components/admin-forms/printings-form/printings-form";
+import { FormValuesPrintings } from "@/components/admin-forms/printings-form/schema";
 import { calcPrintingPrice } from "@/lib/prices";
 import { prisma } from "@/prisma/prisma-client";
 import { PrintingType } from "@prisma/client";

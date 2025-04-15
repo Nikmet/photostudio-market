@@ -1,7 +1,7 @@
 import { cn } from "@/lib";
-import { FormInput } from "../form-input";
 import { Controller, useFormContext } from "react-hook-form";
 import { onNumberValueChange } from "@/lib/inputs";
+import { FormInput } from "../inputs/form-input";
 
 export interface IBadgePriceFormProps {
     className?: string;

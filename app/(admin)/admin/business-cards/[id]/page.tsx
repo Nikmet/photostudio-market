@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { BusinessCardsForm } from "@/components/forms/business-cards-form/business-cards-form";
-import { FormValuesBusinessCards } from "@/components/forms/business-cards-form/schema";
+import { BusinessCardsForm } from "@/components/admin-forms/business-cards-form/business-cards-form";
+import { FormValuesBusinessCards } from "@/components/admin-forms/business-cards-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcBusinessCardPrice } from "@/lib/prices";

@@ -1,6 +1,6 @@
 import { createProduct, updateProduct, uploadImage } from "@/app/actions";
-import { BannerForm } from "@/components/forms/banner-form/banner-form";
-import { FormValuesBanner } from "@/components/forms/banner-form/schema";
+import { BannerForm } from "@/components/admin-forms/banner-form/banner-form";
+import { FormValuesBanner } from "@/components/admin-forms/banner-form/schema";
 import { PageTitle } from "@/components/page-title";
 import { getImage } from "@/lib/image";
 import { calcBannerPrice } from "@/lib/prices";

@@ -1,7 +1,7 @@
 import { cn } from "@/lib";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormInput } from "../form-input";
 import { onNumberValueChange } from "@/lib/inputs";
+import { FormInput } from "../inputs/form-input";
 
 export interface ILecPriceFormProps {
     className?: string;

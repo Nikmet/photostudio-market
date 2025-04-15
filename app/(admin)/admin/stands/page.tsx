@@ -1,15 +1,11 @@
 import { IColumnsProps } from "@/@types/column-props";
 import { deleteProducts } from "@/app/actions";
-import { AdminTable } from "@/components/admin-table";
+import { AdminTable } from "@/components/admin-components/admin-table";
 import { prisma } from "@/prisma/prisma-client";
 import React from "react";
 
 export default async function TablesPage() {
-    const stands = await prisma.stand.findMany({
-        include: {
-            printing_image: true
-        }
-    });
+    const stands = await prisma.stand.findMany();
 
     const flattenedData = stands.map(stand => ({
         id: stand.id,
