@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const formSchemaLFP = z.object({
     name: z.string().min(2, "Название должно быть больше 2 символов"),
+    size: z.string().optional(),
     paper_type_id: z.string().min(1, "Поле обязательно"),
     height: z.number({
         required_error: "Поле обязательно",

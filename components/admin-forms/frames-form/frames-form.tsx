@@ -1,5 +1,3 @@
-//TODO: Сделать выбор стандартного размера
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +10,21 @@ import { Baguette } from "@prisma/client";
 import { AdminSelect } from "@/components/admin-components/admin-select";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
+
+// Добавим типы для стандартных размеров
+type StandardSize = {
+    width: number;
+    height: number;
+};
+
+const STANDARD_SIZES: Record<string, StandardSize> = {
+    A5: { width: 148, height: 210 },
+    A4: { width: 210, height: 297 },
+    A3: { width: 297, height: 420 },
+    A2: { width: 420, height: 594 },
+    A1: { width: 594, height: 841 }
+    // Можно добавить другие стандартные размеры
+};
 
 export interface IFramesFormProps {
     defaultValues?: FormValuesFrames;
@@ -45,6 +58,17 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
     const selectedBaguetteId = watch("baguetteId");
     const selectedBaguette = baguettes.find(b => b.id === selectedBaguetteId);
 
+    // Обработчик изменения размера
+    const handleSizeChange = (size: string) => {
+        setValue("size", size);
+
+        // Если выбран стандартный размер, устанавливаем соответствующие ширину и высоту
+        if (STANDARD_SIZES[size]) {
+            setValue("width", STANDARD_SIZES[size].width);
+            setValue("height", STANDARD_SIZES[size].height);
+        }
+    };
+
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
@@ -64,13 +88,29 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                             <FormInput type="text" label="Название" {...field} errors={errors} required />
                         )}
                     />
+                    <AdminSelect
+                        name="size"
+                        value={watch("size")}
+                        onChange={handleSizeChange}
+                        label={"Размер"}
+                        items={{
+                            A5: "A5 (148×210 мм)",
+                            A4: "A4 (210×297 мм)",
+                            A3: "A3 (297×420 мм)",
+                            A2: "A2 (420×594 мм)",
+                            A1: "A1 (594×841 мм)",
+                            custom: "Пользовательский размер"
+                        }}
+                        errors={errors}
+                        required
+                    />
                     <Controller
                         name="width"
                         control={control}
                         render={({ field: { onChange, ...field } }) => (
                             <FormInput
                                 type="number"
-                                label="Ширина"
+                                label="Ширина (мм)"
                                 {...field}
                                 onChange={e => onNumberValueChange(e, onChange)}
                                 errors={errors}
@@ -84,7 +124,7 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
                         render={({ field: { onChange, ...field } }) => (
                             <FormInput
                                 type="number"
-                                label="Высота"
+                                label="Высота (мм)"
                                 {...field}
                                 onChange={e => onNumberValueChange(e, onChange)}
                                 errors={errors}

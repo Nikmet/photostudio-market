@@ -21,10 +21,10 @@ export const BusinessCardPriceForm = ({ index, className }: IBusinessCardPriceFo
                 control={control}
                 name="oneSideBusinessCard"
                 render={({ field: { onChange, ...field } }) => (
-                    <FormInput  
+                    <FormInput
                         {...field}
                         type="number"
-                        label="Цена односторонней визитки за штуку"
+                        label="Цена односторонней визитки за 100 штук"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required
@@ -39,7 +39,7 @@ export const BusinessCardPriceForm = ({ index, className }: IBusinessCardPriceFo
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена двусторонней визитки за штуку"
+                        label="Цена двусторонней визитки за 100 штук"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required

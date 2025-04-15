@@ -1,11 +1,9 @@
-//TODO Ошибка
-
 import { OrderForm } from "@/components/admin-forms/orders-form/orders-form";
 import { FormValuesOrders } from "@/components/admin-forms/orders-form/schema";
 import { ProductItemWithProduct } from "@/components/admin-components/orders-table";
 import { PageTitle } from "@/components/page-title";
 import { prisma } from "@/prisma/prisma-client";
-import { OrderPaymentStatus, OrderStatus } from "@prisma/client";
+import { Cart, Order, OrderPaymentStatus, OrderStatus, User } from "@prisma/client";
 
 interface Props {
     params: Promise<{
@@ -26,7 +24,11 @@ export default async function ProductPage({ params }: Props) {
                     product: true
                 }
             },
-            user: true
+            user: {
+                include: {
+                    cart: true
+                }
+            }
         }
     });
 
@@ -55,6 +57,7 @@ export default async function ProductPage({ params }: Props) {
 
         const total = products.reduce((acc, product) => acc + product.total, 0);
 
+        let orderResult: Order & { user: User & { cart: Cart | null } };
         try {
             const findOrder = await prisma.order.findFirst({
                 where: {
@@ -70,7 +73,7 @@ export default async function ProductPage({ params }: Props) {
             });
 
             if (findOrder) {
-                await prisma.order.update({
+                orderResult = await prisma.order.update({
                     where: {
                         id: id
                     },
@@ -84,6 +87,13 @@ export default async function ProductPage({ params }: Props) {
                         payment_status: data.order_payment_status as OrderPaymentStatus,
                         totalAmount: total,
                         comment: data.comment
+                    },
+                    include: {
+                        user: {
+                            include: {
+                                cart: true
+                            }
+                        }
                     }
                 });
 
@@ -93,7 +103,7 @@ export default async function ProductPage({ params }: Props) {
                     }
                 });
             } else {
-                await prisma.order.create({
+                orderResult = await prisma.order.create({
                     data: {
                         id: id,
                         user: {
@@ -105,36 +115,49 @@ export default async function ProductPage({ params }: Props) {
                         payment_status: data.order_payment_status as OrderPaymentStatus,
                         totalAmount: total,
                         comment: data.comment
-                    }
-                });
-            }
-        } catch (e) {
-            console.error(e);
-        }
-
-        products.forEach(async product => {
-            try {
-                await prisma.productItem.create({
-                    data: {
-                        product: {
-                            connect: {
-                                id: product.productId
-                            }
-                        },
-                        count: product.count,
-                        total: product.total,
-                        Order: {
-                            connect: {
-                                id: id
+                    },
+                    include: {
+                        user: {
+                            include: {
+                                cart: true
                             }
                         }
                     }
                 });
-            } catch (e) {
-                console.error(e);
             }
-        });
+
+            for (const product of products) {
+                try {
+                    await prisma.productItem.create({
+                        data: {
+                            product: {
+                                connect: {
+                                    id: product.productId
+                                }
+                            },
+                            count: product.count,
+                            total: product.total,
+                            cart: {
+                                connect: {
+                                    id: orderResult.user.cart?.id
+                                }
+                            },
+                            Order: {
+                                connect: {
+                                    id: id
+                                }
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
     };
+
     return (
         <div className="h-[77vh] overflow-auto scrollbar">
             <PageTitle>{findOrder?.id ? `Заказ | ${findOrder.id}` : `Новый заказ | ${id}`}</PageTitle>

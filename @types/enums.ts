@@ -56,3 +56,4 @@ export const orderPaymentStatus: Record<OrderPaymentStatus, string> = {
     [OrderPaymentStatus.CANCELED]: "Отменен",
     [OrderPaymentStatus.SUCCEEDED]: "Оплачен"
 };
+
