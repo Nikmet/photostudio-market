@@ -14,7 +14,7 @@ export const formSchemaAddressPlaqueForms = z.object({
     image: z
         .instanceof(File)
         .refine(file => file.size === 0 || file.type.startsWith("image/"), { message: "Неверный формат изображения" })
-        .refine(file => file.size < 4000000, { message: "Размер изображения не должен превышать 4MB" })
+        .refine(file => file.size < 1000000, { message: "Размер изображения не должен превышать 4MB" })
         .optional()
 });
 

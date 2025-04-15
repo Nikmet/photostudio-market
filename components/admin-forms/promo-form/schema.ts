@@ -10,7 +10,7 @@ export const formSchemaPromo = z.object({
         .refine(file => file.type.startsWith("image/"), {
             message: "Неверный формат изображения"
         })
-        .refine(file => file.size < 4000000, {
+        .refine(file => file.size < 1000000, {
             message: "Размер изображения не должен превышать 4MB"
         })
         .refine(
