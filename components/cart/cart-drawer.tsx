@@ -21,25 +21,32 @@ export interface ICartDrawerProps {
 export const CartDrawer = ({ userId, className }: ICartDrawerProps): React.JSX.Element => {
     const [cart, setCart] = React.useState<TCart>();
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
+    const fetchCart = async () => {
         setIsLoading(true);
-        const fetchCart = async () => {
+        try {
             const res = await fetch("/api/cart/get-user-cart", {
                 method: "POST",
                 body: JSON.stringify({ id: userId })
             });
-
             const data = await res.json();
             setCart(data);
-        };
+        } catch (error) {
+            console.error("Error fetching cart:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-        fetchCart();
-        setIsLoading(false);
-    }, []);
+    React.useEffect(() => {
+        if (isOpen) {
+            fetchCart();
+        }
+    }, [isOpen]);
 
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
                 <div>
                     <Button className="dark:text-white hidden md:flex">
@@ -55,7 +62,12 @@ export const CartDrawer = ({ userId, className }: ICartDrawerProps): React.JSX.E
                     <SheetTitle>Корзина товаров</SheetTitle>
                 </SheetHeader>
                 <div className="flex-grow overflow-auto">
-                    <CartContent cart={cart} isLoading={isLoading} setIsLoading={setIsLoading} />
+                    <CartContent
+                        cart={cart}
+                        isLoading={isLoading}
+                        setIsLoading={setIsLoading}
+                        onCartUpdate={fetchCart} // Передаем функцию обновления в CartContent
+                    />
                 </div>
                 <SheetFooter className="mt-auto flex flex-col gap-4">
                     <SheetClose asChild>

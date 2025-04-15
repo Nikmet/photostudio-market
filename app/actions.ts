@@ -1,6 +1,6 @@
 import { createUid, getId } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
-import { Difficile } from "@prisma/client";
+import { Difficile, Product } from "@prisma/client";
 import { writeFile } from "fs";
 
 export const createProduct = async (
@@ -49,6 +49,46 @@ export const createProduct = async (
         return product;
     } catch (e) {
         console.error("[CREATE_PRODUCT_ACTION]", e);
+        return null;
+    }
+};
+
+export const creteProductItem = async (product: Product, userId: string) => {
+    try {
+        const cart = await prisma.cart.findFirst({
+            where: {
+                userId
+            }
+        });
+
+        if (!cart) {
+            throw new Error("Корзина не найдена");
+        }
+
+        const productItem = await prisma.productItem.create({
+            data: {
+                cartId: cart.id,
+                productId: product.id,
+                count: 1,
+                total: product.price
+            }
+        });
+
+        const updatedCart = await prisma.cart.update({
+            where: {
+                id: cart.id
+            },
+            data: {
+                totalAmount: {
+                    increment: productItem.total
+                }
+            }
+        });
+
+        return updatedCart;
+    } catch (e) {
+        console.error(e);
+        return null;
     }
 };
 
