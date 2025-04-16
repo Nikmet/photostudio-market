@@ -3,7 +3,7 @@ import { Checkbox } from "../ui/checkbox";
 
 export interface IAdminCheckboxProps {
     className?: string;
-    label: string;
+    label: string | React.ReactNode;
     name: string;
     defaultChecked?: boolean;
     checked?: boolean;

@@ -10,8 +10,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { handlePhoneChange, handlePhoneKeyDown } from "@/lib/phone";
 import toast from "react-hot-toast";
 import { FormInput } from "../inputs/form-input";
+import { AdminCheckbox } from "../admin-components/admin-checkbox";
 
-// Схема валидации
+// Обновленная схема валидации с добавлением согласия
 const registerFormSchema = z
     .object({
         fullName: z.string().min(1, "Поле обязательно"),
@@ -22,7 +23,10 @@ const registerFormSchema = z
             .min(6, "Пароль должен содержать минимум 6 символов")
             .regex(/[a-zа-я]/, "Пароль должен содержать хотя бы одну букву")
             .regex(/\d/, "Пароль должен содержать хотя бы одну цифру"),
-        confirmPassword: z.string().min(6, "Подтвердите пароль")
+        confirmPassword: z.string().min(6, "Подтвердите пароль"),
+        agreeToTerms: z.boolean().refine(val => val, {
+            message: "Необходимо согласиться с условиями"
+        })
     })
     .refine(data => data.password === data.confirmPassword, {
         message: "Пароли не совпадают",
@@ -48,7 +52,10 @@ export const RegisterForm = ({ onSubmit, className }: IRegisterFormProps) => {
         control,
         watch
     } = useForm<RegisterFormData>({
-        resolver: zodResolver(registerFormSchema)
+        resolver: zodResolver(registerFormSchema),
+        defaultValues: {
+            agreeToTerms: false
+        }
     });
 
     const password = watch("password");
@@ -254,6 +261,34 @@ export const RegisterForm = ({ onSubmit, className }: IRegisterFormProps) => {
                     >
                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
+                </div>
+
+                {/* Чекбокс согласия с политиками */}
+                <div className="mt-4">
+                    <Controller
+                        name="agreeToTerms"
+                        control={control}
+                        render={({ field }) => (
+                            <AdminCheckbox
+                                {...field}
+                                checked={field.value}
+                                onChange={field.onChange}
+                                label={
+                                    <span>
+                                        Я соглашаюсь с{" "}
+                                        <Link href="/privacy-policy" className="text-blue-600 hover:underline">
+                                            политикой конфиденциальности
+                                        </Link>{" "}
+                                        и{" "}
+                                        <Link href="/terms-of-service" className="text-blue-600 hover:underline">
+                                            условиями использования
+                                        </Link>
+                                    </span>
+                                }
+                            />
+                        )}
+                    />
+                    {errors.agreeToTerms && <p className="mt-1 text-sm text-red-500">{errors.agreeToTerms.message}</p>}
                 </div>
 
                 <Button className="w-full py-2" type="submit">
