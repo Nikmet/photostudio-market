@@ -53,7 +53,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Качественная печать на любой поверхности! Визитки, буклеты, открытки - мы создадим яркие и профессиональные материалы для вашего бизнеса. Быстро, четко, с гарантией отличного результата. Заявите о себе с лучшей стороны!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/printing.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/printing.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/souvenirs/printings`
             }
         ]
@@ -74,7 +74,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Привлекайте внимание с нашими баннерами! Широкая печать на прочных материалах, устойчивых к ветру и дождю. Идеально для рекламных акций, мероприятий и outdoor-продвижения. Большой формат - максимальная заметность!",
                 price: 1000,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/wide_format.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/banner.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/banners`
             },
             {
@@ -82,7 +82,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Ваше первое впечатление - в наших руках! Стильные, лаконичные или креативные визитки на качественной бумаге с различными вариантами отделки. Оставьте клиентам не просто контакты, а запоминающийся образ вашего бренда!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/business_cards.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/business_cards.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/business_cards`
             },
             {
@@ -90,7 +90,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Четкость и функциональность! Таблички с важной информацией, выполненые в строгом или современном дизайне. Подходят для офисов, магазинов и общественных пространств. Долговечные материалы - информация всегда на виду!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/business_cards.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/newsletters.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/newsletters`
             },
             {
@@ -98,7 +98,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Организуйте пространство с нашими стендами! Удобные конструкции для информации, рекламы или навигации. Различные размеры и варианты дизайна под любой интерьер. Сделайте подачу информации удобной и эстетичной!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/business_cards.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/stands.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/stands`
             },
             {
@@ -106,7 +106,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Элегантность и функциональность! Наши таблички из металла, пластика или акрила с четкой гравировкой или печатью. Подходят для номеров офисов, указателей и декора. Качественное исполнение - долгий срок службы!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/business_cards.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/table.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/tables`
             },
             {
@@ -114,7 +114,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Масштабная реклама с безупречным качеством! Печать на баннерах, плёнке, бумаге и других материалах для билбордов, стендов и промо-акций. Яркие цвета, стойкость к выцветанию - ваше сообщение увидит каждый!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/wide_format.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/LFP.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/LFP`
             }
         ]
