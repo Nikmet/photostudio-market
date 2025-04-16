@@ -12,7 +12,7 @@ import { IOrderProps } from "../admin-forms/clients-form/client-form";
 import { handlePhoneChange, handlePhoneKeyDown } from "@/lib/phone";
 import { cn } from "@/lib";
 import Link from "next/link";
-import { ArrowRight, Check, X } from "lucide-react";
+import { ArrowRight, Check, User, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { VerificationCodeInput } from "./virification-code-input";
 import { FormInput } from "../inputs/form-input";
@@ -176,17 +176,25 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                     <h2 className="text-2xl">Подтверждение аккаунта</h2>
                     {verifiedState && (
                         <div className="flex flex-col gap-2">
-                            <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
-                                <Check /> <span>Ваш аккаунт подтвержден.</span>
-                            </p>
-                            <p>*Вы можете использовать все возможности сайта.</p>
+                            {session.user.role === "USER" && (
+                                <>
+                                    <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
+                                        <Check /> <span>Ваш аккаунт подтвержден.</span>
+                                    </p>
+                                    <p>*Вы можете использовать все возможности сайта.</p>
+                                </>
+                            )}
+                            {session.user.role === "ADMIN" && (
+                                <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
+                                    <User /> <span>Вы являетесь администратором</span>
+                                </p>
+                            )}
                         </div>
                     )}
                     {!verifiedState && (
                         <div className="flex flex-col gap-2 w-[300px]">
                             {!sendingCode && (
                                 <>
-                                    {" "}
                                     <p className="flex items-center gap-2 bg-red-100 rounded-md p-2">
                                         <X /> <span>Ваш аккаунт не подтвержден.</span>
                                     </p>
