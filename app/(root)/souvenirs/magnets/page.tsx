@@ -39,7 +39,13 @@ export default async function MagnetsClientPage() {
             }
         });
 
-        const product = await createProduct(magnet.id, magnet.name, "Сувениры", await calcMagnetPrice(magnet), "magnets");
+        const product = await createProduct(
+            magnet.id,
+            magnet.name,
+            "Сувениры",
+            await calcMagnetPrice(magnet),
+            "magnets"
+        );
 
         if (!product) {
             throw new Error("Не удалось создать продукт");

@@ -113,9 +113,12 @@ export const CartContent = ({
             </div>
 
             <div className="border-t pt-4 mt-auto">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2">
                     <span className="font-medium">Итого:</span>
-                    <span className="font-bold text-lg">{cartState.totalAmount.toLocaleString()} ₽</span>
+                    <span className="border-b border-slate-400 border-dashed w-full translate-y-[5px]"></span>
+                    <span className="font-bold text-lg whitespace-nowrap">
+                        {cartState.totalAmount.toFixed(2).replace(".", ",")} ₽
+                    </span>
                 </div>
             </div>
         </div>
