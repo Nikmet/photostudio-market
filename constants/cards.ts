@@ -55,14 +55,6 @@ export const CARDS: ICards[] = [
                 price: 300,
                 imageUrl: `${process.env.NEXT_PUBLIC_URL}/printing.jpg`,
                 link: `${process.env.NEXT_PUBLIC_URL}/souvenirs/printings`
-            },
-            {
-                title: "Лазерная гравировка и резка",
-                description:
-                    "Точность и элегантность в каждой детали! Лазерная гравировка на дереве, металле, пластике и других материалах. Персонализируйте подарки, создавайте эксклюзивные сувениры и рекламную продукцию. Идеально для корпоративных презентов и промоакций!",
-                price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/LEC.jpg`,
-                link: `${process.env.NEXT_PUBLIC_URL}/souvenirs/LEC`
             }
         ]
     },
