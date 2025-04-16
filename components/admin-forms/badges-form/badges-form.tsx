@@ -17,6 +17,8 @@ export interface IBadgesFormProps {
     href: string;
 }
 
+// 2. Когда создаешь или обновляешь данные из таба должен пропадать страница (доделать) (ПРИМЕР)
+
 export const BadgesForm = ({ onSubmit, defaultValues, id, href, className }: IBadgesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesBadges>({
         resolver: zodResolver(formSchemaBadges),

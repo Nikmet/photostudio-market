@@ -82,7 +82,7 @@ export const TShirtsClientForm = ({ onSubmit, defaultValues, id, className }: IT
                             errors={errors}
                             required
                         />
-                        <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
+                        <Button type="submit">Добавить в корзину</Button>
                     </div>
                 </div>
             </form>

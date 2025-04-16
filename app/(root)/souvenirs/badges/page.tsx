@@ -1,18 +1,17 @@
 import { createProduct, creteProductItem, uploadImage } from "@/app/actions";
-import { FormValuesMagnet } from "@/components/admin-forms/magnets-form/schema";
-import { MagnetsClientForm } from "@/components/client-forms/magnet-client-form";
+import { FormValuesBadges } from "@/components/admin-forms/badges-form/schema";
+import { BadgesClientForm } from "@/components/client-forms/badges-client-form";
 import { PageTitle } from "@/components/page-title";
-import { calcMagnetPrice } from "@/lib/prices";
+import { calcBadgePrice } from "@/lib/prices";
 import { createUid } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
-import { MagnetType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
-export default async function MagnetsClientPage() {
+export default async function BadgesClientPage() {
     let id;
 
     const lastId = (
-        await prisma.magnet.findFirst({
+        await prisma.badge.findFirst({
             orderBy: {
                 id: "desc"
             }
@@ -20,26 +19,23 @@ export default async function MagnetsClientPage() {
     )?.id;
 
     if (!lastId) {
-        id = createUid("МГ", "1");
+        id = createUid("ЗН", "1");
     } else {
-        id = createUid("МГ", (Number(lastId.split("-")[1]) + 1).toString());
+        id = createUid("ЗН", (Number(lastId.split("-")[1]) + 1).toString());
     }
 
-    const handleSubmit = async (data: FormValuesMagnet, userId: string) => {
+    const handleSubmit = async (data: FormValuesBadges, userId: string) => {
         "use server";
 
-        const magnet = await prisma.magnet.create({
+        const badge = await prisma.badge.create({
             data: {
                 id: id,
                 name: data.name,
-                height: data.height,
-                width: data.width,
-                magnet_type: data.magnet_type as MagnetType,
                 printing_image: await uploadImage(data.printing_image)
             }
         });
 
-        const product = await createProduct(magnet.id, magnet.name, "Сувениры", await calcMagnetPrice(magnet), "magnets");
+        const product = await createProduct(badge.id, badge.name, "Сувениры", await calcBadgePrice(), "badges");
 
         if (!product) {
             throw new Error("Не удалось создать продукт");
@@ -56,8 +52,8 @@ export default async function MagnetsClientPage() {
 
     return (
         <div>
-            <PageTitle>{`Новый магнитик | ${id}`}</PageTitle>
-            <MagnetsClientForm onSubmit={handleSubmit} id={id} />
+            <PageTitle>{`Новый значок | ${id}`}</PageTitle>
+            <BadgesClientForm onSubmit={handleSubmit} id={id} />
         </div>
     );
 }

@@ -101,7 +101,7 @@ export const MagnetsClientForm = ({ onSubmit, defaultValues, id, className }: IM
                             errors={errors}
                             required
                         />
-                        <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
+                        <Button type="submit">Добавить в корзину</Button>
                     </div>
                 </div>
             </form>

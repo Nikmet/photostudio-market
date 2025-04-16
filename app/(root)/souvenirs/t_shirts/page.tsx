@@ -43,7 +43,7 @@ export default async function CupsClientPage() {
             t_shirt.name,
             "Сувениры",
             await calcTShirtPrice(t_shirt),
-            "cups"
+            "t_shirts"
         );
 
         if (!product) {
@@ -61,7 +61,7 @@ export default async function CupsClientPage() {
 
     return (
         <div>
-            <PageTitle>{`Новая кружка | ${id}`}</PageTitle>
+            <PageTitle>{`Новая футболка | ${id}`}</PageTitle>
             <TShirtsClientForm onSubmit={handleSubmit} id={id} />
         </div>
     );
