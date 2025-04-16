@@ -74,7 +74,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Четкая навигация и презентабельный вид! Наши аншлаги из долговечных материалов с устойчивой к погодным условиям печатью. Подходит для офисов, магазинов и общественных мест. Сделайте вашу компанию легко узнаваемой!",
                 price: 500,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/wide_format.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/address_plaques.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/advertising/address_plaques`
             },
             {
@@ -135,7 +135,7 @@ export const CARDS: ICards[] = [
                 description:
                     "Добавьте стиля вашим воспоминаниям! Наши фоторамки из качественных материалов подчеркнут красоту фотографий, сертификатов или картин. Различные размеры и дизайны - для дома, офиса или в подарок. Оформляйте моменты с любовью!",
                 price: 300,
-                imageUrl: `${process.env.NEXT_PUBLIC_URL}/frames.jpg`,
+                imageUrl: `${process.env.NEXT_PUBLIC_URL}/frames.png`,
                 link: `${process.env.NEXT_PUBLIC_URL}/frames/frames`
             }
         ]
