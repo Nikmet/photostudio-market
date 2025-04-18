@@ -227,8 +227,15 @@ export const calcNewsletterPrice = async (data: Table) => {
         throw new Error("Цвет не найден");
     }
 
+    let colorPrice;
+
     const square = (data.width * data.height) / 1000000;
-    const colorPrice = findColor?.price || 0;
+
+    if (findColor.price == 0) {
+        colorPrice = 1000;
+    } else {
+        colorPrice = findColor.price ?? 0;
+    }
 
     return colorPrice * square;
 };
@@ -279,7 +286,7 @@ export const calcFramePrice = async (data: Frame) => {
 
     const baguettePrice = findBaguette.price ?? 0;
     const square = (data.width * data.height) / 1000000;
-    const perimeter = (data.width + data.height) * 2 / 1000;
+    const perimeter = ((data.width + data.height) * 2) / 1000;
 
     let startPrice = baguettePrice * perimeter;
 

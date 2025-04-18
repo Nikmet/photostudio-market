@@ -42,7 +42,7 @@ export default async function BannersClientPage() {
             business_cards.name,
             "Реклама",
             await calcBusinessCardPrice(business_cards),
-            "banners"
+            "business_cards"
         );
 
         if (!product) {
