@@ -115,7 +115,7 @@ export const CARDS: ICards[] = [
                     "Масштабная реклама с безупречным качеством! Печать на баннерах, плёнке, бумаге и других материалах для билбордов, стендов и промо-акций. Яркие цвета, стойкость к выцветанию - ваше сообщение увидит каждый!",
                 price: 300,
                 imageUrl: `${process.env.NEXT_PUBLIC_URL}/LFP.png`,
-                link: `${process.env.NEXT_PUBLIC_URL}/advertising/LFP`
+                link: `${process.env.NEXT_PUBLIC_URL}/advertising/lfp`
             }
         ]
     },
