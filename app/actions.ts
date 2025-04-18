@@ -46,9 +46,15 @@ export const createProduct = async (
             }
         });
 
+        console.log(product);
+
         return product;
     } catch (e) {
-        console.error("[CREATE_PRODUCT_ACTION]", e);
+        if (e instanceof Error) {
+            console.error("[CREATE_PRODUCT_ACTION]", e.message);
+        } else {
+            console.error("[CREATE_PRODUCT_ACTION]", "An unknown error occurred");
+        }
         return null;
     }
 };
