@@ -7,7 +7,7 @@ import { createUid } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
 
-export default async function BadgesClientPage() {
+export default async function AddressPlaquesClientPage() {
     let id;
 
     const lastId = (

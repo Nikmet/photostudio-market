@@ -83,7 +83,7 @@ export const CARDS: ICards[] = [
                     "Ваше первое впечатление - в наших руках! Стильные, лаконичные или креативные визитки на качественной бумаге с различными вариантами отделки. Оставьте клиентам не просто контакты, а запоминающийся образ вашего бренда!",
                 price: 300,
                 imageUrl: `${process.env.NEXT_PUBLIC_URL}/business_cards.png`,
-                link: `${process.env.NEXT_PUBLIC_URL}/advertising/business_cards`
+                link: `${process.env.NEXT_PUBLIC_URL}/advertising/business-cards`
             },
             {
                 title: "Информационная табличка",

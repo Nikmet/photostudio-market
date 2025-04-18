@@ -100,7 +100,7 @@ export const CartContent = ({
 
     return (
         <div className={cn(className, "flex flex-col gap-4 h-full")}>
-            <div className="flex-1 overflow-y-auto space-y-4">
+            <div className="flex-1 overflow-y-auto scrollbar space-y-4 pr-2">
                 {cartState.items.map(item => (
                     <CartItem
                         key={item.id}
