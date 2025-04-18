@@ -206,8 +206,8 @@ model ProductItem {
     orderId String?
     Order   Order?  @relation(fields: [orderId], references: [id])
 
-    cartId Int
-    cart   Cart @relation(fields: [cartId], references: [id])
+    cartId Int?
+    cart   Cart? @relation(fields: [cartId], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

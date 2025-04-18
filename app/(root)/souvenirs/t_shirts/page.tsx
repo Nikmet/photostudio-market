@@ -43,7 +43,7 @@ export default async function CupsClientPage() {
             t_shirt.name,
             "Сувениры",
             await calcTShirtPrice(t_shirt),
-            "t_shirts"
+            "t-shirts"
         );
 
         if (!product) {

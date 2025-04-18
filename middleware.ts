@@ -6,7 +6,14 @@ export async function middleware(request: NextRequest) {
     const token = await getToken({ req: request });
     const { pathname } = request.nextUrl;
 
-    // Защищаем только админские маршруты
+    // Защита checkout роута для неавторизованных пользователей
+    if (pathname.startsWith("/checkout")) {
+        if (!token) {
+            return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, request.url));
+        }
+    }
+
+    // Защищаем админские маршруты и API
     if (pathname.startsWith("/admin")) {
         // 1. Если пользователь не авторизован - редирект на логин
         if (!token) {
@@ -23,5 +30,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/admin/:path*"]
+    matcher: ["/admin/:path*", "/checkout/:path*"]
 };
