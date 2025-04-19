@@ -1,4 +1,5 @@
 import { OrderClientForm, OrderClientFormValues } from "@/components/client-forms/order-client-form";
+import { createPayment } from "@/lib/create-paement";
 import { createUid } from "@/lib/uid";
 import { prisma } from "@/prisma/prisma-client";
 import { redirect } from "next/navigation";
@@ -23,7 +24,6 @@ export default async function CheckoutPage() {
             id = createUid("ЗАК", (Number(lastId.split("-")[1]) + 1).toString());
         }
 
-        // Получаем корзину с товарами
         const cart = await prisma.cart.findFirst({
             where: {
                 userId
@@ -41,12 +41,8 @@ export default async function CheckoutPage() {
             throw new Error("Корзина не найдена");
         }
 
-        // Если оплата онлайн - редирект на страницу оплаты
-        if (data.paymentMethod === "online") {
-            redirect("/payment");
-        }
+        let paymentUrl: string | undefined;
 
-        // Создаем заказ
         await prisma.$transaction(async tx => {
             // 1. Создаем заказ
             const order = await tx.order.create({
@@ -58,7 +54,7 @@ export default async function CheckoutPage() {
                 }
             });
 
-            // 2. Создаем новые ProductItem для заказа (вместо переноса)
+            // 2. Создаем новые ProductItem для заказа
             await Promise.all(
                 cart.items.map(item =>
                     tx.productItem.create({
@@ -88,10 +84,39 @@ export default async function CheckoutPage() {
                     totalAmount: 0
                 }
             });
+
+            // Если оплата онлайн - создаем платеж
+            if (data.paymentMethod === "online") {
+                const paymentData = await createPayment({
+                    amount: cart.totalAmount,
+                    description: `Оплата заказа №${order.id}`,
+                    orderId: order.id
+                });
+
+                if (!paymentData) {
+                    throw new Error("Payment data not found");
+                }
+
+                // Используем tx (transaction) вместо prisma
+                await tx.order.update({
+                    where: {
+                        id: order.id
+                    },
+                    data: {
+                        paymentId: paymentData.id
+                    }
+                });
+
+                paymentUrl = paymentData.confirmation.confirmation_url; // Сохраняем URL для редиректа
+            }
         });
 
-        // Редирект на страницу успешного оформления
-        redirect("/checkout/success");
+        // Редирект
+        if (data.paymentMethod === "online" && paymentUrl) {
+            redirect(paymentUrl);
+        } else {
+            redirect("/checkout/success");
+        }
     };
 
     return (
