@@ -152,6 +152,7 @@ export const OrdersTable = ({
                 itemId: product.itemId,
                 comments: null,
                 route: "ПР",
+                cartId: null,
                 orderId: null
             });
         }

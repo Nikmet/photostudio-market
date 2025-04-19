@@ -1,8 +1,8 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PageTitle } from "@/components/page-title";
 import { Profile, ProfileFormData } from "@/components/auth/profile";
 import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export default async function ProfilePage() {
     const session = await getServerSession(authOptions);

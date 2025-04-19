@@ -77,6 +77,10 @@ export async function POST(req: NextRequest) {
                 where: { id: productItem.productId }
             });
 
+            if (!productItem.cartId) {
+                return null;
+            }
+
             // Return updated cart
             return await tx.cart.findFirst({
                 where: { id: productItem.cartId },

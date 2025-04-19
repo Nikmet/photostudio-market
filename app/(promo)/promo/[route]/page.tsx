@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 interface Props {
-    params: {
+    params: Promise<{
         route: string;
-    };
+    }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const route = decodeURIComponent(params.route);
+    const resolvedParams = await params;
+    const route = decodeURIComponent(resolvedParams.route);
 
     const pageData = await prisma.promotionPage.findFirst({
         where: { route },
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PromoPage({ params }: Props) {
-    const route = decodeURIComponent(params.route);
+    const resolvedParams = await params;
+    const route = decodeURIComponent(resolvedParams.route);
 
     const pageData = await prisma.promotionPage.findFirst({
         where: { route }
