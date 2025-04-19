@@ -28,7 +28,8 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
     const {
         control,
         formState: { errors },
-        handleSubmit
+        handleSubmit,
+        watch
     } = useForm<OrderClientFormValues>({
         resolver: zodResolver(orderFormSchema),
         defaultValues: {
@@ -42,6 +43,8 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
     const [error, setError] = React.useState<string | null>(null);
 
     const session = useSession();
+
+    const payment_method = watch("paymentMethod");
 
     React.useEffect(() => {
         const fetchCart = async () => {
@@ -268,7 +271,7 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
                                 type="submit"
                                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
-                                Подтвердить заказ
+                                {payment_method == "cash" ? "Создать заказ" : "Оплатить"}
                             </button>
                         </form>
                     </>
