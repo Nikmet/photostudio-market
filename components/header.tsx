@@ -19,7 +19,7 @@ export const Header: React.FC<IHeaderProps> = ({ className }) => {
         <>
             <header
                 className={cn(
-                    "header-animation bg-secondary -translate-y-[100%] m-4 mb-0 rounded-md items-center justify-between p-4 flex",
+                    "header-animation bg-secondary -translate-y-[100%] m-4 mb-0 rounded-md items-center justify-between p-4 flex pl-[50px] md:pl-4",
                     className
                 )}
             >
@@ -32,7 +32,7 @@ export const Header: React.FC<IHeaderProps> = ({ className }) => {
                     {/* Кнопки для авторизации */}
                     {!session.data?.user && (
                         <Link
-                            className="dark:border-solid dark:border-white border-1 shadow-none text-black hidden md:flex border-solid border-black bg-transparent"
+                            className="dark:border-solid dark:border-white border-1 shadow-none text-black border-solid border-black bg-transparent md:text-md text-sm"
                             href="/login"
                         >
                             Войти
@@ -40,13 +40,23 @@ export const Header: React.FC<IHeaderProps> = ({ className }) => {
                     )}
                     {session.data?.user && (
                         <Link className="" href="/profile">
-                            <div className="gap-2 items-center dark:border-white border shadow-none hidden md:flex border-solid border-black py-1 px-3 rounded-md hover:bg-slate-100 transition-all duration-200">
+                            {/* Десктопная версия (видна на md и выше) */}
+                            <div className="gap-2 items-center dark:border-white border shadow-none md:flex hidden border-solid border-black py-1 px-3 rounded-md hover:bg-slate-100 transition-all duration-200">
                                 <img
                                     src={session.data.user.photo ?? "/avatar.png"}
                                     alt="фото профиля"
                                     className="w-6 h-6 rounded-full"
                                 />
                                 <span className="text-sm">Профиль</span>
+                            </div>
+
+                            {/* Мобильная версия (видна ниже md) */}
+                            <div className="flex items-center dark:border-white border shadow-none md:hidden border-solid border-black py-1 px-3 rounded-md hover:bg-slate-100 transition-all duration-200">
+                                <img
+                                    src={session.data.user.photo ?? "/avatar.png"}
+                                    alt="фото профиля"
+                                    className="w-4 h-4 rounded-full"
+                                />
                             </div>
                         </Link>
                     )}
