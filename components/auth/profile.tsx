@@ -17,7 +17,6 @@ import toast from "react-hot-toast";
 import { VerificationCodeInput } from "./virification-code-input";
 import { FormInput } from "../inputs/form-input";
 
-// Схема валидации
 const profileSchema = z.object({
     name: z.string().min(2, "Имя должно содержать минимум 2 символа"),
     email: z.string().email("Введите корректный email"),
@@ -53,7 +52,6 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
         }
     });
 
-    // Обновляем форму при изменении сессии
     React.useEffect(() => {
         if (session) {
             reset({
@@ -121,14 +119,19 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
     }
 
     return (
-        <div className={cn(className, "p-10")}>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10 mb-10">
-                <img
-                    src={session.user.photo ?? "/avatar.png"}
-                    alt="Фотография пользователя"
-                    className="w-[300px] h-[300px] rounded-full border-2 border-gray-300"
-                />
-                <div className="flex flex-col w-[400px] gap-2">
+        <div className={cn(className, "p-4 sm:p-6 md:p-8 xl:p-10")}>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col md:flex-row gap-6 xl:gap-10 mb-8 md:mb-10">
+                {/* Аватар */}
+                <div className="flex justify-center md:justify-start">
+                    <img
+                        src={session.user.photo ?? "/avatar.png"}
+                        alt="Фотография пользователя"
+                        className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] xl:w-[250px] xl:h-[250px] rounded-full border-2 border-gray-300 mx-auto md:mx-0"
+                    />
+                </div>
+
+                {/* Основная форма */}
+                <div className="flex flex-col w-full md:w-[250px] xl:w-[300px] gap-3 md:gap-4">
                     <Controller
                         name="name"
                         control={control}
@@ -164,47 +167,68 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                             <FormInput type="email" label="Эл. Почта" required errors={errors} {...field} />
                         )}
                     />
-                    <div className="flex gap-2 mt-4">
-                        <Button type="submit">Сохранить изменения</Button>
-                        <Button type="button" onClick={() => signOut({ callbackUrl: "/" })} variant={"outline"}>
+                    <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                        <Button type="submit" className="w-full sm:w-auto">
+                            Сохранить изменения
+                        </Button>
+                        <Button
+                            type="button"
+                            onClick={() => signOut({ callbackUrl: "/" })}
+                            variant={"outline"}
+                            className="w-full sm:w-auto"
+                        >
                             Выйти из аккаунта
                         </Button>
                     </div>
                 </div>
-                <div className="w-[2px] h-[300px] bg-slate-400"></div>
-                <div className="flex flex-col gap-2">
-                    <h2 className="text-2xl">Подтверждение аккаунта</h2>
+
+                {/* Разделитель */}
+                <div className="hidden md:block w-[1px] h-auto bg-gray-300 mx-4 xl:mx-6"></div>
+
+                {/* Подтверждение аккаунта */}
+                <div className="flex flex-col gap-3 md:gap-4 mt-6 md:mt-0 md:w-[250px] xl:w-[300px]">
+                    <h2 className="text-lg sm:text-xl md:text-xl xl:text-2xl">Подтверждение аккаунта</h2>
                     {verifiedState && (
                         <div className="flex flex-col gap-2">
                             {session.user.role === "USER" && (
                                 <>
-                                    <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
-                                        <Check /> <span>Ваш аккаунт подтвержден.</span>
+                                    <p className="flex items-center gap-2 bg-green-100 rounded-md p-2 text-sm sm:text-base">
+                                        <Check size={16} className="flex-shrink-0" />{" "}
+                                        <span>Ваш аккаунт подтвержден.</span>
                                     </p>
-                                    <p>*Вы можете использовать все возможности сайта.</p>
+                                    <p className="text-sm sm:text-base">
+                                        *Вы можете использовать все возможности сайта.
+                                    </p>
                                 </>
                             )}
                             {session.user.role === "ADMIN" && (
-                                <p className="flex items-center gap-2 bg-green-100 rounded-md p-2">
-                                    <User /> <span>Вы являетесь администратором</span>
+                                <p className="flex items-center gap-2 bg-green-100 rounded-md p-2 text-sm sm:text-base">
+                                    <User size={16} className="flex-shrink-0" />{" "}
+                                    <span>Вы являетесь администратором</span>
                                 </p>
                             )}
                         </div>
                     )}
                     {!verifiedState && (
-                        <div className="flex flex-col gap-2 w-[300px]">
+                        <div className="flex flex-col gap-3 w-full">
                             {!sendingCode && (
                                 <>
-                                    <p className="flex items-center gap-2 bg-red-100 rounded-md p-2">
-                                        <X /> <span>Ваш аккаунт не подтвержден.</span>
+                                    <p className="flex items-center gap-2 bg-red-100 rounded-md p-2 text-sm sm:text-base">
+                                        <X size={16} className="flex-shrink-0" />{" "}
+                                        <span>Ваш аккаунт не подтвержден.</span>
                                     </p>
-                                    <Button type="button" variant={"outline"} onClick={createNewCode}>
+                                    <Button
+                                        type="button"
+                                        variant={"outline"}
+                                        onClick={createNewCode}
+                                        className="w-full sm:w-auto"
+                                    >
                                         Отправить код подтверждения
                                     </Button>
                                 </>
                             )}
                             {sendingCode && (
-                                <div className="flex flex-col gap-2  w-[300px]">
+                                <div className="flex flex-col gap-3 w-full">
                                     <VerificationCodeInput onComplete={onCodeSubmit} />
                                 </div>
                             )}
@@ -212,21 +236,26 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                     )}
                 </div>
             </form>
+
+            {/* Секция заказов */}
             {orders.length > 0 && (
-                <div className="mb-2">
-                    <h2 className="text-2xl mb-2">Ваши заказы</h2>
-                    <ClientTable orders={orders} />
+                <div className="mb-4 md:mb-6 mt-8 md:mt-10">
+                    <h2 className="text-lg sm:text-xl md:text-xl xl:text-2xl mb-3 md:mb-4">Ваши заказы</h2>
+                    <div className="overflow-x-auto">
+                        <ClientTable orders={orders} />
+                    </div>
                 </div>
             )}
+
             {orders.length == 0 && (
-                <div className="flex flex-col items-center gap-2 border-2 border-dashed border-gray-300 p-5 rounded-md">
-                    <h2 className="text-2xl">У вас нет заказов</h2>
-                    <p>Вы можете сделать заказ, перейдя в каталог.</p>
+                <div className="flex flex-col items-center gap-3 border-2 border-dashed border-gray-300 p-4 sm:p-5 rounded-md mt-8 md:mt-10">
+                    <h2 className="text-lg sm:text-xl md:text-xl xl:text-2xl text-center">У вас нет заказов</h2>
+                    <p className="text-center text-sm sm:text-base">Вы можете сделать заказ, перейдя в каталог.</p>
                     <Link
                         href="/"
-                        className="text-blue-500 hover:gap-3 flex items-center gap-1 transition-all duration-100"
+                        className="text-blue-500 hover:gap-3 flex items-center gap-1 transition-all duration-100 text-sm sm:text-base mt-2"
                     >
-                        <span>Перейти к выбору</span> <ArrowRight />
+                        <span>Перейти к выбору</span> <ArrowRight size={16} />
                     </Link>
                 </div>
             )}
