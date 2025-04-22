@@ -42,9 +42,9 @@ export const ThemeSwitcher = ({ className }: IThemeSwitcherProps): React.JSX.Ele
 
     return (
         <div className={cn("flex gap-1 md:gap-2", className)}>
-            <Sun size={20} />
+            <Sun size={20} className="text-white" />
             <Switch checked={theme == "dark"} onCheckedChange={handleThemeChange} />
-            <Moon size={20} />
+            <Moon size={20} className="text-white" />
         </div>
     );
 };

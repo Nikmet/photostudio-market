@@ -24,18 +24,19 @@ export default async function MainLayout({
 
     return (
         <html lang="ru" className={theme} style={{ colorScheme: theme }}>
-            <body className={main_font.className}>
+            <body className={`${main_font.className} flex flex-col min-h-screen`}>
                 <Providers theme={theme}>
-                    {children}
+                    <main className="flex-grow">{children}</main>
                     <CookieConsent />
                 </Providers>
-
-                <footer className="flex flex-col justify-center items-center bg-secondary p-2 view-animation">
-                    <p className="text-center text-sm text-gray-500">
-                        © {new Date().getFullYear()} ООО &quot;Фотостудия-М&quot;
-                    </p>
-                    <p className="text-center text-sm text-gray-500">{process.env.VERSION}</p>
-                </footer>
+                <footer className="mt-auto bg-gradient-to-b from-blue-100 to-blue-200 p-2 view-animation">
+                    <div className="flex flex-col justify-center items-center">
+                        <p className="text-center text-sm text-blue-900">
+                            © {new Date().getFullYear()} ООО &quot;Фотостудия-М&quot;
+                        </p>
+                        <p className="text-center text-sm text-blue-900">{process.env.VERSION}</p>
+                    </div>
+                </footer>{" "}
             </body>
         </html>
     );
