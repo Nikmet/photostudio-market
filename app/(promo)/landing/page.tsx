@@ -2,6 +2,19 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
+export const metadata = {
+    title: "Фотостудия-М - Профессиональная печать и сувенирная продукция",
+    description:
+        "Профессиональная печать, сувенирная продукция, полиграфические услуги с 1997 года. Собственное производство, современное оборудование, быстрые сроки исполнения.",
+    keywords:
+        "фотостудия, печать, сувениры, полиграфия, визитки, баннеры, кружки с печатью, футболки с принтом, рекламная продукция",
+    openGraph: {
+        title: "Фотостудия-М - Профессиональная печать и сувенирная продукция",
+        description: "Профессиональная печать, сувенирная продукция, полиграфические услуги с 1997 года.",
+        images: ["/og-image.jpg"]
+    }
+};
+
 export default function AboutPage() {
     const products = [
         {
@@ -51,7 +64,7 @@ export default function AboutPage() {
             description:
                 "Четкая навигация и презентабельный вид! Наши аншлаги из долговечных материалов с устойчивой к погодным условиям печатью. Подходит для офисов, магазинов и общественных мест. Сделайте вашу компанию легко узнаваемой!",
             price: 500,
-            image: `/address_plaques.png`,
+            imageUrl: `/address_plaques.png`,
             category: "Реклама"
         }
     ];
@@ -65,7 +78,7 @@ export default function AboutPage() {
                         <source src="/video/hero-background.mp4" type="video/mp4" />
                     </video>
                     <div className="container mx-auto px-4 text-center text-white relative z-10">
-                        <h1 className="text-4xl md:text-6xl font-bold mb-6">Фотостудия-Маркет</h1>
+                        <h1 className="text-4xl md:text-6xl font-bold mb-6">Фотостудия-М</h1>
                         <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
                             Профессиональная печать и сувенирная продукция с 1997 года
                         </p>
