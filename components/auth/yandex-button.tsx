@@ -13,11 +13,11 @@ export const YandexButton = ({ className }: IYandexButtonProps): React.JSX.Eleme
         <Button
             type="button"
             onClick={() => signIn("yandex", { callbackUrl: "/profile" })}
-            className={cn(className, "bg-slate-300 hover:bg-slate-400 transition-all duration-300")}
+            className={cn(className, "bg-slate-300 hover:bg-slate-400 transition-all duration-300 dark:bg-slate-900")}
         >
             <div className="flex justify-center items-center gap-2 p-5">
                 <img src="/yandex-logo.svg" alt="Yandex" className="w-6 h-6" />
-                <span className="text-slate-900">Войти с помощью Яндекс ID</span>
+                <span className="text-slate-900 dark:text-white">Войти с помощью Яндекс ID</span>
             </div>
         </Button>
     );

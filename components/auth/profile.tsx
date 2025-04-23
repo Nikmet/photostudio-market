@@ -175,7 +175,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                             type="button"
                             onClick={() => signOut({ callbackUrl: "/" })}
                             variant={"outline"}
-                            className="w-full sm:w-auto"
+                            className="w-full sm:w-auto dark:border-white"
                         >
                             Выйти из аккаунта
                         </Button>
@@ -192,7 +192,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                         <div className="flex flex-col gap-2">
                             {session.user.role === "USER" && (
                                 <>
-                                    <p className="flex items-center gap-2 bg-green-100 rounded-md p-2 text-sm sm:text-base">
+                                    <p className="flex items-center gap-2 bg-green-100 dark:bg-green-900 rounded-md p-2 text-sm sm:text-base">
                                         <Check size={16} className="flex-shrink-0" />{" "}
                                         <span>Ваш аккаунт подтвержден.</span>
                                     </p>
@@ -202,7 +202,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                                 </>
                             )}
                             {session.user.role === "ADMIN" && (
-                                <p className="flex items-center gap-2 bg-green-100 rounded-md p-2 text-sm sm:text-base">
+                                <p className="flex items-center gap-2 bg-green-100 dark:bg-green-900 rounded-md p-2 text-sm sm:text-base">
                                     <User size={16} className="flex-shrink-0" />{" "}
                                     <span>Вы являетесь администратором</span>
                                 </p>
@@ -213,7 +213,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                         <div className="flex flex-col gap-3 w-full">
                             {!sendingCode && (
                                 <>
-                                    <p className="flex items-center gap-2 bg-red-100 rounded-md p-2 text-sm sm:text-base">
+                                    <p className="flex items-center gap-2 bg-red-100 dark:bg-red-800 rounded-md p-2 text-sm sm:text-base">
                                         <X size={16} className="flex-shrink-0" />{" "}
                                         <span>Ваш аккаунт не подтвержден.</span>
                                     </p>
@@ -221,7 +221,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                                         type="button"
                                         variant={"outline"}
                                         onClick={createNewCode}
-                                        className="w-full sm:w-auto"
+                                        className="w-full sm:w-auto dark:border-white"
                                     >
                                         Отправить код подтверждения
                                     </Button>

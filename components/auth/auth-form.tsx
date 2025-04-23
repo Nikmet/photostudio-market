@@ -1,3 +1,4 @@
+// auth-form.tsx
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,7 +73,7 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center">Вход в аккаунт</h2>
+                <h2 className="text-2xl font-bold text-center dark:text-white">Вход в аккаунт</h2>
 
                 <Controller
                     name="phone"
@@ -109,7 +110,7 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
                     />
                     <button
                         type="button"
-                        className="absolute right-3 top-[42px] text-gray-500 hover:text-gray-700"
+                        className="absolute right-3 top-[42px] text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                         onClick={togglePasswordVisibility}
                     >
                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -117,7 +118,7 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
                 </div>
 
                 <div className="flex justify-end">
-                    <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                    <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
                         Забыли пароль?
                     </Link>
                 </div>
@@ -128,10 +129,12 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
 
                 <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-300"></div>
+                        <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
                     </div>
                     <div className="relative flex justify-center">
-                        <span className="px-2 bg-white text-sm text-gray-500">Или войдите с помощью</span>
+                        <span className="px-2 bg-white dark:bg-gray-800 text-sm text-gray-500 dark:text-gray-400">
+                            Или войдите с помощью
+                        </span>
                     </div>
                 </div>
 
@@ -141,8 +144,8 @@ export const AuthForm = ({ className }: IAuthFormProps): React.JSX.Element => {
 
                 <div className="flex gap-1 items-center justify-center text-center text-sm mt-4">
                     <>
-                        <p>Нет аккаунта?</p>
-                        <Link href="/register" className="text-blue-600 hover:underline">
+                        <p className="dark:text-gray-300">Нет аккаунта?</p>
+                        <Link href="/register" className="text-blue-600 hover:underline dark:text-blue-400">
                             Зарегистрироваться
                         </Link>
                     </>

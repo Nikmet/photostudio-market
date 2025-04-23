@@ -39,8 +39,8 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50">
-            <div className="w-full md:max-w-md max-w-[350px] rounded-lg bg-white p-8 shadow-md">
+        <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
+            <div className="w-full md:max-w-md max-w-[350px] rounded-lg bg-white dark:bg-gray-800 p-8 shadow-md">
                 <RegisterForm onSubmit={onSubmit} />
             </div>
         </div>

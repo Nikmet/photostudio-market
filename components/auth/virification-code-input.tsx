@@ -75,7 +75,7 @@ export const VerificationCodeInput = ({ onComplete }: { onComplete: (code: strin
                 type="button"
                 onClick={handleSubmit}
                 disabled={code.some(digit => !digit)}
-                className="w-full flex items-center justify-center gap-2 bg-green-200 text-green-900 hover:bg-green-300"
+                className="w-full flex items-center justify-center gap-2 bg-green-200 dark:bg-green-800 text-green-900 hover:bg-green-300"
             >
                 <Check className="w-4 h-4" />
                 Подтвердить
