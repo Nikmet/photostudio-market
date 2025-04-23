@@ -10,16 +10,18 @@ import { CartDrawer } from "./cart/cart-drawer";
 
 export interface IHeaderProps {
     className?: string;
+    isPromo?: boolean;
 }
 
-export const Header: React.FC<IHeaderProps> = ({ className }) => {
+export const Header: React.FC<IHeaderProps> = ({ isPromo, className }) => {
     const session = useSession();
 
     return (
         <>
             <header
                 className={cn(
-                    "header-animation dark:bg-gradient-to-r dark:from-blue-950 dark:to-blue-900/80 bg-gradient-to-r from-blue-600 to-blue-500/80 -translate-y-[100%] m-4 mb-0 rounded-md items-center justify-between p-4 flex pl-[50px] md:pl-4",
+                    "header-animation dark:bg-gradient-to-r dark:from-blue-950 dark:to-blue-900/80 bg-gradient-to-r from-blue-600 to-blue-500/80 -translate-y-[100%] m-4 mb-0 rounded-md items-center justify-between p-4 flex",
+                    !isPromo && "pl-[50px] md:pl-4",
                     className
                 )}
             >
