@@ -7,7 +7,6 @@ import { signOut } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import React from "react";
-import { ClientTable } from "../admin-components/client-table";
 import { IOrderProps } from "../admin-forms/clients-form/client-form";
 import { handlePhoneChange, handlePhoneKeyDown } from "@/lib/phone";
 import { cn } from "@/lib";
@@ -16,6 +15,7 @@ import { ArrowRight, Check, User, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { VerificationCodeInput } from "./virification-code-input";
 import { FormInput } from "../inputs/form-input";
+import { OrdersList } from "./orders-list";
 
 const profileSchema = z.object({
     name: z.string().min(2, "Имя должно содержать минимум 2 символа"),
@@ -242,7 +242,7 @@ export const Profile = ({ onSubmitAction, userPassword, orders, verified, classN
                 <div className="mb-4 md:mb-6 mt-8 md:mt-10">
                     <h2 className="text-lg sm:text-xl md:text-xl xl:text-2xl mb-3 md:mb-4">Ваши заказы</h2>
                     <div className="overflow-x-auto">
-                        <ClientTable orders={orders} />
+                        <OrdersList orders={orders} />
                     </div>
                 </div>
             )}
