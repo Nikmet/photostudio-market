@@ -66,7 +66,7 @@ export const MagnetsClientForm = ({ onSubmit, defaultValues, id, className }: IM
                         )}
                     />
                 </div>
-                <div className="flex flex-col gap-4 w-[400px] lg:w-[600px]">
+                <div className="flex flex-col gap-4 w-[300px] lg:w-[600px]">
                     <Controller
                         name="width"
                         control={control}

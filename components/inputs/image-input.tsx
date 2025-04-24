@@ -58,7 +58,7 @@ export const ImageInput = ({
                 </div>
             )}
 
-            <div className="w-[400px] h-[400px] lg:w-[600px] lg:h-[500px] border border-gray-300 rounded-md mb-4">
+            <div className="w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] border border-gray-300 rounded-md mb-4">
                 {previewUrl ? (
                     <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
                 ) : (
@@ -67,7 +67,7 @@ export const ImageInput = ({
                     </div>
                 )}
             </div>
-            <Input {...props} className="bg-white dark:bg-gray-700 cursor-pointer w-[400px] lg:w-full" type="file" accept="image/*" onChange={handleFileChange} />
+            <Input {...props} className="bg-white dark:bg-gray-700 cursor-pointer w-[300px] lg:w-full" type="file" accept="image/*" onChange={handleFileChange} />
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
         </div>
     );

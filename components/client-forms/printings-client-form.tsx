@@ -51,7 +51,7 @@ export const PrintingsClientForm = ({
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2 w-[400px] flex-col">
+            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2 w-[300px] flex-col">
                 <AdminSelect
                     name="printing_type"
                     value={watch("printing_type")}

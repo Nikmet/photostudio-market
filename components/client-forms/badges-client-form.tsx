@@ -55,7 +55,7 @@ export const BadgesClientForm = ({ onSubmit, defaultValues, id, className }: IBa
                         />
                     )}
                 />
-                <Button className="lg:w-full w-[400px]" type="submit">
+                <Button className="lg:w-full w-[300px]" type="submit">
                     Добавить в корзину
                 </Button>
             </form>

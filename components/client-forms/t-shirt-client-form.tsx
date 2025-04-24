@@ -62,7 +62,7 @@ export const TShirtsClientForm = ({ onSubmit, defaultValues, id, className }: IT
                         )}
                     />
                 </div>
-                <div className="flex flex-col gap-4 w-[400px] lg:w-[600px]">
+                <div className="flex flex-col gap-4 w-[300px] lg:w-[600px]">
                     <AdminSelect
                         name="printing_side"
                         value={watch("printingSide")}
