@@ -6,5 +6,5 @@ export interface IPageTitleProps {
 }
 
 export const PageTitle = ({ children, className }: IPageTitleProps): React.JSX.Element => {
-    return <h1 className={cn("text-4xl font-medium my-4", className)}>{children}</h1>;
+    return <h1 className={cn("2xl:text-4xl text-2xl font-medium my-4 text-center 2xl:text-start", className)}>{children}</h1>;
 };

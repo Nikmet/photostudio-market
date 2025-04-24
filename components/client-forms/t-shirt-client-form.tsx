@@ -47,8 +47,8 @@ export const TShirtsClientForm = ({ onSubmit, defaultValues, id, className }: IT
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <div className="flex gap-4">
+            <form onSubmit={handleSubmit(submitAction)} className="flex flex-col items-center 2xl:items-start 2xl:flex-row gap-2">
+                <div className="flex mb-4">
                     <Controller
                         name="printing_image"
                         control={control}
@@ -61,29 +61,29 @@ export const TShirtsClientForm = ({ onSubmit, defaultValues, id, className }: IT
                             />
                         )}
                     />
-                    <div className="flex flex-col gap-4 w-[500px]">
-                        <AdminSelect
-                            name="printing_side"
-                            value={watch("printingSide")}
-                            onChange={value => setValue("printingSide", value)}
-                            label={"Стороны печати"}
-                            items={printingSides}
-                            defaultValue={defaultValues?.printingSide}
-                            errors={errors}
-                            required
-                        />
-                        <AdminSelect
-                            name="size"
-                            label={"Размер"}
-                            value={watch("size")}
-                            onChange={value => setValue("size", value)}
-                            items={sizes}
-                            defaultValue={defaultValues?.size}
-                            errors={errors}
-                            required
-                        />
-                        <Button type="submit">Добавить в корзину</Button>
-                    </div>
+                </div>
+                <div className="flex flex-col gap-4 w-[400px] lg:w-[600px]">
+                    <AdminSelect
+                        name="printing_side"
+                        value={watch("printingSide")}
+                        onChange={value => setValue("printingSide", value)}
+                        label={"Стороны печати"}
+                        items={printingSides}
+                        defaultValue={defaultValues?.printingSide}
+                        errors={errors}
+                        required
+                    />
+                    <AdminSelect
+                        name="size"
+                        label={"Размер"}
+                        value={watch("size")}
+                        onChange={value => setValue("size", value)}
+                        items={sizes}
+                        defaultValue={defaultValues?.size}
+                        errors={errors}
+                        required
+                    />
+                    <Button type="submit">Добавить в корзину</Button>
                 </div>
             </form>
         </div>

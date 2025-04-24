@@ -18,7 +18,12 @@ export interface IPrintingsFormProps {
     id: string;
 }
 
-export const PrintingsClientForm = ({ onSubmit, defaultValues, id, className }: IPrintingsFormProps): React.JSX.Element => {
+export const PrintingsClientForm = ({
+    onSubmit,
+    defaultValues,
+    id,
+    className
+}: IPrintingsFormProps): React.JSX.Element => {
     const {
         handleSubmit,
         formState: { errors },
@@ -46,22 +51,18 @@ export const PrintingsClientForm = ({ onSubmit, defaultValues, id, className }: 
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <div className="flex gap-2">
-                    <div className="flex flex-col gap-2">
-                        <AdminSelect
-                            name="printing_type"
-                            value={watch("printing_type")}
-                            onChange={value => setValue("printing_type", value)}
-                            label="Тип печати"
-                            items={printingTypes}
-                            defaultValue={defaultValues?.printing_type}
-                            errors={errors}
-                            required
-                        />
-                        <Button type="submit">Добавить в корзину</Button>
-                    </div>
-                </div>
+            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2 w-[400px] flex-col">
+                <AdminSelect
+                    name="printing_type"
+                    value={watch("printing_type")}
+                    onChange={value => setValue("printing_type", value)}
+                    label="Тип печати"
+                    items={printingTypes}
+                    defaultValue={defaultValues?.printing_type}
+                    errors={errors}
+                    required
+                />
+                <Button type="submit">Добавить в корзину</Button>
             </form>
         </div>
     );

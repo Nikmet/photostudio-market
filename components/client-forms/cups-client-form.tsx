@@ -37,7 +37,7 @@ export const CupsClientForm = ({ onSubmit, id, className }: ICupsFormProps): Rea
             <form
                 encType="multipart/form-data"
                 onSubmit={form.handleSubmit(submitAction)}
-                className="flex flex-col w-[600px] gap-2"
+                className="flex flex-col items-center lg:items-start lg:w-[600px] gap-2"
             >
                 <Controller
                     name="printing_image"
@@ -51,7 +51,9 @@ export const CupsClientForm = ({ onSubmit, id, className }: ICupsFormProps): Rea
                         />
                     )}
                 />
-                <Button type="submit">Добавить в корзину</Button>
+                <Button className="lg:w-full w-[400px]" type="submit">
+                    Добавить в корзину
+                </Button>
             </form>
         </div>
     );

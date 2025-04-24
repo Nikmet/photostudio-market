@@ -38,7 +38,11 @@ export const BadgesClientForm = ({ onSubmit, defaultValues, id, className }: IBa
 
     return (
         <div className={className}>
-            <form onSubmit={form.handleSubmit(submitAction)} className="flex flex-col w-[600px] gap-2">
+            <form
+                encType="multipart/form-data"
+                onSubmit={form.handleSubmit(submitAction)}
+                className="flex flex-col items-center lg:items-start lg:w-[600px] gap-2"
+            >
                 <Controller
                     name="printing_image"
                     control={form.control}
@@ -51,7 +55,9 @@ export const BadgesClientForm = ({ onSubmit, defaultValues, id, className }: IBa
                         />
                     )}
                 />
-                <Button type="submit">Добавить в корзину</Button>
+                <Button className="lg:w-full w-[400px]" type="submit">
+                    Добавить в корзину
+                </Button>
             </form>
         </div>
     );

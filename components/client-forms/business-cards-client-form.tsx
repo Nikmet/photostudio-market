@@ -51,7 +51,10 @@ export const BusinessCardsClientForm = ({
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
+            <form
+                onSubmit={handleSubmit(submitAction)}
+                className="flex flex-col items-center 2xl:items-start 2xl:flex-row gap-2"
+            >
                 <div className="flex gap-2">
                     <Controller
                         name="printing_image"

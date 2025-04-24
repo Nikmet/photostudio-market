@@ -48,8 +48,11 @@ export const MagnetsClientForm = ({ onSubmit, defaultValues, id, className }: IM
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
-                <div className="flex gap-2">
+            <form
+                onSubmit={handleSubmit(submitAction)}
+                className="flex flex-col items-center 2xl:items-start 2xl:flex-row gap-2"
+            >
+                <div className="flex gap-2 mb-4">
                     <Controller
                         name="printing_image"
                         control={control}
@@ -62,47 +65,47 @@ export const MagnetsClientForm = ({ onSubmit, defaultValues, id, className }: IM
                             />
                         )}
                     />
-                    <div className="flex flex-col gap-2">
-                        <Controller
-                            name="width"
-                            control={control}
-                            render={({ field: { onChange, ...field } }) => (
-                                <FormInput
-                                    type="number"
-                                    label="Ширина (мм)"
-                                    {...field}
-                                    onChange={e => onNumberValueChange(e, onChange)}
-                                    errors={errors}
-                                    required
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="height"
-                            control={control}
-                            render={({ field: { onChange, ...field } }) => (
-                                <FormInput
-                                    type="number"
-                                    label="Высота (мм)"
-                                    {...field}
-                                    onChange={e => onNumberValueChange(e, onChange)}
-                                    errors={errors}
-                                    required
-                                />
-                            )}
-                        />
-                        <AdminSelect
-                            name="magnet_type"
-                            value={watch("magnet_type")}
-                            onChange={value => setValue("magnet_type", value)}
-                            label="Тип магнита"
-                            items={magnetTypes}
-                            defaultValue={defaultValues?.magnet_type}
-                            errors={errors}
-                            required
-                        />
-                        <Button type="submit">Добавить в корзину</Button>
-                    </div>
+                </div>
+                <div className="flex flex-col gap-4 w-[400px] lg:w-[600px]">
+                    <Controller
+                        name="width"
+                        control={control}
+                        render={({ field: { onChange, ...field } }) => (
+                            <FormInput
+                                type="number"
+                                label="Ширина (мм)"
+                                {...field}
+                                onChange={e => onNumberValueChange(e, onChange)}
+                                errors={errors}
+                                required
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="height"
+                        control={control}
+                        render={({ field: { onChange, ...field } }) => (
+                            <FormInput
+                                type="number"
+                                label="Высота (мм)"
+                                {...field}
+                                onChange={e => onNumberValueChange(e, onChange)}
+                                errors={errors}
+                                required
+                            />
+                        )}
+                    />
+                    <AdminSelect
+                        name="magnet_type"
+                        value={watch("magnet_type")}
+                        onChange={value => setValue("magnet_type", value)}
+                        label="Тип магнита"
+                        items={magnetTypes}
+                        defaultValue={defaultValues?.magnet_type}
+                        errors={errors}
+                        required
+                    />
+                    <Button type="submit">Добавить в корзину</Button>
                 </div>
             </form>
         </div>

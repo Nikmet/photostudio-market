@@ -11,8 +11,9 @@ export const SuccessAnimation = () => {
     }, []);
 
     return (
-        <div className="h-full bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 text-center border border-blue-100">
+        <div className="h-full bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-md p-8 text-center border border-blue-100 dark:border-gray-700">
+                {/* SVG иконка с анимацией */}
                 {/* SVG иконка с анимацией */}
                 <div className="mx-auto mb-6 w-24 h-24">
                     <svg viewBox="0 0 100 100" className="text-blue-500">
@@ -51,13 +52,15 @@ export const SuccessAnimation = () => {
                     </svg>
                 </div>
 
-                <h1 className="text-2xl font-bold text-blue-800 mb-3">Покупка совершена!</h1>
+                <h1 className="text-2xl font-bold text-blue-800 dark:text-blue-100 mb-3">Покупка совершена!</h1>
 
-                <p className="text-blue-600 mb-6">Спасибо за ваш заказ! Мы рады, что вы выбрали нас.</p>
+                <p className="text-blue-600 dark:text-blue-300 mb-6">
+                    Спасибо за ваш заказ! Мы рады, что вы выбрали нас.
+                </p>
 
                 <Link
                     href="/"
-                    className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 dark:from-blue-600 dark:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg dark:shadow-blue-900/50"
                 >
                     Вернуться в магазин
                     <svg
