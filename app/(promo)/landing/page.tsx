@@ -74,7 +74,7 @@ export default function AboutPage() {
             <main className="flex-grow">
                 {/* Hero секция */}
                 <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-                    <video autoPlay muted loop className="absolute w-full h-full object-cover">
+                    <video autoPlay muted loop playsInline className="absolute w-full h-full object-cover">
                         <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
                     <div className="container mx-auto px-4 text-center text-white relative z-10">
