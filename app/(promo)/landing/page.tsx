@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export const metadata = {
-    title: "Фотостудия-М - Профессиональная печать и сувенирная продукция",
+    title: "Фотостудия-М",
     description:
         "Профессиональная печать, сувенирная продукция, полиграфические услуги с 1997 года. Собственное производство, современное оборудование, быстрые сроки исполнения.",
     keywords:
@@ -75,21 +75,21 @@ export default function AboutPage() {
                 {/* Hero секция */}
                 <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
                     <video autoPlay muted loop className="absolute w-full h-full object-cover">
-                        <source src="/video/hero-background.mp4" type="video/mp4" />
+                        <source src="/hero-background.mp4" type="video/mp4" />
                     </video>
                     <div className="container mx-auto px-4 text-center text-white relative z-10">
                         <h1 className="text-4xl md:text-6xl font-bold mb-6">Фотостудия-М</h1>
                         <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                            Профессиональная печать и сувенирная продукция с 1997 года
+                            Профессиональная печать и реклама с 1997 года
                         </p>
                         <Button
                             asChild
-                            className="bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 px-8 py-4 text-lg"
+                            className="bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-5000 px-12 py-8 text-lg font-bold shadow-lg hover:shadow-xl rounded-md animate-pulse"
                         >
-                            <Link href="/">Перейти в магазин</Link>
+                            <Link href="/">Начать покупки сейчас!</Link>
                         </Button>
                     </div>
-                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="absolute inset-0 bg-black/60"></div>
                 </section>
 
                 {/* О компании */}
@@ -116,8 +116,8 @@ export default function AboutPage() {
                                     обработки.
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-300">
-                                    Наши клиенты - это более 500 компаний и тысячи людей по всей России, которые
-                                    доверяют нам свои рекламные и корпоративные проекты.
+                                    Наши клиенты - это более <b className="text-primary">50 000</b> клиентов по всей
+                                    России, которые доверяют нам свои рекламные и корпоративные проекты.
                                 </p>
                             </div>
 
@@ -278,7 +278,7 @@ export default function AboutPage() {
                                     name: "Елена С.",
                                     company: "Салон красоты 'Элегант'",
                                     text: "Сделали для нас визитки с тиснением - выглядит очень стильно и дорого. Клиенты сразу обращают внимание.",
-                                    rating: 4
+                                    rating: 5
                                 }
                             ].map((review, index) => (
                                 <div key={index} className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
@@ -286,7 +286,7 @@ export default function AboutPage() {
                                         {[...Array(5)].map((_, i) => (
                                             <span
                                                 key={i}
-                                                className={`text-xl ${
+                                                className={`text-3xl ${
                                                     i < review.rating ? "text-yellow-400" : "text-gray-300"
                                                 }`}
                                             >
@@ -310,14 +310,17 @@ export default function AboutPage() {
                     <div className="container mx-auto px-4 text-center">
                         <h2 className="text-3xl md:text-4xl font-bold mb-6">Готовы начать сотрудничество?</h2>
                         <p className="text-xl mb-8 max-w-2xl mx-auto">
-                            Оставьте заявку или перейдите в наш интернет-магазин, чтобы выбрать продукцию
+                            Перейдите в наш интернет-магазин, чтобы выбрать продукцию
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center gap-4">
                             <Button
                                 asChild
-                                className="bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 px-8 py-4 text-lg"
+                                className="bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 px-12 py-6 text-lg"
                             >
-                                <Link href="/">Перейти в магазин</Link>
+                                <Link href="/" className="flex items-center justify-center">
+                                    <span>Перейти в магазин</span>
+                                    <ArrowRight className="w-10 h-10" />
+                                </Link>
                             </Button>
                         </div>
                     </div>
