@@ -22,7 +22,7 @@ export const ProductCard = ({
         <div className={className}>
             <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:border-blue-100 dark:hover:border-blue-900/50">
                 {/* Изображение с синим оверлеем */}
-                <div className="h-[500px] relative overflow-hidden">
+                <div className="h-[400px] xl:h-[500px] relative overflow-hidden">
                     <img
                         src={imageUrl}
                         alt={title}

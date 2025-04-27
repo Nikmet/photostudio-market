@@ -26,7 +26,7 @@ export default function Home() {
                             </div>
 
                             {/* Сетка продуктов */}
-                            <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
                                 {card.products.map((product, i) => (
                                     <ProductCard
                                         key={i}

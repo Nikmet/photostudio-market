@@ -148,7 +148,7 @@ export default function AboutPage() {
                                     key={product.id}
                                     className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 border border-slate-100 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:border-blue-100 dark:hover:border-blue-900/50"
                                 >
-                                    <div className="h-[500px] relative overflow-hidden">
+                                    <div className="h-[300px] md:h-[400px] xl:h-[500px] relative overflow-hidden">
                                         <img
                                             src={product.image}
                                             alt={product.name}
