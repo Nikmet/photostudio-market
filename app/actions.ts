@@ -8,7 +8,8 @@ export const createProduct = async (
     itemName: string,
     categoryName: string,
     price: number,
-    route: string
+    route: string,
+    comments: string = ""
 ) => {
     try {
         const category = await prisma.category.findFirst({
@@ -42,7 +43,8 @@ export const createProduct = async (
                 itemName,
                 categoryId: category.id,
                 price,
-                route
+                route,
+                comments,
             }
         });
 

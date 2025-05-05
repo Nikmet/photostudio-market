@@ -35,7 +35,7 @@ export default async function CupsClientPage() {
             }
         });
 
-        const product = await createProduct(cup.id, cup.name, "Сувениры", await calcCupPrice(), "cups");
+        const product = await createProduct(cup.id, cup.name, "Сувениры", await calcCupPrice(), "cups", data.comment);
 
         if (!product) {
             throw new Error("Не удалось создать продукт");
