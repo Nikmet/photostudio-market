@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export const metadata = {
@@ -84,12 +81,9 @@ export default function AboutPage() {
                         <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
                             Профессиональная печать и реклама с 1997 года
                         </p>
-                        <Button
-                            asChild
-                            className="bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-5000 px-12 py-8 text-lg font-bold shadow-lg hover:shadow-xl rounded-md animate-pulse"
-                        >
+                        <button className="bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-5000 px-12 py-8 text-lg font-bold shadow-lg hover:shadow-xl rounded-md animate-pulse">
                             <Link href="/">Начать покупки сейчас!</Link>
-                        </Button>
+                        </button>
                     </div>
                     <div className="absolute inset-0 bg-black/60"></div>
                 </section>
@@ -184,12 +178,9 @@ export default function AboutPage() {
                         </div>
 
                         <div className="mt-12 text-center">
-                            <Button
-                                asChild
-                                className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white py-3 px-6"
-                            >
+                            <button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white py-3 px-6">
                                 <Link href="/">Смотреть все товары</Link>
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -315,15 +306,12 @@ export default function AboutPage() {
                             Перейдите в наш интернет-магазин, чтобы выбрать продукцию
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center gap-4">
-                            <Button
-                                asChild
-                                className="bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 px-12 py-6 text-lg"
-                            >
+                            <button className="bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 px-12 py-6 text-lg">
                                 <Link href="/" className="flex items-center justify-center">
                                     <span>Перейти в магазин</span>
                                     <ArrowRight className="w-10 h-10" />
                                 </Link>
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </section>
