@@ -12,6 +12,10 @@ export const clientPages: IPage[] = [
     {
         name: "Фоторамки",
         href: "/frames"
+    },
+    {
+        name: "Контакты",
+        href: "/contacts"
     }
 ];
 

@@ -2,7 +2,7 @@
 
 import { IPage } from "@/@types/page";
 import { cn } from "@/lib";
-import { Menu, X, Settings, Image, Gift, Smartphone } from "lucide-react";
+import { Menu, X, Settings, Image, Gift, Smartphone, Phone } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
@@ -16,6 +16,8 @@ const getPageIcon = (pageName: string) => {
             return <Smartphone className="w-5 h-5" />;
         case "фоторамки":
             return <Image className="w-5 h-5" />;
+        case "контакты":
+            return <Phone className="w-5 h-5" />;
     }
 };
 
