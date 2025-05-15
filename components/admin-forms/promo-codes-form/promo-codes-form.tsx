@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
 import { onNumberValueChange } from "@/lib/inputs";
+import { LinkButton } from "@/components/inputs/link-button";
 
 export interface IPromoCodesFormProps {
     className?: string;
@@ -62,6 +63,7 @@ export const PromoCodesForm = ({ onSubmit, defaultValues, className }: IPromoCod
                             />
                         )}
                     />
+                    <LinkButton href="/admin/promo" name="Промо-страницы" text="Создать банер для промокода" />
                     <Button type="submit">{defaultValues ? "Сохранить" : "Создать"}</Button>
                 </div>
             </form>

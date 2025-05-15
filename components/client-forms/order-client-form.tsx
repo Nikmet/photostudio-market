@@ -7,10 +7,12 @@ import { Controller, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { Cart, Product, ProductItem } from "@prisma/client";
+import { FormInput } from "../inputs/form-input";
 
 const orderFormSchema = z.object({
     comment: z.string().optional(),
-    paymentMethod: z.enum(["online", "cash"]).default("online")
+    paymentMethod: z.enum(["online", "cash"]).default("online"),
+    promo_code: z.string().optional()
 });
 
 export type OrderClientFormValues = z.infer<typeof orderFormSchema>;
@@ -29,7 +31,8 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
         control,
         formState: { errors },
         handleSubmit,
-        watch
+        watch,
+        setValue
     } = useForm<OrderClientFormValues>({
         resolver: zodResolver(orderFormSchema),
         defaultValues: {
@@ -41,10 +44,14 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
     const [cart, setCart] = React.useState<CartWithItems | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
+    const [discount, setDiscount] = React.useState<number | null>(null);
+    const [promoError, setPromoError] = React.useState<string | null>(null);
+    const [isCheckingPromo, setIsCheckingPromo] = React.useState(false);
 
     const session = useSession();
 
     const payment_method = watch("paymentMethod");
+    const promo_code = watch("promo_code");
 
     React.useEffect(() => {
         const fetchCart = async () => {
@@ -87,6 +94,44 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
         onSubmit(data, session.data.user.id);
     };
 
+    const handleApplyPromoCode = async () => {
+        if (!promo_code || !session.data?.user?.id) return;
+
+        setIsCheckingPromo(true);
+        setPromoError(null);
+
+        try {
+            const response = await fetch("/api/promo/check", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    code: promo_code
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Промокод недействителен или истек срок действия");
+            }
+
+            const data = await response.json();
+            setDiscount(data.discount);
+        } catch (err) {
+            console.error("Ошибка при проверке промокода:", err);
+            setPromoError(err instanceof Error ? err.message : "Не удалось применить промокод");
+            setDiscount(null);
+        } finally {
+            setIsCheckingPromo(false);
+        }
+    };
+
+    const handleRemovePromoCode = () => {
+        setValue("promo_code", "");
+        setDiscount(null);
+        setPromoError(null);
+    };
+
     if (isLoading) {
         return (
             <div className={`flex justify-center items-center h-64 ${className}`}>
@@ -122,6 +167,21 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
             </div>
         );
     }
+
+    const calculateTotal = () => {
+        if (!cart) return 0;
+
+        const subtotal = cart.items.reduce((sum, item) => sum + item.count * item.product.price, 0);
+
+        if (discount) {
+            return subtotal - (subtotal * discount) / 100;
+        }
+
+        return subtotal;
+    };
+
+    const total = calculateTotal();
+    const subtotal = cart?.items.reduce((sum, item) => sum + item.count * item.product.price, 0) || 0;
 
     return (
         <div className={`bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden ${className}`}>
@@ -159,16 +219,27 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
                                     </li>
                                 ))}
                             </ul>
-                            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                                {discount && (
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600 dark:text-gray-300">Скидка по промокоду:</span>
+                                        <span className="text-lg font-semibold text-green-600 dark:text-green-400">
+                                            -{((subtotal * discount) / 100).toLocaleString()} ₽ ({discount}%)
+                                        </span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between items-center">
                                     <span className="text-gray-600 dark:text-gray-300">Итого:</span>
                                     <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                                        {cart.items
-                                            .reduce((sum, item) => sum + item.count * item.product.price, 0)
-                                            .toLocaleString()}{" "}
-                                        ₽
+                                        {total.toLocaleString()} ₽
                                     </span>
                                 </div>
+                                {discount && (
+                                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                                        <span>Без скидки: </span>
+                                        <span className="line-through">{subtotal.toLocaleString()} ₽</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -255,6 +326,49 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
                                         )}
                                     />
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <div className="flex items-end gap-2">
+                                    <Controller
+                                        control={control}
+                                        name="promo_code"
+                                        render={({ field }) => (
+                                            <FormInput
+                                                type="text"
+                                                label="Промокод"
+                                                {...field}
+                                                errors={errors}
+                                                className="flex-1"
+                                            />
+                                        )}
+                                    />
+                                    {discount ? (
+                                        <button
+                                            type="button"
+                                            onClick={handleRemovePromoCode}
+                                            className="h-10 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md transition-colors"
+                                            disabled={isCheckingPromo}
+                                        >
+                                            Удалить
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            onClick={handleApplyPromoCode}
+                                            className="h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+                                            disabled={isCheckingPromo || !promo_code}
+                                        >
+                                            {isCheckingPromo ? "Проверка..." : "Применить"}
+                                        </button>
+                                    )}
+                                </div>
+                                {promoError && <p className="text-sm text-red-600 dark:text-red-400">{promoError}</p>}
+                                {discount && (
+                                    <p className="text-sm text-green-600 dark:text-green-400">
+                                        Промокод применен! Ваша скидка: {discount}%
+                                    </p>
+                                )}
                             </div>
 
                             <Controller

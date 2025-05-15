@@ -43,13 +43,21 @@ export default async function CheckoutPage() {
 
         let paymentUrl: string | undefined;
 
+        const code = await prisma.promoCode.findFirst({
+            where: {
+                code: data.promo_code
+            }
+        });
+
+        const total = code ? cart.totalAmount - (cart.totalAmount * code?.discount) / 100 : cart.totalAmount;
+
         await prisma.$transaction(async tx => {
             // 1. Создаем заказ
             const order = await tx.order.create({
                 data: {
                     id,
                     userId,
-                    totalAmount: cart.totalAmount || 0,
+                    totalAmount: total || 0,
                     comment: data.comment
                 }
             });
@@ -88,7 +96,7 @@ export default async function CheckoutPage() {
             // Если оплата онлайн - создаем платеж
             if (data.paymentMethod === "online") {
                 const paymentData = await createPayment({
-                    amount: cart.totalAmount,
+                    amount: total,
                     description: `Оплата заказа №${order.id}`,
                     orderId: order.id
                 });
