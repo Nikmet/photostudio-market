@@ -9,7 +9,7 @@ export interface IPromoItemProps {
 
 export const PromoItem = ({ promoData, className }: IPromoItemProps): React.JSX.Element => {
     return (
-        <div className={cn(className, "border border-slate-400")}>
+        <div className={cn(className, "border border-slate-400 rounded-md")}>
             <Link className="h-[250px] rounded-md" href={`/promo/${promoData.route}`}>
                 <img
                     src={`${process.env.NEXT_PUBLIC_URL}/${promoData.image}`}

@@ -74,6 +74,13 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                     </div>
                 ))}
                 <Link
+                    href="/admin/promo-codes"
+                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
+                    onClick={() => handleClick({ name: "Промокоды", href: "/admin/promo-codes" })}
+                >
+                    Промокоды
+                </Link>
+                <Link
                     href="/admin/clients"
                     className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
                     onClick={() => handleClick({ name: "Клиенты", href: "/admin/clients" })}

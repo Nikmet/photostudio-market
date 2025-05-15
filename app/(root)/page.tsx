@@ -9,9 +9,7 @@ export default function Home() {
 
             <div className="mx-auto px-4 mt-8 md:mt-12">
                 {/* Главный заголовок с градиентом */}
-                <h2 className="text-3xl md:text-4xl font-bold mb-10 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    Наши продукты
-                </h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-10 text-blue-700">Наши продукты</h2>
 
                 {/* Список категорий */}
                 <div className="space-y-14">
@@ -19,7 +17,7 @@ export default function Home() {
                         <section key={i} className="relative">
                             {/* Заголовок категории с акцентным элементом */}
                             <div className="flex items-center mb-8">
-                                <div className="w-3 h-8 bg-indigo-500 rounded-full mr-3"></div>
+                                <div className="w-1 h-8 bg-indigo-500 rounded-md mr-2"></div>
                                 <h3 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
                                     {card.category}
                                 </h3>
