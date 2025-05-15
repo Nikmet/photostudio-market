@@ -24,7 +24,7 @@ export const BadgePriceForm = ({ index, className }: IBadgePriceFormProps): Reac
                     <FormInput
                         {...field}
                         type="number"
-                        label="Цена значка за штуку"
+                        label="Цена значков за 50 штук"
                         onChange={e => onNumberValueChange(e, onChange)}
                         errors={errors}
                         required

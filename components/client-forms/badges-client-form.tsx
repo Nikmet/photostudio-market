@@ -28,12 +28,12 @@ export const BadgesClientForm = ({ onSubmit, defaultValues, id, className }: IBa
 
     const session = useSession();
 
-    form.setValue("name", `Значок | ${id}`);
+    form.setValue("name", `Значки (50шт.) | ${id}`);
 
     const submitAction = (data: FormValuesBadges) => {
         try {
             onSubmit(data, session.data?.user.id);
-            toast.success(`Значок "${data.name}" добавлен в корзину!`);
+            toast.success(`Значки (50шт.) "${data.name}" добавлен в корзину!`);
         } catch (e) {
             console.error(e);
         }

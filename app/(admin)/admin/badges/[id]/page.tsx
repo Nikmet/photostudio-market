@@ -61,7 +61,7 @@ export default async function BadgesEditPage({ params }: Props) {
 
     return (
         <div>
-            <h1>{findBadge?.id ? `Кружка | ${findBadge.id}` : `Новый значок | ${id}`}</h1>
+            <h1>{findBadge?.id ? `Значки (50шт.) | ${findBadge.id}` : `Новые значки (50шт.) | ${id}`}</h1>
             {findBadge ? (
                 <BadgesForm
                     onSubmit={handleSubmit}

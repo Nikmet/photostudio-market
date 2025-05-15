@@ -40,7 +40,7 @@ export const CARDS: ICards[] = [
                 link: `${process.env.NEXT_PUBLIC_URL}/souvenirs/magnets`
             },
             {
-                title: "Значок",
+                title: "Значки (50шт.)",
                 description: "Компактный значок с прочным покрытием. Идеален для рюкзаков, одежды и мероприятий.",
                 price: 150,
                 imageUrl: `${process.env.NEXT_PUBLIC_URL}/badge.png`,

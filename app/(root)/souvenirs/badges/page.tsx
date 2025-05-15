@@ -52,7 +52,7 @@ export default async function BadgesClientPage() {
 
     return (
         <div>
-            <PageTitle>{`Новый значок | ${id}`}</PageTitle>
+            <PageTitle>{`Новые значки (50шт.) | ${id}`}</PageTitle>
             <BadgesClientForm onSubmit={handleSubmit} id={id} />
         </div>
     );

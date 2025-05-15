@@ -32,7 +32,7 @@ export const BadgesForm = ({ onSubmit, defaultValues, id, href, className }: IBa
     const submitAction = (data: FormValuesBadges) => {
         onSubmit(data);
         closeTab(id, href, "Значки");
-        toast.success(`Значок "${data.name}" успешно сохранен!`);
+        toast.success(`Значки (50шт.) "${data.name}" успешно сохранен!`);
     };
 
     return (
