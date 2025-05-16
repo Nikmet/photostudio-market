@@ -52,6 +52,36 @@ export default async function ProductPage({ params }: Props) {
             cartId: product.cartId
         })) || [];
 
+    async function sendOrderSMS(phone: string, variant: "update" | "create"): Promise<boolean> {
+        "use server";
+
+        try {
+            const newPhone = phone.replace(/\D/g, "");
+
+            let smsText;
+
+            if (variant === "create") {
+                smsText = `Ваш заказ ${id} был принят, вскоре мы возьмемся за его выполнение. Перейдите в свой профиль для просмотра изменений. https://photostudio-market.vercel.app`;
+            } else {
+                smsText = `Ваш заказ ${id} был изменен администратором, перейдите в свой профиль для просмотра изменений. https://photostudio-market.vercel.app`;
+            }
+
+            const smsRuUrl = `https://sms.ru/sms/send?api_id=${
+                process.env.SMS_API_KEY
+            }&to=${newPhone}&msg=${encodeURIComponent(smsText)}&json=1`;
+
+            const response = await fetch(smsRuUrl);
+            const data = await response.json();
+
+            console.log(data);
+
+            return data.status === "OK";
+        } catch (error) {
+            console.error("SMS sending error:", error);
+            return false;
+        }
+    }
+
     const handleSubmit = async (data: FormValuesOrders, products: ProductItemWithProduct[]) => {
         "use server";
 
@@ -102,6 +132,7 @@ export default async function ProductPage({ params }: Props) {
                         orderId: id
                     }
                 });
+                sendOrderSMS(findUser?.phone || "", "update");
             } else {
                 orderResult = await prisma.order.create({
                     data: {
@@ -124,6 +155,7 @@ export default async function ProductPage({ params }: Props) {
                         }
                     }
                 });
+                sendOrderSMS(findUser?.phone || "", "create");
             }
 
             for (const product of products) {
