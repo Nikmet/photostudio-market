@@ -10,6 +10,7 @@ import { AdminSelect } from "@/components/admin-components/admin-select";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
 import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
+import { ImageInput } from "@/components/inputs/image-input";
 
 export interface INewslettersFormProps {
     defaultValues?: FormValuesNewsletters;
@@ -52,6 +53,18 @@ export const NewslettersForm = ({
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
+                <Controller
+                    name="printing_image"
+                    control={control}
+                    render={({ field }) => (
+                        <ImageInput
+                            {...field}
+                            label="Изображение"
+                            errors={errors}
+                            onChange={file => field.onChange(file)} // Передаем файл в форму
+                        />
+                    )}
+                />
                 <div className="flex flex-col gap-2">
                     <Controller
                         name="name"

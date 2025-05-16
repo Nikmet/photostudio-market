@@ -10,7 +10,13 @@ export const formSchemaNewsletters = z.object({
         required_error: "Поле обязательно",
         invalid_type_error: "Значение должно быть числом"
     }),
-    colorId: z.string().min(1, "Выберите цвет")
+    colorId: z.string().min(1, "Выберите цвет"),
+    printing_image: z
+        .instanceof(File)
+        .refine(file => file.size === 0 || file.type.startsWith("image/"), { message: "Неверный формат изображения" })
+        .refine(file => file.size < 1000000, { message: "Размер изображения не должен превышать 4MB" })
+        .optional(),
+    comment: z.string().optional()
 });
 
 export type FormValuesNewsletters = z.infer<typeof formSchemaNewsletters>;

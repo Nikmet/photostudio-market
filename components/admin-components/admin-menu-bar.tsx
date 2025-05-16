@@ -6,6 +6,7 @@ import { usePagesStore } from "@/store/pages-store";
 import Link from "next/link";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export interface IAdminMenuBarProps {
     className?: string;
@@ -19,10 +20,9 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
     const handleClick = (page: IPage) => {
         const findPage = openPages.find(p => p.name === page.name);
         setActivePage(page);
-        if (findPage) {
-            return;
+        if (!findPage) {
+            addPage(page);
         }
-        addPage(page);
     };
 
     const toggleCategory = (category: string) => {
@@ -34,21 +34,23 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
     return (
         <div
             className={cn(
-                "menu-bar-animation w-[300px] bg-secondary mr-4 rounded-md -translate-x-[110%] flex flex-col align-center justify-between",
+                "w-[300px] h-full bg-gradient-to-b from-blue-600/90 to-blue-500/80 dark:from-blue-950/95 dark:to-blue-900/90 backdrop-blur-md rounded-md shadow-lg overflow-hidden  flex flex-col",
                 className
             )}
         >
-            <div className="scrollbar overflow-auto">
+            <div className="flex-1 overflow-y-auto scrollbar py-4 px-2">
                 {pages.map(page => (
                     <div key={page.category}>
                         <div
-                            className="p-4 pb-2 dark:text-white text-black cursor-pointer flex items-center"
+                            className="flex items-center text-white/90 hover:text-white cursor-pointer p-3 rounded-md hover:bg-white/10 transition-colors duration-200"
                             onClick={() => toggleCategory(page.category)}
                         >
-                            <span className="mr-1 text-sm text-slate-400">
-                                {expandedCategories.includes(page.category) ? "▼" : "▶"}
-                            </span>
-                            {page.category}
+                            {expandedCategories.includes(page.category) ? (
+                                <ChevronDown className="w-4 h-4 mr-2 text-white/70" />
+                            ) : (
+                                <ChevronRight className="w-4 h-4 mr-2 text-white/70" />
+                            )}
+                            <span className="font-medium">{page.category}</span>
                         </div>
                         <AnimatePresence>
                             {expandedCategories.includes(page.category) && (
@@ -58,14 +60,14 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                                     exit={{ opacity: 0, height: 0 }}
                                     transition={{ duration: 0.2 }}
                                 >
-                                    {page.pages.map(page => (
+                                    {page.pages.map(subpage => (
                                         <Link
-                                            key={page.href}
-                                            href={page.href}
-                                            className="block p-2 dark:text-white text-black/80 hover:bg-primary/5 pl-8"
-                                            onClick={() => handleClick(page)}
+                                            key={subpage.href}
+                                            href={subpage.href}
+                                            onClick={() => handleClick(subpage)}
+                                            className="block pl-8 pr-4 py-2 text-white/80 hover:text-white hover:bg-white/5 transition rounded-md"
                                         >
-                                            {page.name}
+                                            {subpage.name}
                                         </Link>
                                     ))}
                                 </motion.div>
@@ -73,48 +75,26 @@ export const AdminMenuBar = ({ pages, className }: IAdminMenuBarProps): React.JS
                         </AnimatePresence>
                     </div>
                 ))}
-                <Link
-                    href="/admin/promo-codes"
-                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
-                    onClick={() => handleClick({ name: "Промокоды", href: "/admin/promo-codes" })}
-                >
-                    Промокоды
-                </Link>
-                <Link
-                    href="/admin/clients"
-                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
-                    onClick={() => handleClick({ name: "Клиенты", href: "/admin/clients" })}
-                >
-                    Клиенты
-                </Link>
-                <Link
-                    href="/admin/orders"
-                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
-                    onClick={() => handleClick({ name: "Заказы", href: "/admin/orders" })}
-                >
-                    Заказы
-                </Link>
-                <Link
-                    href="/admin/products"
-                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
-                    onClick={() => handleClick({ name: "Продукты", href: "/admin/products" })}
-                >
-                    Все продукты
-                </Link>
-                <Link
-                    href="/admin/prices"
-                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
-                    onClick={() => handleClick({ name: "Цены", href: "/admin/prices" })}
-                >
-                    Цены
-                </Link>
-                <Link
-                    href="/admin/promo"
-                    className="p-4 pl-4 pb-2 dark:text-white text-black cursor-pointer block hover:bg-primary/5"
-                    onClick={() => handleClick({ name: "Промо-страницы", href: "/admin/promo" })}
-                >
-                    Промо-страницы
-                </Link>
+
+                <div className="mt-4 border-t border-white/10 pt-4 space-y-1">
+                    {[
+                        { name: "Промокоды", href: "/admin/promo-codes" },
+                        { name: "Клиенты", href: "/admin/clients" },
+                        { name: "Заказы", href: "/admin/orders" },
+                        { name: "Все продукты", href: "/admin/products" },
+                        { name: "Цены", href: "/admin/prices" },
+                        { name: "Промо-страницы", href: "/admin/promo" }
+                    ].map(page => (
+                        <Link
+                            key={page.href}
+                            href={page.href}
+                            onClick={() => handleClick(page)}
+                            className="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/5 transition rounded-md"
+                        >
+                            {page.name}
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -16,9 +16,9 @@ export default async function AdminLayout({
     return (
         <>
             <Header />
-            <main className="flex h-[86vh] w-full p-4">
+            <main className="flex h-[85vh] w-full p-4">
                 <AdminMenuBar pages={adminPages} />
-                <div className="w-full h-full view-animation">
+                <div className="w-full h-full view-animation px-4">
                     <PagesTab />
                     <div className="h-full w-full overflow-auto scrollbar">{children}</div>
                 </div>

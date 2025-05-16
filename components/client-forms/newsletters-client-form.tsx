@@ -10,6 +10,7 @@ import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
 import { formSchemaNewsletters, FormValuesNewsletters } from "../admin-forms/newsletters-form/schema";
 import { useSession } from "next-auth/react";
+import { ImageInput } from "../inputs/image-input";
 
 export interface INewslettersFormProps {
     defaultValues?: FormValuesNewsletters;
@@ -55,6 +56,18 @@ export const NewslettersClientForm = ({
     return (
         <div className={className}>
             <form onSubmit={handleSubmit(submitAction)} className="flex gap-2">
+                <Controller
+                    name="printing_image"
+                    control={control}
+                    render={({ field }) => (
+                        <ImageInput
+                            {...field}
+                            label="Изображение"
+                            errors={errors}
+                            onChange={file => field.onChange(file)} // Передаем файл в форму
+                        />
+                    )}
+                />
                 <div className="flex flex-col gap-2">
                     <Controller
                         name="width"

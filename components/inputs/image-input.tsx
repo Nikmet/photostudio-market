@@ -4,6 +4,7 @@ import React, { InputHTMLAttributes } from "react";
 import { RequiredSymbol } from "./required-symbol";
 import { ErrorText } from "./error-text";
 import { Input } from "../ui/input";
+import { Download } from "lucide-react";
 
 export interface IImageInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
     name: string;
@@ -26,6 +27,7 @@ export const ImageInput = ({
     ...props
 }: IImageInputProps): React.JSX.Element => {
     const [preview, setPreview] = React.useState<string | undefined>();
+    const [, setDownloadUrl] = React.useState<string | undefined>();
 
     const errorText = errors?.[name];
 
@@ -34,7 +36,9 @@ export const ImageInput = ({
         if (selectedFile) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setPreview(reader.result as string);
+                const result = reader.result as string;
+                setPreview(result);
+                setDownloadUrl(result);
             };
             reader.readAsDataURL(selectedFile);
             if (onChange) {
@@ -42,6 +46,7 @@ export const ImageInput = ({
             }
         } else {
             setPreview(undefined);
+            setDownloadUrl(undefined);
             if (onChange) {
                 onChange(null);
             }
@@ -58,7 +63,7 @@ export const ImageInput = ({
                 </div>
             )}
 
-            <div className="w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] border border-gray-300 rounded-md mb-4">
+            <div className="relative w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] border border-gray-300 rounded-md mb-4">
                 {previewUrl ? (
                     <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
                 ) : (
@@ -66,8 +71,25 @@ export const ImageInput = ({
                         <p className="text-gray-500">Изображение отсутствует</p>
                     </div>
                 )}
+                {previewUrl && (
+                    <a
+                        href={previewUrl}
+                        download="preview-image.png"
+                        className="absolute top-2 right-2 bg-white dark:bg-blue-950 text-sm px-1 py-1 rounded-md shadow hover:bg-gray-100 transition"
+                    >
+                        <Download />
+                    </a>
+                )}
             </div>
-            <Input {...props} className="bg-white dark:bg-gray-700 cursor-pointer w-[300px] lg:w-full" type="file" accept="image/*" onChange={handleFileChange} />
+
+            <Input
+                {...props}
+                className="bg-white dark:bg-gray-700 cursor-pointer w-[300px] lg:w-full"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+            />
+
             {errorText && <ErrorText text={String(errorText.message)} className="mt-2" />}
         </div>
     );
