@@ -206,6 +206,8 @@ export default async function ProductPage({ params }: Props) {
                     onSubmit={handleSubmit}
                     productsProp={orderProducts}
                     orderTotal={findOrder.totalAmount}
+                    href="/admin/orders"
+                    id={id}
                 />
             ) : (
                 <OrderForm
@@ -220,6 +222,8 @@ export default async function ProductPage({ params }: Props) {
                     }}
                     productsProp={[]}
                     orderTotal={0}
+                    href="/admin/orders"
+                    id={id}
                 />
             )}
         </div>

@@ -7,14 +7,17 @@ import toast from "react-hot-toast";
 import { formSchemaCups, FormValuesCups } from "./schema";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface ICupsFormProps {
     defaultValues?: FormValuesCups;
     onSubmit: (data: FormValuesCups) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const CupsForm = ({ onSubmit, defaultValues, className }: ICupsFormProps): React.JSX.Element => {
+export const CupsForm = ({ onSubmit, defaultValues, id, href, className }: ICupsFormProps): React.JSX.Element => {
     const form = useForm<FormValuesCups>({
         resolver: zodResolver(formSchemaCups),
         defaultValues: defaultValues || {
@@ -22,9 +25,12 @@ export const CupsForm = ({ onSubmit, defaultValues, className }: ICupsFormProps)
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesCups) => {
         try {
             onSubmit(data);
+            closeTab(id, href, "Кружки");
             toast.success(`Кружка "${data.name}" успешно сохранена!`);
         } catch (e) {
             console.error(e);

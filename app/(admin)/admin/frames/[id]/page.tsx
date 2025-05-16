@@ -86,9 +86,15 @@ export default async function FramesEditPage({ params }: Props) {
         <div>
             <PageTitle>{findFrame?.id ? `Рамка | ${findFrame.id}` : `Новая рамка | ${id}`}</PageTitle>
             {findFrame ? (
-                <FramesForm defaultValues={findFrame} onSubmit={handleSubmit} baguettes={baguettes} />
+                <FramesForm
+                    defaultValues={findFrame}
+                    onSubmit={handleSubmit}
+                    baguettes={baguettes}
+                    href="/admin/frames"
+                    id={id}
+                />
             ) : (
-                <FramesForm onSubmit={handleSubmit} baguettes={baguettes} />
+                <FramesForm onSubmit={handleSubmit} baguettes={baguettes} href="/admin/frames" id={id} />
             )}
         </div>
     );

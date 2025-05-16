@@ -10,8 +10,8 @@ import { Baguette } from "@prisma/client";
 import { AdminSelect } from "@/components/admin-components/admin-select";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
-// Добавим типы для стандартных размеров
 type StandardSize = {
     width: number;
     height: number;
@@ -31,9 +31,18 @@ export interface IFramesFormProps {
     onSubmit: (data: FormValuesFrames) => void;
     className?: string;
     baguettes: Baguette[];
+    id: string;
+    href: string;
 }
 
-export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IFramesFormProps): React.JSX.Element => {
+export const FramesForm = ({
+    onSubmit,
+    defaultValues,
+    baguettes,
+    id,
+    href,
+    className
+}: IFramesFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -50,8 +59,11 @@ export const FramesForm = ({ onSubmit, defaultValues, baguettes, className }: IF
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesFrames) => {
         onSubmit(data);
+        closeTab(id, href, "Рамки");
         toast.success(`Рамка ${data.name} успешно сохранена!`);
     };
 

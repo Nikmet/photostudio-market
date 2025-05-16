@@ -72,9 +72,11 @@ export default async function BusinessCardsEditPage({ params }: Props) {
                         printing_side: findCard?.printing_side,
                         printing_image: await getImage(findCard.printing_image)
                     }}
+                    href="/admin/business-cards"
+                    id={id}
                 />
             ) : (
-                <BusinessCardsForm onSubmit={handleSubmit} />
+                <BusinessCardsForm onSubmit={handleSubmit} href="/admin/business-cards" id={id} />
             )}
         </div>
     );

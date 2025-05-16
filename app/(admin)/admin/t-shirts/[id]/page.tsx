@@ -68,9 +68,11 @@ export default async function TShirtsEditPage({ params }: Props) {
                         printing_image: await getImage(find_t_shirts.printing_image)
                     }}
                     onSubmit={handleSubmit}
+                    href="/admin/t-shirts"
+                    id={id}
                 />
             ) : (
-                <TShirtsForm onSubmit={handleSubmit} />
+                <TShirtsForm onSubmit={handleSubmit} href="/admin/t-shirts" id={id} />
             )}
         </div>
     );

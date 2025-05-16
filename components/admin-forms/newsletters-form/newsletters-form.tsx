@@ -9,18 +9,23 @@ import { onNumberValueChange } from "@/lib/inputs";
 import { AdminSelect } from "@/components/admin-components/admin-select";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface INewslettersFormProps {
     defaultValues?: FormValuesNewsletters;
     onSubmit: (data: FormValuesNewsletters) => void;
     className?: string;
     colors: Color[];
+    id: string;
+    href: string;
 }
 
 export const NewslettersForm = ({
     colors,
     onSubmit,
     defaultValues,
+    id,
+    href,
     className
 }: INewslettersFormProps): React.JSX.Element => {
     const {
@@ -36,8 +41,11 @@ export const NewslettersForm = ({
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesNewsletters) => {
         onSubmit(data);
+        closeTab(id, href, "Информационные вывески");
         toast.success(`Информационная табличка "${data.name}" успешно сохранена!`);
     };
 

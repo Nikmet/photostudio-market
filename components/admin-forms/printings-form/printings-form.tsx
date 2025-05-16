@@ -8,14 +8,23 @@ import { AdminSelect } from "@/components/admin-components/admin-select";
 import { printingTypes } from "@/@types/enums";
 import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IPrintingsFormProps {
     defaultValues?: FormValuesPrintings;
     onSubmit: (data: FormValuesPrintings) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const PrintingsForm = ({ onSubmit, defaultValues, className }: IPrintingsFormProps): React.JSX.Element => {
+export const PrintingsForm = ({
+    onSubmit,
+    defaultValues,
+    id,
+    href,
+    className
+}: IPrintingsFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -29,8 +38,11 @@ export const PrintingsForm = ({ onSubmit, defaultValues, className }: IPrintings
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesPrintings) => {
         onSubmit(data);
+        closeTab(id, href, "Печати");
         toast.success(`Печать "${data.name}" успешно сохранена!`);
     };
 

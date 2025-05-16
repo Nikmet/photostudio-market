@@ -10,14 +10,17 @@ import { magnetTypes } from "@/@types/enums";
 import { onNumberValueChange } from "@/lib/inputs";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IMagnetsFormProps {
     defaultValues?: FormValuesMagnet;
     onSubmit: (data: FormValuesMagnet) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const MagnetsForm = ({ onSubmit, defaultValues, className }: IMagnetsFormProps): React.JSX.Element => {
+export const MagnetsForm = ({ onSubmit, defaultValues, id, href, className }: IMagnetsFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -31,8 +34,11 @@ export const MagnetsForm = ({ onSubmit, defaultValues, className }: IMagnetsForm
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesMagnet) => {
         onSubmit(data);
+        closeTab(id, href, "Магниты");
         toast.success(`Магнит "${data.name}" успешно сохранен!`);
     };
 

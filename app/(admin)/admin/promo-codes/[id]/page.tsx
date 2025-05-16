@@ -49,9 +49,9 @@ export default async function PromoCodesEditPage({ params }: Props) {
         <div>
             <h1>{findCode?.id ? `Промокод | ${findCode.id}` : `Новый промокод | ${id}`}</h1>
             {findCode ? (
-                <PromoCodesForm defaultValues={findCode} onSubmit={handleSubmit} />
+                <PromoCodesForm defaultValues={findCode} onSubmit={handleSubmit} href="/admin/promo-codes" id={id} />
             ) : (
-                <PromoCodesForm onSubmit={handleSubmit} />
+                <PromoCodesForm onSubmit={handleSubmit} href="/admin/promo-codes" id={id} />
             )}
         </div>
     );

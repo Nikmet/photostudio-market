@@ -72,9 +72,11 @@ export default async function MagnetEditPage({ params }: Props) {
                         printing_image: await getImage(findMagnet.printing_image)
                     }}
                     onSubmit={handleSubmit}
+                    href="/admin/magnets"
+                    id={id}
                 />
             ) : (
-                <MagnetsForm onSubmit={handleSubmit} />
+                <MagnetsForm onSubmit={handleSubmit} href="/admin/magnets" id={id} />
             )}
         </div>
     );

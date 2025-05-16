@@ -80,9 +80,11 @@ export default async function CupsEditPage({ params }: Props) {
                         totalAmount: order.totalAmount,
                         status: order.status
                     }))}
+                    href="/admin/clients"
+                    id={id}
                 />
             ) : (
-                <ClientForm onSubmit={handleSubmit} orders={[]} />
+                <ClientForm onSubmit={handleSubmit} orders={[]} href="/admin/clients" id={id} />
             )}
         </div>
     );

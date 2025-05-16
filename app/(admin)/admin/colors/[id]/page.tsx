@@ -10,7 +10,7 @@ interface Props {
     }>;
 }
 
-export default async function CupsEditPage({ params }: Props) {
+export default async function ColorsEditPage({ params }: Props) {
     const { id: resolvedId } = await params;
     const id = decodeURIComponent(resolvedId);
 
@@ -58,9 +58,11 @@ export default async function CupsEditPage({ params }: Props) {
                         rgb: rgbStringToHex(findColor?.rgb || "0,0,0"),
                         price: findColor.price || 0
                     }}
+                    href="/admin/colors"
+                    id={id}
                 />
             ) : (
-                <ColorsForm onSubmit={handleSubmit} />
+                <ColorsForm onSubmit={handleSubmit} href="/admin/colors" id={id} />
             )}
         </div>
     );

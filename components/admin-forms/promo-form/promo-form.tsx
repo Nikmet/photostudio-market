@@ -8,14 +8,17 @@ import { formSchemaPromo, FormValuesPromo } from "./schema";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
 import { TiptapEditor } from "@/components/inputs/tiptap-editor";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IPromoFormProps {
     defaultValues?: FormValuesPromo;
     onSubmit: (data: FormValuesPromo) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const PromoForm = ({ onSubmit, defaultValues, className }: IPromoFormProps): React.JSX.Element => {
+export const PromoForm = ({ onSubmit, defaultValues, id, href, className }: IPromoFormProps): React.JSX.Element => {
     const form = useForm<FormValuesPromo>({
         resolver: zodResolver(formSchemaPromo),
         defaultValues: defaultValues || {
@@ -26,9 +29,12 @@ export const PromoForm = ({ onSubmit, defaultValues, className }: IPromoFormProp
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesPromo) => {
         try {
             onSubmit(data);
+            closeTab(id, href, "Промо-страницы");
             toast.success(`Промо-страница "${data.title}" успешно сохранена!`);
         } catch (e) {
             console.error(e);

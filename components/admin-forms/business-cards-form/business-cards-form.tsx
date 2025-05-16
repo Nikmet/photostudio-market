@@ -9,16 +9,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IBusinessCardsFormProps {
     defaultValues?: FormValuesBusinessCards;
     onSubmit: (data: FormValuesBusinessCards) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
 export const BusinessCardsForm = ({
     defaultValues,
     onSubmit,
+    href,
+    id,
     className
 }: IBusinessCardsFormProps): React.JSX.Element => {
     const {
@@ -34,8 +39,11 @@ export const BusinessCardsForm = ({
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesBusinessCards) => {
         onSubmit(data);
+        closeTab(id, href, "Визитки");
         toast.success(`Визитка "${data.name}" успешно сохранена!`);
     };
 

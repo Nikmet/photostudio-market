@@ -7,14 +7,17 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui";
 import { onNumberValueChange } from "@/lib/inputs";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IColorsFormProps {
     defaultValues?: FormValuesColors;
     onSubmit: (data: FormValuesColors) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const ColorsForm = ({ onSubmit, defaultValues, className }: IColorsFormProps): React.JSX.Element => {
+export const ColorsForm = ({ onSubmit, defaultValues, href, id, className }: IColorsFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -27,8 +30,11 @@ export const ColorsForm = ({ onSubmit, defaultValues, className }: IColorsFormPr
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesColors) => {
         onSubmit(data);
+        closeTab(id, href, "Цвета");
         toast.success(`Цвет "${data.name}" успешно сохранена!`);
     };
 

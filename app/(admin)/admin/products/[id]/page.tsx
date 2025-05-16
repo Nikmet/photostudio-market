@@ -60,9 +60,11 @@ export default async function ProductPage({ params }: Props) {
                     itemId={findProduct.itemId}
                     itemName={findProduct.itemName}
                     route={findProduct.route}
+                    href="/admin/products"
+                    id={id}
                 />
             ) : (
-                <ProductForm onSubmit={handleSubmit} />
+                <ProductForm onSubmit={handleSubmit} href="/admin/products" id={id} />
             )}
         </div>
     );

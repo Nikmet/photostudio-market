@@ -71,9 +71,11 @@ export default async function StandsEditPage({ params }: Props) {
                         printing_image: await getImage(findStand.printing_image)
                     }}
                     onSubmit={handleSubmit}
+                    href="/admin/stands"
+                    id={id}
                 />
             ) : (
-                <StandsForm onSubmit={handleSubmit} />
+                <StandsForm onSubmit={handleSubmit} href="/admin/stands" id={id} />
             )}
         </div>
     );

@@ -14,6 +14,7 @@ import { AppWindow } from "lucide-react";
 import { OrdersTable, ProductItemWithProduct } from "@/components/admin-components/orders-table";
 import { FormInput } from "@/components/inputs/form-input";
 import { FormTextarea } from "@/components/inputs/form-textarea";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IOrderFormProps {
     defaultValues?: FormValuesOrders;
@@ -21,6 +22,8 @@ export interface IOrderFormProps {
     className?: string;
     productsProp: ProductItemWithProduct[];
     orderTotal: number;
+    id: string;
+    href: string;
 }
 
 export const OrderForm = ({
@@ -28,6 +31,8 @@ export const OrderForm = ({
     defaultValues,
     productsProp,
     orderTotal,
+    href,
+    id,
     className
 }: IOrderFormProps): React.JSX.Element => {
     const {
@@ -44,6 +49,8 @@ export const OrderForm = ({
     const [loading, setLoading] = React.useState(false);
     const [addWindow, setAddWindow] = React.useState(false);
     const [products, setProducts] = React.useState<ProductItemWithProduct[]>(productsProp);
+
+    const { closeTab } = UseCloseTabOnSubmit();
 
     const fetchUsers = async () => {
         try {
@@ -76,7 +83,7 @@ export const OrderForm = ({
 
     const submitAction = (data: FormValuesOrders) => {
         onSubmit(data, products);
-
+        closeTab(id, href, "Заказы");
         toast.success(`Заказ для ${data.userName} успешно сохранен!`);
     };
 

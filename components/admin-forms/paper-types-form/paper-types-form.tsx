@@ -7,14 +7,23 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui";
 import { onNumberValueChange } from "@/lib/inputs";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IPaperTypesFormProps {
     defaultValues?: FormValuesPaperTypes;
     onSubmit: (data: FormValuesPaperTypes) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const PaperTypesForm = ({ onSubmit, defaultValues, className }: IPaperTypesFormProps): React.JSX.Element => {
+export const PaperTypesForm = ({
+    onSubmit,
+    defaultValues,
+    href,
+    id,
+    className
+}: IPaperTypesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesPaperTypes>({
         resolver: zodResolver(formSchemaPaperTypes),
         defaultValues: defaultValues || {
@@ -22,8 +31,11 @@ export const PaperTypesForm = ({ onSubmit, defaultValues, className }: IPaperTyp
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesPaperTypes) => {
         onSubmit(data);
+        closeTab(id, href, "Типы бумаги");
         toast.success(`Тип бумаги "${data.name}" успешно сохранен!`);
     };
 

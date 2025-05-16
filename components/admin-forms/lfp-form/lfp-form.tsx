@@ -10,6 +10,7 @@ import { PaperType } from "@prisma/client";
 import { Button } from "@/components/ui";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 // Типы и константы для стандартных размеров
 type StandardSize = {
@@ -31,9 +32,18 @@ export interface ILfpFormProps {
     onSubmit: (data: FormValuesLFP) => void;
     className?: string;
     paperTypes: PaperType[];
+    id: string;
+    href: string;
 }
 
-export const LfpForm = ({ onSubmit, defaultValues, paperTypes, className }: ILfpFormProps): React.JSX.Element => {
+export const LfpForm = ({
+    onSubmit,
+    defaultValues,
+    paperTypes,
+    id,
+    href,
+    className
+}: ILfpFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -49,8 +59,11 @@ export const LfpForm = ({ onSubmit, defaultValues, paperTypes, className }: ILfp
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesLFP) => {
         onSubmit(data);
+        closeTab(id, href, "ШФП");
         toast.success(`ШФП "${data.name}" успешно сохранена!`);
     };
 

@@ -93,9 +93,11 @@ export default async function TablesEditPage({ params }: Props) {
                     }}
                     onSubmit={handleSubmit}
                     paperTypes={paperTypes}
+                    href="/admin/lfps"
+                    id={id}
                 />
             ) : (
-                <LfpForm onSubmit={handleSubmit} paperTypes={paperTypes} />
+                <LfpForm onSubmit={handleSubmit} paperTypes={paperTypes} href="/admin/lfps" id={id} />
             )}
         </div>
     );

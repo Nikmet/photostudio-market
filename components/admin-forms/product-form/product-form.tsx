@@ -13,6 +13,7 @@ import { onNumberValueChange } from "@/lib/inputs";
 import { FormTextarea } from "@/components/inputs/form-textarea";
 import { FormInput } from "@/components/inputs/form-input";
 import { LinkButton } from "@/components/inputs/link-button";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IProductFormProps {
     defaultValues?: FormValuesProducts;
@@ -22,6 +23,8 @@ export interface IProductFormProps {
     itemId?: string;
     itemName?: string;
     route?: string;
+    id: string;
+    href: string;
 }
 
 export const ProductForm = ({
@@ -31,6 +34,8 @@ export const ProductForm = ({
     itemId,
     itemName,
     route,
+    id,
+    href,
     className
 }: IProductFormProps): React.JSX.Element => {
     const {
@@ -43,6 +48,8 @@ export const ProductForm = ({
         resolver: zodResolver(formSchemaProducts),
         defaultValues: defaultValues
     });
+
+    const { closeTab } = UseCloseTabOnSubmit();
 
     const calcPriceWithDifficulty = (price: number) => {
         const difficulty = watch("design_difficulty");
@@ -75,6 +82,7 @@ export const ProductForm = ({
 
     const submitAction = (data: FormValuesProducts) => {
         onSubmit(data);
+        closeTab(id, href, "Продукты");
         toast.success(`Печать "${itemName}" успешно сохранена!`);
     };
 

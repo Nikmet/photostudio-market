@@ -59,9 +59,9 @@ export default async function PrintingsEditPage({ params }: Props) {
         <div>
             <h1>{findlEC?.id ? `ЛГР | ${findlEC.id}` : `Новая ЛГР | ${id}`}</h1>
             {findlEC ? (
-                <LecForm defaultValues={findlEC} onSubmit={handleSubmit} />
+                <LecForm defaultValues={findlEC} onSubmit={handleSubmit} href="/admin/lec" id={id} />
             ) : (
-                <LecForm onSubmit={handleSubmit} />
+                <LecForm onSubmit={handleSubmit} href="/admin/lec" id={id} />
             )}
         </div>
     );

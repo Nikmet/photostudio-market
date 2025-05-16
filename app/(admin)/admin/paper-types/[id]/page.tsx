@@ -48,9 +48,14 @@ export default async function PaperTypesEditPage({ params }: Props) {
         <div>
             <h1>{findPaperType?.id ? `Тип бумаги | ${findPaperType.id}` : `Новый тип бумаги | ${id}`}</h1>
             {findPaperType ? (
-                <PaperTypesForm defaultValues={findPaperType} onSubmit={handleSubmit} />
+                <PaperTypesForm
+                    defaultValues={findPaperType}
+                    onSubmit={handleSubmit}
+                    href="/admin/paper-types"
+                    id={id}
+                />
             ) : (
-                <PaperTypesForm onSubmit={handleSubmit} />
+                <PaperTypesForm onSubmit={handleSubmit} href="/admin/paper-types" id={id} />
             )}
         </div>
     );

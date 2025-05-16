@@ -78,9 +78,11 @@ export default async function BannersEditPage({ params }: Props) {
                         luvers_step: findBanner?.luvers_step,
                         printing_image: await getImage(findBanner.printing_image)
                     }}
+                    href="/admin/banners"
+                    id={id}
                 />
             ) : (
-                <BannerForm onSubmit={handleSubmit} />
+                <BannerForm onSubmit={handleSubmit} href="/admin/banners" id={id} />
             )}
         </div>
     );

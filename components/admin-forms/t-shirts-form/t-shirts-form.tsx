@@ -9,14 +9,17 @@ import { printingSides, sizes } from "@/@types/enums";
 import { Button } from "@/components/ui";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface ITShirtsFormProps {
     className?: string;
     defaultValues?: FormValuesTShirts;
     onSubmit: (data: FormValuesTShirts) => void;
+    id: string;
+    href: string;
 }
 
-export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsFormProps): React.JSX.Element => {
+export const TShirtsForm = ({ onSubmit, defaultValues, id, href, className }: ITShirtsFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -31,8 +34,11 @@ export const TShirtsForm = ({ onSubmit, defaultValues, className }: ITShirtsForm
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesTShirts) => {
         onSubmit(data);
+        closeTab(id, href, "Футболки");
         toast.success(`Футболка "${data.name}" успешно сохранена!`);
     };
 

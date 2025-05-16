@@ -55,9 +55,9 @@ export default async function PrintingsEditPage({ params }: Props) {
         <div>
             <h1>{findPrinting?.id ? `Печать | ${findPrinting.id}` : `Новая печать | ${id}`}</h1>
             {findPrinting ? (
-                <PrintingsForm defaultValues={findPrinting} onSubmit={handleSubmit} />
+                <PrintingsForm defaultValues={findPrinting} onSubmit={handleSubmit} href="/admin/printings" id={id} />
             ) : (
-                <PrintingsForm onSubmit={handleSubmit} />
+                <PrintingsForm onSubmit={handleSubmit} href="/admin/printings" id={id} />
             )}
         </div>
     );

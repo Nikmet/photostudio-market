@@ -87,9 +87,15 @@ export default async function TablesEditPage({ params }: Props) {
                     : `Новая информационная табличка | ${id}`}
             </h1>
             {findNewsletter ? (
-                <NewslettersForm onSubmit={handleSubmit} defaultValues={findNewsletter} colors={colors} />
+                <NewslettersForm
+                    onSubmit={handleSubmit}
+                    defaultValues={findNewsletter}
+                    colors={colors}
+                    href="/admin/newsletters"
+                    id={id}
+                />
             ) : (
-                <NewslettersForm onSubmit={handleSubmit} colors={colors} />
+                <NewslettersForm onSubmit={handleSubmit} colors={colors} href="/admin/newsletters" id={id} />
             )}
         </div>
     );

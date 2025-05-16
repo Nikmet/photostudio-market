@@ -11,14 +11,17 @@ import { onNumberValueChange } from "@/lib/inputs";
 import { formSchemaBanners, FormValuesBanner } from "./schema";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IBannerFormProps {
     defaultValues?: FormValuesBanner;
     onSubmit: (data: FormValuesBanner) => void;
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormProps): React.JSX.Element => {
+export const BannerForm = ({ onSubmit, defaultValues, href, id, className }: IBannerFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -31,6 +34,8 @@ export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormPr
             name: ""
         }
     });
+
+    const { closeTab } = UseCloseTabOnSubmit();
 
     const width = watch("width");
     const height = watch("height");
@@ -45,6 +50,7 @@ export const BannerForm = ({ onSubmit, defaultValues, className }: IBannerFormPr
 
     const submitAction = (data: FormValuesBanner) => {
         onSubmit(data);
+        closeTab(id, href, "Банеры");
         toast.success(`Банер успешно сохранен!`);
     };
 

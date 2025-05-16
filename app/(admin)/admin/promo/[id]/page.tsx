@@ -68,9 +68,11 @@ export default async function CupsEditPage({ params }: Props) {
                         alt: findPage.alt,
                         image: await getImage(findPage.image)
                     }}
+                    href="/admin/promo"
+                    id={id}
                 />
             ) : (
-                <PromoForm onSubmit={handleSubmit} />
+                <PromoForm onSubmit={handleSubmit} href="/admin/promo" id={id} />
             )}
         </div>
     );

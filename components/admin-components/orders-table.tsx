@@ -6,7 +6,7 @@ import { useSelection } from "@/hooks/use-selection";
 import { useSort } from "@/hooks/use-sort";
 import { cn } from "@/lib";
 import { Button } from "../ui";
-import { ArrowDown, ArrowUp, Minus, Plus } from "lucide-react"; // Добавляем иконки
+import { ArrowDown, ArrowUp, Minus, Plus } from "lucide-react"; 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Checkbox } from "../ui/checkbox";
 import { IColumnsProps } from "@/@types/column-props";

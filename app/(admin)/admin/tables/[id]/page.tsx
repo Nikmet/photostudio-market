@@ -77,9 +77,15 @@ export default async function TablesEditPage({ params }: Props) {
         <div>
             <h1>{findTable?.id ? `Табличка | ${findTable.id}` : `Новая табличка | ${id}`}</h1>
             {findTable ? (
-                <TablesForm defaultValues={findTable} onSubmit={handleSubmit} colors={colors} />
+                <TablesForm
+                    defaultValues={findTable}
+                    onSubmit={handleSubmit}
+                    colors={colors}
+                    href="/admin/tables"
+                    id={id}
+                />
             ) : (
-                <TablesForm colors={colors} onSubmit={handleSubmit} />
+                <TablesForm colors={colors} onSubmit={handleSubmit} href="/admin/tables" id={id} />
             )}
         </div>
     );

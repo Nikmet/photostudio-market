@@ -8,14 +8,23 @@ import { Button } from "@/components/ui";
 import { FormInput } from "@/components/inputs/form-input";
 import { onNumberValueChange } from "@/lib/inputs";
 import { LinkButton } from "@/components/inputs/link-button";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IPromoCodesFormProps {
     className?: string;
     defaultValues?: FormValuesPromoCode;
     onSubmit: (data: FormValuesPromoCode) => void;
+    id: string;
+    href: string;
 }
 
-export const PromoCodesForm = ({ onSubmit, defaultValues, className }: IPromoCodesFormProps): React.JSX.Element => {
+export const PromoCodesForm = ({
+    onSubmit,
+    defaultValues,
+    id,
+    href,
+    className
+}: IPromoCodesFormProps): React.JSX.Element => {
     const form = useForm<FormValuesPromoCode>({
         resolver: zodResolver(formSchemaPromoCode),
         defaultValues: defaultValues || {
@@ -23,9 +32,12 @@ export const PromoCodesForm = ({ onSubmit, defaultValues, className }: IPromoCod
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesPromoCode) => {
         try {
             onSubmit(data);
+            closeTab(id, href, "Промокоды");
             toast.success(`Промокод "${data.code}" успешно сохранен!`);
         } catch (e) {
             console.error(e);

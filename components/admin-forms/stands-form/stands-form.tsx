@@ -8,14 +8,17 @@ import { onNumberValueChange } from "@/lib/inputs";
 import { Button } from "@/components/ui";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IStandsFormProps {
     className?: string;
     defaultValues?: FormValuesStands;
     onSubmit: (data: FormValuesStands) => void;
+    id: string;
+    href: string;
 }
 
-export const StandsForm = ({ onSubmit, defaultValues, className }: IStandsFormProps): React.JSX.Element => {
+export const StandsForm = ({ onSubmit, defaultValues, id, href, className }: IStandsFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -27,8 +30,11 @@ export const StandsForm = ({ onSubmit, defaultValues, className }: IStandsFormPr
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = (data: FormValuesStands) => {
         onSubmit(data);
+        closeTab(id, href, "Стенды");
         toast.success(`Стенд "${data.name}" успешно сохранен!`);
     };
 

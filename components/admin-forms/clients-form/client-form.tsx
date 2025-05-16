@@ -11,6 +11,7 @@ import { ClientTable } from "@/components/admin-components/client-table";
 import { OrderPaymentStatus, OrderStatus } from "@prisma/client";
 import { ImageInput } from "@/components/inputs/image-input";
 import { FormInput } from "@/components/inputs/form-input";
+import { UseCloseTabOnSubmit } from "@/hooks/use-close-tab-on-submit";
 
 export interface IOrderProps {
     id: string;
@@ -25,9 +26,18 @@ export interface IClientFormProps {
     onSubmit: (data: FormValuesClients) => void;
     orders: IOrderProps[];
     className?: string;
+    id: string;
+    href: string;
 }
 
-export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClientFormProps): React.JSX.Element => {
+export const ClientForm = ({
+    onSubmit,
+    defaultValues,
+    orders,
+    href,
+    id,
+    className
+}: IClientFormProps): React.JSX.Element => {
     const {
         control,
         handleSubmit,
@@ -41,6 +51,8 @@ export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClie
         }
     });
 
+    const { closeTab } = UseCloseTabOnSubmit();
+
     const submitAction = async (data: FormValuesClients) => {
         const res = await fetch(`isRegistered/${data.email}`);
         const isRegistered = await res.json();
@@ -50,6 +62,7 @@ export const ClientForm = ({ onSubmit, defaultValues, orders, className }: IClie
             return;
         }
         onSubmit(data);
+        closeTab(id, href, "Клиенты");
         toast.success(`Клиент "${data.fullName}" успешно сохранен!`);
     };
 
