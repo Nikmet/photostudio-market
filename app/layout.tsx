@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 import { CookieConsent } from "@/components/cookie-consent";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
     title: "Фотостудия-Маркет | Главная"
@@ -28,6 +29,7 @@ export default async function MainLayout({
                 <Providers theme={theme}>
                     <main className="flex-grow">{children}</main>
                     <CookieConsent />
+                    <Analytics />
                 </Providers>
                 <footer className="mt-auto bg-gradient-to-b from-blue-100 to-blue-200 dark:from-blue-950 dark:to-blue-900 p-2 view-animation">
                     <div className="flex flex-col justify-center items-center">
@@ -36,7 +38,8 @@ export default async function MainLayout({
                         </p>
                         <p className="text-center text-sm text-blue-900 dark:text-blue-100">{process.env.VERSION}</p>
                     </div>
-                </footer>            </body>
+                </footer>{" "}
+            </body>
         </html>
     );
 }

@@ -9,8 +9,7 @@ export default async function AdminPricesPage() {
     };
 
     return (
-        <div>
-            <h1>Prices</h1>
+        <div className="mt-4">
             <MainPricesForm defaultValues={await getDefaultPrices()} onSubmit={onSubmit} />
         </div>
     );
