@@ -150,11 +150,11 @@ export const uploadImage = async (file: File | undefined) => {
     const buffer = await file.arrayBuffer();
     const fileName = file.name.replaceAll(" ", "_");
 
-    await writeFile(`./tmp/images/${fileName}`, Buffer.from(buffer), err => {
+    await writeFile(`./public/images/${fileName}`, Buffer.from(buffer), err => {
         if (err) {
             console.error(err);
         }
     });
 
-    return `/tmp/images/${fileName}`;
+    return `/images/${fileName}`;
 };
