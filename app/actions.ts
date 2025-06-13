@@ -156,5 +156,5 @@ export const uploadImage = async (file: File | undefined) => {
         }
     });
 
-    return `/images/${fileName}`;
+    return `/tmp/images/${fileName}`;
 };
