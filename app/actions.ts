@@ -44,7 +44,7 @@ export const createProduct = async (
                 categoryId: category.id,
                 price,
                 route,
-                comments,
+                comments
             }
         });
 
@@ -150,7 +150,7 @@ export const uploadImage = async (file: File | undefined) => {
     const buffer = await file.arrayBuffer();
     const fileName = file.name.replaceAll(" ", "_");
 
-    await writeFile(`./public/images/${fileName}`, Buffer.from(buffer), err => {
+    await writeFile(`./tmp/images/${fileName}`, Buffer.from(buffer), err => {
         if (err) {
             console.error(err);
         }
