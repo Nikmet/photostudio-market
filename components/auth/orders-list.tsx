@@ -25,7 +25,9 @@ export const OrdersList = ({ orders, className }: IOrdersListProps): React.JSX.E
                     <div className="flex justify-between items-start">
                         <div>
                             <h3 className="font-medium">Заказ #{order.id}</h3>
-                            <p className="text-sm text-muted-foreground mt-1">{order.createdAt}</p>
+                            <p className="text-sm text-muted-foreground mt-1">
+                                {order.createdAt}
+                            </p>
                         </div>
                         <div className="text-right">
                             <p className="font-semibold">{order.totalAmount} ₽</p>

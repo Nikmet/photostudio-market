@@ -12,7 +12,11 @@ export default async function ProfilePage() {
             id: session?.user?.id
         },
         include: {
-            orders: true
+            orders: {
+                orderBy: {
+                    id: "desc"
+                }
+            }
         }
     });
 

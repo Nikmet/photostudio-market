@@ -33,7 +33,7 @@ export const CartDrawer = ({ userId, className }: ICartDrawerProps): React.JSX.E
             const data = await res.json();
             setCart(data);
         } catch (error) {
-            console.error("Error fetching cart:", error);
+            console.error("Корзина не найдена:", error);
         } finally {
             setIsLoading(false);
         }

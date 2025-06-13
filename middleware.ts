@@ -13,6 +13,27 @@ export async function middleware(request: NextRequest) {
         }
     }
 
+    if (pathname.startsWith("/profile")) {
+        if (!token) {
+            return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, request.url));
+        }
+    }
+    if (pathname.startsWith("/advertising")) {
+        if (!token) {
+            return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, request.url));
+        }
+    }
+    if (pathname.startsWith("/frames")) {
+        if (!token) {
+            return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, request.url));
+        }
+    }
+    if (pathname.startsWith("/souvenirs")) {
+        if (!token) {
+            return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(pathname)}`, request.url));
+        }
+    }
+
     // Защищаем админские маршруты и API
     if (pathname.startsWith("/admin")) {
         // 1. Если пользователь не авторизован - редирект на логин
@@ -30,5 +51,12 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/admin/:path*", "/checkout/:path*"]
+    matcher: [
+        "/admin/:path*",
+        "/checkout/:path*",
+        "/profile/:path*",
+        "/advertising/:path*",
+        "/frames/:path*",
+        "/souvenirs/:path*"
+    ]
 };
