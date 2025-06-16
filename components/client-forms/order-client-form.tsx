@@ -29,7 +29,7 @@ type CartWithItems = Cart & {
 export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps): React.JSX.Element => {
     const {
         control,
-        formState: { errors },
+        formState: { errors, isSubmitting },
         handleSubmit,
         watch,
         setValue
@@ -47,6 +47,7 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
     const [discount, setDiscount] = React.useState<number | null>(null);
     const [promoError, setPromoError] = React.useState<string | null>(null);
     const [isCheckingPromo, setIsCheckingPromo] = React.useState(false);
+    const [isProcessingPayment, setIsProcessingPayment] = React.useState(false);
 
     const session = useSession();
 
@@ -91,7 +92,16 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
 
     const handleSubmitForm = async (data: OrderClientFormValues) => {
         if (!session.data?.user?.id) return;
-        onSubmit(data, session.data.user.id);
+
+        if (data.paymentMethod === "online") {
+            setIsProcessingPayment(true);
+        }
+
+        try {
+            await onSubmit(data, session.data.user.id);
+        } finally {
+            setIsProcessingPayment(false);
+        }
     };
 
     const handleApplyPromoCode = async () => {
@@ -189,6 +199,23 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
                 <h1 className="text-2xl font-bold">Оформление заказа</h1>
             </div>
+
+            {/* Оверлей загрузки для ЮКассы */}
+            {isProcessingPayment && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4 text-center">
+                        <div className="flex justify-center mb-6">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        </div>
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                            Перенаправляем на страницу оплаты...
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                            Пожалуйста, подождите, идет подготовка платежа в ЮКасса.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* Содержимое */}
             <div className="p-6 space-y-6">
@@ -388,8 +415,37 @@ export const OrderClientForm = ({ onSubmit, className }: IOrderClientFormProps):
                             <button
                                 type="submit"
                                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                disabled={isSubmitting || isProcessingPayment}
                             >
-                                {payment_method == "cash" ? "Создать заказ" : "Оплатить"}
+                                {isProcessingPayment ? (
+                                    <span className="flex items-center justify-center">
+                                        <svg
+                                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
+                                        </svg>
+                                        Подготовка платежа...
+                                    </span>
+                                ) : payment_method == "cash" ? (
+                                    "Создать заказ"
+                                ) : (
+                                    "Оплатить"
+                                )}
                             </button>
                         </form>
                     </>
